@@ -3,6 +3,114 @@
 <head>
     <meta charset="utf-8">
     <title>Solicitud de Estudios - Innova Med</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            color: #333;
+        }
+
+        .document-container {
+            background-color: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-top: 8px solid #27649d; /* Tu azul profesional */
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #d4af37; /* Toque Oro */
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .clinic-info {
+            text-align: right;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+
+        .clinic-info h2 {
+            margin: 0;
+            color: #27649d;
+            font-weight: 700;
+        }
+
+        .patient-data {
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .date-row {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 10px;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .doc-title {
+            text-align: center;
+            text-transform: uppercase;
+            color: #27649d;
+            font-size: 1.4em;
+            text-decoration: underline;
+            margin: 40px 0;
+        }
+
+        .clinical-block {
+            margin-bottom: 25px;
+        }
+
+        .clinical-block h3 {
+            font-size: 1em;
+            color: #27649d;
+            border-left: 4px solid #d4af37;
+            padding-left: 10px;
+            margin-bottom: 10px;
+        }
+
+        .content-box {
+            padding: 10px;
+            min-height: 40px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .highlighted {
+            background-color: #fff9e6; /* Fondo suave para resaltar el estudio */
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .signature-line {
+            width: 250px;
+            border-top: 1px solid #333;
+            margin: 0 auto 10px;
+        }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .document-container { box-shadow: none; border: none; }
+        }
+    </style>
+    
     </head>
 <body>
     <div class="document-container">

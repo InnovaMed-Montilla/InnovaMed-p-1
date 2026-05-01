@@ -3,149 +3,32 @@
 <head>
     <meta charset="utf-8">
     <title>Solicitud de Estudios - Innova Med</title>
-    <!-- Librerías Externas -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.3.1/html-docx.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-            color: #333;
-        }
-
-        .document-container {
-            background-color: white;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 50px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-top: 8px solid #27649d;
-        }
-
-        .logo-container img {
-            width: 300px; 
-            height: auto;
-            display: block;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #d4af37;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        .clinic-info {
-            text-align: right;
-            font-size: 0.85em;
-            line-height: 1.4;
-        }
-
-        .clinic-info h2 {
-            margin: 0;
-            color: #27649d;
-            font-weight: 700;
-        }
-
-        .patient-data {
-            margin-bottom: 30px;
-            font-size: 0.9em;
-        }
-
-        .date-row {
-            text-align: right;
-            margin-bottom: 10px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 10px;
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 5px;
-        }
-
-        .doc-title {
-            text-align: center;
-            text-transform: uppercase;
-            color: #27649d;
-            font-size: 1.4em;
-            text-decoration: underline;
-            margin: 40px 0;
-        }
-
-        .clinical-block {
-            margin-bottom: 25px;
-        }
-
-        .clinical-block h3 {
-            font-size: 1em;
-            color: #27649d;
-            border-left: 4px solid #d4af37;
-            padding-left: 10px;
-            margin-bottom: 10px;
-        }
-
-        .content-box {
-            padding: 10px;
-            min-height: 40px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .highlighted {
-            background-color: #fff9e6;
-            font-weight: bold;
-        }
-
-        footer {
-            margin-top: 80px;
-            text-align: center;
-        }
-
-        .signature-line {
-            width: 250px;
-            border-top: 1px solid #333;
-            margin: 0 auto 10px;
-        }
-
-        /* Contenedor de Botones */
-        .button-container {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: bold;
-            transition: 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
+        body { font-family: 'Montserrat', sans-serif; background-color: #f4f4f4; padding: 20px; color: #333; }
+        .document-container { background-color: white; max-width: 800px; margin: 0 auto; padding: 50px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-top: 8px solid #27649d; }
+        .logo-container img { width: 300px; height: auto; display: block; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #d4af37; padding-bottom: 20px; margin-bottom: 30px; }
+        .clinic-info { text-align: right; font-size: 0.85em; line-height: 1.4; }
+        .clinic-info h2 { margin: 0; color: #27649d; font-weight: 700; }
+        .patient-data { margin-bottom: 30px; font-size: 0.9em; }
+        .date-row { text-align: right; margin-bottom: 10px; }
+        .info-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; background: #f9f9f9; padding: 15px; border-radius: 5px; }
+        .doc-title { text-align: center; text-transform: uppercase; color: #27649d; font-size: 1.4em; text-decoration: underline; margin: 40px 0; }
+        .clinical-block { margin-bottom: 25px; }
+        .clinical-block h3 { font-size: 1em; color: #27649d; border-left: 4px solid #d4af37; padding-left: 10px; margin-bottom: 10px; }
+        .content-box { padding: 10px; min-height: 40px; border-bottom: 1px solid #eee; }
+        .highlighted { background-color: #fff9e6; font-weight: bold; }
+        footer { margin-top: 80px; text-align: center; }
+        .signature-line { width: 250px; border-top: 1px solid #333; margin: 0 auto 10px; }
+        .button-container { margin-top: 30px; display: flex; justify-content: center; gap: 15px; }
+        .btn { padding: 12px 25px; cursor: pointer; border: none; border-radius: 5px; font-family: 'Montserrat', sans-serif; font-weight: bold; transition: 0.3s; }
         .btn-print { background-color: #27649d; color: white; }
         .btn-word { background-color: #2b579a; color: white; }
-        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
-
-        @media print {
-            body { background: none; padding: 0; }
-            .document-container { box-shadow: none; border: none; width: 100%; max-width: 100%; }
-            .no-print { display: none; }
-        }
+        @media print { body { background: none; padding: 0; } .document-container { box-shadow: none; border: none; } .no-print { display: none; } }
     </style>
 </head>
 <body>
-
     <div id="exportContent" class="document-container">
         <header>
             <div class="logo-container">
@@ -160,9 +43,7 @@
         </header>
 
         <section class="patient-data">
-            <div class="date-row">
-                <strong>Fecha:</strong> <span id="fecha"></span>
-            </div>
+            <div class="date-row"><strong>Fecha:</strong> <span id="fecha"></span></div>
             <div class="info-grid">
                 <p><strong>Nombre y Apellido:</strong> <span id="nombre"></span></p>
                 <p><strong>C.I.:</strong> <span id="cedula"></span></p>
@@ -172,17 +53,14 @@
 
         <main>
             <h1 class="doc-title">Solicitud de estudios de Radiodiagnóstico</h1>
-
             <div class="clinical-block">
                 <h3>Información clínica:</h3>
                 <div id="info-clinica" class="content-box"></div>
             </div>
-
             <div class="clinical-block">
                 <h3>Diagnóstico clínico:</h3>
                 <div id="diag-clinico" class="content-box"></div>
             </div>
-
             <div class="clinical-block">
                 <h3>Estudio solicitado:</h3>
                 <div id="estudio" class="content-box highlighted"></div>
@@ -197,11 +75,10 @@
 
     <div class="button-container no-print">
         <button class="btn btn-print" onclick="window.print()">Imprimir PDF</button>
-        <button class="btn btn-word" onclick="exportHTMLtoWord()">Descargar Word (.docx)</button>
+        <button class="btn btn-word" onclick="exportToWord()">Descargar Word</button>
     </div>
 
     <script>
-        // 1. Capturar parámetros de la URL
         const params = new URLSearchParams(window.location.search);
         document.getElementById('fecha').innerText = params.get('f') || '';
         document.getElementById('nombre').innerText = params.get('n') || '';
@@ -211,43 +88,30 @@
         document.getElementById('diag-clinico').innerText = params.get('dc') || '';
         document.getElementById('estudio').innerText = params.get('s') || '';
 
-        // 2. Función de Exportación Profesional a Word
-        function exportHTMLtoWord() {
-    try {
-        var content = document.getElementById("exportContent").innerHTML;
-        var fullHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
-            body { font-family: 'Arial', sans-serif; }
-            .document-container { padding: 20px; border-top: 8px solid #27649d; }
-            header { border-bottom: 2px solid #d4af37; margin-bottom: 20px; }
-            .clinic-info { text-align: right; }
-            .doc-title { text-align: center; color: #27649d; text-decoration: underline; }
-            .clinical-block h3 { color: #27649d; border-left: 4px solid #d4af37; padding-left: 8px; }
-            .highlighted { background-color: #fff9e6; border: 1px solid #d4af37; font-weight: bold; padding: 10px; }
-            footer { margin-top: 60px; text-align: center; }
-            .signature-line { border-top: 1px solid #000; width: 200px; margin: 0 auto; }
-        </style></head><body>${content}</body></html>`;
+        function exportToWord() {
+            var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><style>body{font-family:Arial;} .document-container{padding:20px;} h2, h3, .doc-title{color:#27649d;} .info-grid{background:#f9f9f9; padding:10px; border:1px solid #eee;} .highlighted{background:#fff9e6; font-weight:bold; border:1px solid #d4af37; padding:10px;}</style></head><body>";
+            var postHtml = "</body></html>";
+            var html = preHtml + document.getElementById("exportContent").innerHTML + postHtml;
 
-        // Generar el archivo
-        var converted = htmlDocx.asBlob(fullHtml);
-        var link = document.createElement('a');
-        
-        // Esto ayuda a que el navegador entienda que es una descarga forzada
-        var url = URL.createObjectURL(converted);
-        link.href = url;
-        link.download = 'Solicitud_' + (params.get('n') || 'Paciente') + '.docx';
-        
-        document.body.appendChild(link); // Lo añadimos al documento momentáneamente
-        link.click();
-        
-        // Limpieza
-        setTimeout(function() {
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-        }, 100);
-    } catch (e) {
-        alert("Error al generar el Word: " + e.message);
-    }
-}
+            var blob = new Blob(['\ufeff', html], {
+                type: 'application/msword'
+            });
+            
+            var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+            var filename = 'Solicitud_' + (document.getElementById('nombre').innerText || 'Paciente') + '.doc';
+            
+            var downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+            
+            if(navigator.msSaveOrOpenBlob ){
+                navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                downloadLink.href = url;
+                downloadLink.download = filename;
+                downloadLink.click();
+            }
+            document.body.removeChild(downloadLink);
+        }
     </script>
 </body>
 </html>

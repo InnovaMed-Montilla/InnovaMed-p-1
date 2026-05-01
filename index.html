@@ -104,21 +104,37 @@
 
         // 2. Función mágica para exportar a Word
         function exportHTMLtoWord() {
-            var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
-                         "xmlns:w='urn:schemas-microsoft-com:office:word' "+
-                         "xmlns='http://www.w3.org/TR/REC-html40'>"+
-                         "<head><meta charset='utf-8'><title>Export HTML to Word</title></head><body>";
-            var footer = "</body></html>";
-            var sourceHTML = header + document.getElementById("exportContent").innerHTML + footer;
-            
-            var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
-            var fileDownload = document.createElement("a");
-            document.body.appendChild(fileDownload);
-            fileDownload.href = source;
-            fileDownload.download = 'Solicitud_Estudio_' + (params.get('n') || 'Paciente') + '.doc';
-            fileDownload.click();
-            document.body.removeChild(fileDownload);
-        }
+    // 1. Definimos los estilos manuales para Word (Inline CSS)
+    var styleHeader = "<style>" +
+        "body { font-family: 'Arial', sans-serif; }" + // Word prefiere Arial o Calibri si no tiene Montserrat
+        ".document-container { border-top: 8px solid #27649d; padding: 30px; }" +
+        "h2, .doc-title, h3 { color: #27649d; font-family: 'Arial'; }" +
+        ".clinic-info { text-align: right; }" +
+        ".info-grid { background-color: #f9f9f9; padding: 10px; border: 1px solid #eee; }" +
+        ".highlighted { background-color: #fff9e6; font-weight: bold; padding: 10px; border: 1px solid #d4af37; }" +
+        ".clinical-block h3 { border-left: 4px solid #d4af37; padding-left: 10px; }" +
+        "footer { margin-top: 50px; text-align: center; }" +
+        ".signature-line { border-top: 1px solid #000; width: 250px; margin: 20px auto; }" +
+        "</style>";
+
+    var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+                 "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+                 "xmlns='http://www.w3.org/TR/REC-html40'>"+
+                 "<head><meta charset='utf-8'>" + styleHeader + "</head><body>";
+    var footer = "</body></html>";
+    
+    // 2. Capturamos el contenido
+    var sourceHTML = header + document.getElementById("exportContent").innerHTML + footer;
+    
+    // 3. Creamos el archivo
+    var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+    var fileDownload = document.createElement("a");
+    document.body.appendChild(fileDownload);
+    fileDownload.href = source;
+    fileDownload.download = 'Solicitud_Estudio_' + (params.get('n') || 'Paciente') + '.doc';
+    fileDownload.click();
+    document.body.removeChild(fileDownload);
+}
     </script>
 </body>
 </html>

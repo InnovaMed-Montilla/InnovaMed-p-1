@@ -5,117 +5,24 @@
     <title>Solicitud de Estudios - Innova Med</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-            color: #333;
-        }
-
-        .document-container {
-            background-color: white;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 50px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-top: 8px solid #27649d;
-        }
-
-        /* --- AQUÍ SE CONTROLA EL TAMAÑO DEL LOGO --- */
-        .logo-container img {
-            width: 300px; 
-            height: auto;
-            display: block;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #d4af37;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        .clinic-info {
-            text-align: right;
-            font-size: 0.85em;
-            line-height: 1.4;
-        }
-
-        .clinic-info h2 {
-            margin: 0;
-            color: #27649d;
-            font-weight: 700;
-        }
-
-        .patient-data {
-            margin-bottom: 30px;
-            font-size: 0.9em;
-        }
-
-        .date-row {
-            text-align: right;
-            margin-bottom: 10px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 10px;
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 5px;
-        }
-
-        .doc-title {
-            text-align: center;
-            text-transform: uppercase;
-            color: #27649d;
-            font-size: 1.4em;
-            text-decoration: underline;
-            margin: 40px 0;
-        }
-
-        .clinical-block {
-            margin-bottom: 25px;
-        }
-
-        .clinical-block h3 {
-            font-size: 1em;
-            color: #27649d;
-            border-left: 4px solid #d4af37;
-            padding-left: 10px;
-            margin-bottom: 10px;
-        }
-
-        .content-box {
-            padding: 10px;
-            min-height: 40px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .highlighted {
-            background-color: #fff9e6;
-            font-weight: bold;
-        }
-
-        footer {
-            margin-top: 80px;
-            text-align: center;
-        }
-
-        .signature-line {
-            width: 250px;
-            border-top: 1px solid #333;
-            margin: 0 auto 10px;
-        }
-
-        @media print {
-            body { background: none; padding: 0; }
-            .document-container { box-shadow: none; border: none; }
-        }
+        /* Mantengo todos tus estilos originales igualitos */
+        body { font-family: 'Montserrat', sans-serif; background-color: #f4f4f4; padding: 20px; color: #333; }
+        .document-container { background-color: white; max-width: 800px; margin: 0 auto; padding: 50px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-top: 8px solid #27649d; }
+        .logo-container img { width: 300px; height: auto; display: block; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #d4af37; padding-bottom: 20px; margin-bottom: 30px; }
+        .clinic-info { text-align: right; font-size: 0.85em; line-height: 1.4; }
+        .clinic-info h2 { margin: 0; color: #27649d; font-weight: 700; }
+        .patient-data { margin-bottom: 30px; font-size: 0.9em; }
+        .date-row { text-align: right; margin-bottom: 10px; }
+        .info-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; background: #f9f9f9; padding: 15px; border-radius: 5px; }
+        .doc-title { text-align: center; text-transform: uppercase; color: #27649d; font-size: 1.4em; text-decoration: underline; margin: 40px 0; }
+        .clinical-block { margin-bottom: 25px; }
+        .clinical-block h3 { font-size: 1em; color: #27649d; border-left: 4px solid #d4af37; padding-left: 10px; margin-bottom: 10px; }
+        .content-box { padding: 10px; min-height: 40px; border-bottom: 1px solid #eee; }
+        .highlighted { background-color: #fff9e6; font-weight: bold; }
+        footer { margin-top: 80px; text-align: center; }
+        .signature-line { width: 250px; border-top: 1px solid #333; margin: 0 auto 10px; }
+        @media print { body { background: none; padding: 0; } .document-container { box-shadow: none; border: none; } .no-print { display: none; } }
     </style>
 </head>
 <body>
@@ -134,38 +41,48 @@
 
         <section class="patient-data">
             <div class="date-row">
-                <strong>Fecha:</strong> <span>&lt;&lt;[Fecha]&gt;&gt;</span>
+                <strong>Fecha:</strong> <span id="fecha"></span>
             </div>
             <div class="info-grid">
-                <p><strong>Nombre y Apellido:</strong> &lt;&lt;[pacienteid].[Nombre y Apellido]&gt;&gt;</p>
-                <p><strong>C.I.:</strong> &lt;&lt;[pacienteid].[Cedula]&gt;&gt;</p>
-                <p><strong>Edad:</strong> &lt;&lt;[pacienteid].[Edad]&gt;&gt;</p>
+                <p><strong>Nombre y Apellido:</strong> <span id="nombre"></span></p>
+                <p><strong>C.I.:</strong> <span id="cedula"></span></p>
+                <p><strong>Edad:</strong> <span id="edad"></span></p>
             </div>
         </section>
 
         <main>
             <h1 class="doc-title">Solicitud de estudios de Radiodiagnóstico</h1>
-
             <div class="clinical-block">
                 <h3>Información clínica:</h3>
-                <div class="content-box">&lt;&lt;[Información clínica]&gt;&gt;</div>
+                <div id="info-clinica" class="content-box"></div>
             </div>
-
             <div class="clinical-block">
                 <h3>Diagnóstico clínico:</h3>
-                <div class="content-box">&lt;&lt;[Diagnóstico clínico]&gt;&gt;</div>
+                <div id="diag-clinico" class="content-box"></div>
             </div>
-
             <div class="clinical-block">
                 <h3>Estudio solicitado:</h3>
-                <div class="content-box highlighted">&lt;&lt;[Estudio solicitado]&gt;&gt;</div>
+                <div id="estudio" class="content-box highlighted"></div>
             </div>
         </main>
 
         <footer>
             <div class="signature-line"></div>
             <p>Firma y Sello Médico</p>
+            <button class="no-print" onclick="window.print()" style="margin-top:20px; padding:10px 20px; cursor:pointer;">Imprimir Solicitud</button>
         </footer>
     </div>
+
+    <script>
+        // Esta función "mapea" los parámetros de la URL a los campos del HTML
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById('fecha').innerText = params.get('f') || '';
+        document.getElementById('nombre').innerText = params.get('n') || '';
+        document.getElementById('cedula').innerText = params.get('c') || '';
+        document.getElementById('edad').innerText = params.get('e') || '';
+        document.getElementById('info-clinica').innerText = params.get('ic') || '';
+        document.getElementById('diag-clinico').innerText = params.get('dc') || '';
+        document.getElementById('estudio').innerText = params.get('s') || '';
+    </script>
 </body>
 </html>

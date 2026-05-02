@@ -7,7 +7,10 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
         body { font-family: 'Montserrat', sans-serif; background-color: #f4f4f4; padding: 20px; color: #333; }
         .document-container { background-color: white; max-width: 800px; margin: 0 auto; padding: 50px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-top: 8px solid #27649d; }
-        .logo-container img { width: 300px; max-width: 100%; height: auto; display: block; }
+        
+        /* Ajuste del logo para la vista Web */
+        .logo-container img { width: 250px; max-width: 100%; height: auto; display: block; }
+        
         header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #d4af37; padding-bottom: 20px; margin-bottom: 30px; }
         .clinic-info { text-align: right; font-size: 0.85em; line-height: 1.4; }
         .clinic-info h2 { margin: 0; color: #27649d; font-weight: 700; }
@@ -32,7 +35,8 @@
     <div id="exportContent" class="document-container">
         <header>
             <div class="logo-container">
-                <img src="https://acortar.link/WQtUKl" alt="Logo">
+                <!-- REEMPLAZA EL SRC CON TU ENLACE O TU CÓDIGO BASE64 -->
+                <img src="https://lh3.googleusercontent.com/d/1b0xVc6U0mUzyTCTHS29LsfUf9yiV3Euk" alt="Logo">
             </div>
             <div class="clinic-info">
                 <h2>CONSULTORIO MÉDICO DERMATOLÓGICO</h2>
@@ -89,57 +93,52 @@
         document.getElementById('estudio').innerText = params.get('s') || '';
 
         function exportToWord() {
-    var content = document.getElementById("exportContent").innerHTML;
+            var content = document.getElementById("exportContent").innerHTML;
 
-    var preHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-            <meta charset='utf-8'>
-            <!--[if gte mso 9]>
-            <xml>
-                <w:WordDocument>
-                    <w:View>Print</w:View> <!-- FUERZA LA VISTA DE IMPRESIÓN -->
-                    <w:Zoom>100</w:Zoom>
-                    <w:DoNotOptimizeForBrowser/>
-                </w:WordDocument>
-            </xml>
-            <![endif]-->
-            <style>
-                /* Configuración de la Hoja Física */
-                @page {
-                    size: 8.5in 11in; /* Tamaño Carta */
-                    margin: 1in 1in 1in 1in; /* Márgenes de 2.54cm */
-                }
-                body { 
-                    font-family: 'Calibri', Arial, sans-serif; 
-                }
-                .document-container { width: 100%; }
-                header { border-bottom: 2pt solid #d4af37; margin-bottom: 20pt; padding-bottom: 10pt; }
-                h2 { color: #27649d; font-size: 14pt; }
-                .info-grid { background-color: #f3f3f3; padding: 10pt; border: 0.5pt solid #cccccc; margin-bottom: 20pt; }
-                .doc-title { text-align: center; color: #27649d; font-size: 18pt; font-weight: bold; margin: 30pt 0; text-decoration: underline; }
-                h3 { color: #27649d; border-left: 5pt solid #d4af37; padding-left: 8pt; font-size: 12pt; }
-                .highlighted { background-color: #fff9e6; border: 1pt solid #d4af37; padding: 10pt; font-weight: bold; }
-                footer { margin-top: 60pt; text-align: center; }
-                .signature-line { border-top: 1pt solid #000000; width: 200pt; margin: 0 auto; }
-            </style>
-        </head>
-        <body>`;
-        
-    var postHtml = "</body></html>";
-    var html = preHtml + content + postHtml;
+            var preHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <style>
+                        @page {
+                            size: 8.5in 11in;
+                            margin: 1in 1in 1in 1in;
+                        }
+                        body { font-family: 'Calibri', Arial, sans-serif; }
+                        
+                        /* ESTO FIXEA EL TAMAÑO EN WORD */
+                        .logo-container img { 
+                            width: 180pt; 
+                            height: auto; 
+                        }
+                        
+                        .document-container { width: 100%; }
+                        header { border-bottom: 2pt solid #d4af37; margin-bottom: 20pt; padding-bottom: 10pt; }
+                        h2 { color: #27649d; font-size: 14pt; }
+                        .info-grid { background-color: #f3f3f3; padding: 10pt; border: 0.5pt solid #cccccc; margin-bottom: 20pt; }
+                        .doc-title { text-align: center; color: #27649d; font-size: 18pt; font-weight: bold; margin: 30pt 0; text-decoration: underline; }
+                        h3 { color: #27649d; border-left: 5pt solid #d4af37; padding-left: 8pt; font-size: 12pt; }
+                        .highlighted { background-color: #fff9e6; border: 1pt solid #d4af37; padding: 10pt; font-weight: bold; }
+                        footer { margin-top: 60pt; text-align: center; }
+                        .signature-line { border-top: 1pt solid #000000; width: 200pt; margin: 0 auto; }
+                    </style>
+                </head>
+                <body>`;
+            
+            var postHtml = "</body></html>";
+            var html = preHtml + content + postHtml;
 
-    var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-    var url = URL.createObjectURL(blob);
-    var filename = 'Solicitud_' + (document.getElementById('nombre').innerText || 'Paciente') + '.doc';
-    
-    var downloadLink = document.createElement("a");
-    document.body.appendChild(downloadLink);
-    downloadLink.href = url;
-    downloadLink.download = filename;
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-}
+            var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+            var url = URL.createObjectURL(blob);
+            var filename = 'Solicitud_' + (document.getElementById('nombre').innerText || 'Paciente') + '.doc';
+            
+            var downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+            downloadLink.href = url;
+            downloadLink.download = filename;
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
     </script>
 </body>
 </html>

@@ -98,7 +98,7 @@
     // 2. TRUCO DEFINITIVO: Forzamos el tamaño de la imagen mediante reemplazo de texto.
     // Word ignora el CSS, pero respeta el atributo 'width' antiguo. 
     // Aquí le decimos que mida 120 (equivalente a unos 4.2cm aprox).
-    content = content.replace(/<img/g, '<img width="150"'); 
+    content = content.replace(/<img/g, '<img width="120" height="60"'); 
 
     // 3. Preparamos el encabezado del archivo Word
     var preHtml = `

@@ -5,25 +5,33 @@
     <title>Solicitud de Estudios - Innova Med</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-        body { font-family: 'Montserrat', sans-serif; background-color: #f4f4f4; padding: 20px; color: #333; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f4f4f4; padding: 20px; color: #000; }
         .document-container { background-color: white; max-width: 800px; margin: 0 auto; padding: 50px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-top: 8px solid #27649d; }
         
-        /* Ajuste del logo para la vista Web */
-        .logo-container img { width: 250px; max-width: 100%; height: auto; display: block; }
+        /* Encabezado Estilo Montilla */
+        header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .logo-container img { width: 220px; max-width: 100%; height: auto; display: block; }
+        .clinic-info { text-align: center; flex-grow: 1; margin-top: 10px; }
+        .clinic-info h2 { margin: 0; font-size: 1.1em; color: #000; font-weight: 700; text-transform: uppercase; }
+        .clinic-info .dra-name { font-size: 1.1em; margin: 5px 0; font-weight: 400; }
         
-        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #d4af37; padding-bottom: 20px; margin-bottom: 30px; }
-        .clinic-info { text-align: right; font-size: 0.85em; line-height: 1.4; }
-        .clinic-info h2 { margin: 0; color: #27649d; font-weight: 700; }
-        .patient-data { margin-bottom: 30px; font-size: 0.9em; }
-        .date-row { text-align: right; margin-bottom: 10px; }
-        .info-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; background: #f9f9f9; padding: 15px; border-radius: 5px; }
-        .doc-title { text-align: center; text-transform: uppercase; color: #27649d; font-size: 1.4em; text-decoration: underline; margin: 40px 0; }
-        .clinical-block { margin-bottom: 25px; }
-        .clinical-block h3 { font-size: 1em; color: #27649d; border-left: 4px solid #d4af37; padding-left: 10px; margin-bottom: 10px; }
-        .content-box { padding: 10px; min-height: 40px; border-bottom: 1px solid #eee; }
-        .highlighted { background-color: #fff9e6; font-weight: bold; }
+        .divider-line { border-top: 3px solid #000; margin-bottom: 15px; width: 100%; }
+        .contact-info { text-align: center; font-size: 0.85em; margin-bottom: 30px; color: #444; }
+
+        .patient-data { margin-bottom: 30px; font-size: 1em; }
+        .date-row { text-align: right; margin-bottom: 20px; font-weight: bold; font-size: 1.1em; }
+        .info-clean { display: block; line-height: 1.6; }
+        
+        .doc-title { text-align: center; text-transform: none; color: #000; font-size: 1.6em; text-decoration: underline; margin: 40px 0; font-weight: bold; }
+        
+        .clinical-block { margin-bottom: 30px; }
+        .clinical-block h3 { font-size: 1.1em; color: #000; margin-bottom: 5px; font-weight: bold; }
+        .content-box { padding: 5px 0; min-height: 30px; font-size: 1.1em; }
+        
         footer { margin-top: 80px; text-align: center; }
-        .signature-line { width: 250px; border-top: 1px solid #333; margin: 0 auto 10px; }
+        .signature-line { width: 250px; border-top: 1.5px solid #000; margin: 0 auto 5px; }
+        
+        /* Botonera */
         .button-container { margin-top: 30px; display: flex; justify-content: center; gap: 15px; }
         .btn { padding: 12px 25px; cursor: pointer; border: none; border-radius: 5px; font-family: 'Montserrat', sans-serif; font-weight: bold; transition: 0.3s; }
         .btn-print { background-color: #27649d; color: white; }
@@ -39,15 +47,19 @@
             </div>
             <div class="clinic-info">
                 <h2>CONSULTORIO MÉDICO DERMATOLÓGICO</h2>
-                <p>Torre Cavendes - Caracas.</p>
-                <p>Tel: 0414-9172983 | WhatsApp: 0426-9198665</p>
-                <p>@draluisamontilla</p>
+                <p class="dra-name">Dra. Luisa Montilla - Dermatólogo UCV</p>
             </div>
         </header>
 
+        <div class="divider-line"></div>
+        <div class="contact-info">
+            Torre Cavendes - Caracas. Teléfono: 0414-9172983<br>
+            Whatsapp: 04269198665 / @draluisamontilla
+        </div>
+
         <section class="patient-data">
-            <div class="date-row"><strong>Fecha:</strong> <span id="fecha"></span></div>
-            <div class="info-grid">
+            <div class="date-row">Fecha: <span id="fecha"></span></div>
+            <div class="info-clean">
                 <p><strong>Nombre y Apellido:</strong> <span id="nombre"></span></p>
                 <p><strong>C.I.:</strong> <span id="cedula"></span></p>
                 <p><strong>Edad:</strong> <span id="edad"></span></p>
@@ -56,17 +68,20 @@
 
         <main>
             <h1 class="doc-title">Solicitud de estudios de Radiodiagnóstico</h1>
+            
             <div class="clinical-block">
                 <h3>Información clínica:</h3>
                 <div id="info-clinica" class="content-box"></div>
             </div>
+            
             <div class="clinical-block">
                 <h3>Diagnóstico clínico:</h3>
                 <div id="diag-clinico" class="content-box"></div>
             </div>
+            
             <div class="clinical-block">
                 <h3>Estudio solicitado:</h3>
-                <div id="estudio" class="content-box highlighted"></div>
+                <div id="estudio" class="content-box"></div>
             </div>
         </main>
 
@@ -92,67 +107,52 @@
         document.getElementById('estudio').innerText = params.get('s') || '';
 
         function exportToWord() {
-    // 1. Obtenemos el contenido del contenedor
-    var content = document.getElementById("exportContent").innerHTML;
+            var content = document.getElementById("exportContent").innerHTML;
+            
+            // Mantenemos tu truco del reemplazo para el logo
+            content = content.replace(/<img/g, '<img width="120" height="60"'); 
 
-    // 2. TRUCO DEFINITIVO: Forzamos el tamaño de la imagen mediante reemplazo de texto.
-    // Word ignora el CSS, pero respeta el atributo 'width' antiguo. 
-    // Aquí le decimos que mida 120 (equivalente a unos 4.2cm aprox).
-    content = content.replace(/<img/g, '<img width="120" height="60"'); 
-
-    // 3. Preparamos el encabezado del archivo Word
-    var preHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-            <meta charset='utf-8'>
-            <!--[if gte mso 9]>
-            <xml>
-                <w:WordDocument>
-                    <w:View>Print</w:View> <!-- FUERZA LA VISTA DE IMPRESIÓN -->
+            var preHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <!--[if gte mso 9]>
+                    <xml>
+                    <w:WordDocument>
+                    <w:View>Print</w:View>
                     <w:Zoom>100</w:Zoom>
-                    <w:DoNotOptimizeForBrowser/>
-                </w:WordDocument>
-            </xml>
-            <![endif]-->
-            <style>
-                @page {
-                    size: 8.5in 11in;
-                    margin: 1in 1in 1in 1in;
-                }
-                body { 
-                    font-family: 'Calibri', Arial, sans-serif; 
-                }
-                /* Estilos de refuerzo para Word */
-                .logo-container { text-align: left; margin-bottom: 10pt; }
-                header { border-bottom: 2pt solid #d4af37; margin-bottom: 20pt; padding-bottom: 10pt; }
-                h2 { color: #27649d; font-size: 14pt; margin: 0; }
-                .info-grid { background-color: #f3f3f3; padding: 10pt; border: 0.5pt solid #cccccc; margin-bottom: 20pt; }
-                .doc-title { text-align: center; color: #27649d; font-size: 18pt; font-weight: bold; margin: 30pt 0; text-decoration: underline; }
-                h3 { color: #27649d; border-left: 5pt solid #d4af37; padding-left: 8pt; font-size: 12pt; }
-                .highlighted { background-color: #fff9e6; border: 1pt solid #d4af37; padding: 10pt; font-weight: bold; }
-                footer { margin-top: 60pt; text-align: center; }
-                .signature-line { border-top: 1pt solid #000000; width: 200pt; margin: 0 auto; }
-            </style>
-        </head>
-        <body>`;
-        
-    var postHtml = "</body></html>";
-    
-    // 4. Unimos todo el contenido
-    var html = preHtml + content + postHtml;
+                    </w:WordDocument></xml>
+                    <![endif]-->
+                    <style>
+                        @page { size: 8.5in 11in; margin: 0.8in; }
+                        body { font-family: 'Arial', sans-serif; font-size: 11pt; }
+                        .logo-container { float: left; width: 180pt; }
+                        .clinic-info { text-align: center; }
+                        .divider-line { border-top: 2.5pt solid #000000; margin: 10pt 0; clear: both; }
+                        .contact-info { text-align: center; font-size: 9pt; margin-bottom: 20pt; }
+                        .date-row { text-align: right; font-weight: bold; margin-bottom: 15pt; }
+                        .doc-title { text-align: center; font-size: 16pt; font-weight: bold; text-decoration: underline; margin: 25pt 0; }
+                        h3 { font-size: 11pt; font-weight: bold; margin-bottom: 2pt; }
+                        .content-box { margin-bottom: 15pt; }
+                        footer { margin-top: 50pt; text-align: center; }
+                    </style>
+                </head>
+                <body>`;
+                
+            var postHtml = "</body></html>";
+            var html = preHtml + content + postHtml;
 
-    // 5. Creamos el archivo y disparamos la descarga
-    var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-    var url = URL.createObjectURL(blob);
-    var filename = 'Solicitud_' + (document.getElementById('nombre').innerText || 'Paciente') + '.doc';
-    
-    var downloadLink = document.createElement("a");
-    document.body.appendChild(downloadLink);
-    downloadLink.href = url;
-    downloadLink.download = filename;
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-}
+            var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+            var url = URL.createObjectURL(blob);
+            var filename = 'Solicitud_' + (document.getElementById('nombre').innerText || 'Paciente') + '.doc';
+            
+            var downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+            downloadLink.href = url;
+            downloadLink.download = filename;
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
     </script>
 </body>
 </html>

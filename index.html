@@ -98,13 +98,22 @@
     // 2. TRUCO DEFINITIVO: Forzamos el tamaño de la imagen mediante reemplazo de texto.
     // Word ignora el CSS, pero respeta el atributo 'width' antiguo. 
     // Aquí le decimos que mida 120 (equivalente a unos 4.2cm aprox).
-    content = content.replace(/<img/g, '<img width="120"'); 
+    content = content.replace(/<img/g, '<img width="150"'); 
 
     // 3. Preparamos el encabezado del archivo Word
     var preHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
         <head>
             <meta charset='utf-8'>
+            <!--[if gte mso 9]>
+            <xml>
+                <w:WordDocument>
+                    <w:View>Print</w:View> <!-- FUERZA LA VISTA DE IMPRESIÓN -->
+                    <w:Zoom>100</w:Zoom>
+                    <w:DoNotOptimizeForBrowser/>
+                </w:WordDocument>
+            </xml>
+            <![endif]-->
             <style>
                 @page {
                     size: 8.5in 11in;

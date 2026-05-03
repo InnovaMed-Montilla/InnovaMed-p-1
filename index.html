@@ -141,7 +141,7 @@
     var content = document.getElementById("exportContent").innerHTML;
     
     // 1. Logo: Volvemos al tamaño que daba estabilidad a la tabla
-    content = content.replace(/<img/g, '<img width="220"'); 
+    content = content.replace(/<img/g, '<img width="120" height="60"'); 
 
     var preHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -165,8 +165,8 @@
                 body { 
                     font-family: 'Times New Roman', serif; 
                     font-size: 11pt; 
-                    /* Eliminamos el line-height global para no dañar la tabla */
-                }
+                    line-height: 1.0; /* Forzamos interlineado sencillo global */
+                    }
 
                 .header-table { 
                     width: 100%; 

@@ -4,9 +4,25 @@
     <meta charset="utf-8">
     <title>Solicitud de Estudios - Innova Med</title>
     <style>
-        body { font-family: 'Times New Roman', Times, serif;
-    line-height: 0.90; background-color: #f4f4f4; padding: 5px; color: #000; }
-        .document-container { background-color: white; max-width: 800px; margin: 0 auto; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-top: 8px solid #27649d; }
+       body { 
+    font-family: 'Times New Roman', Times, serif; 
+    line-height: 1.1; 
+    background-color: #f4f4f4; 
+    padding: 20px;
+    color: #000;
+    display: flex;
+    justify-content: center;
+}
+       .document-container {
+    background-color: white;
+    width: 816px; 
+    min-height: 1056px; 
+    margin: 20px auto; 
+    padding: 20px; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-sizing: border-box; 
+    overflow: hidden;
+}
         
         /* Estructura de Tabla para el Encabezado */
         .header-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; border: none; }
@@ -41,7 +57,7 @@
         .btn-print { background-color: #27649d; color: white; }
         .btn-word { background-color: #2b579a; color: white; }
         
-        @media print { .no-print { display: none; } .document-container { box-shadow: none; border: none; } }
+        @media print { .no-print { display: none; } .document-container { width: 100%; height: auto; margin: 0; box-shadow: none; border: none; } }
     </style>
 </head>
 <body>

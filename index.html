@@ -169,7 +169,6 @@
                     line-height: 1.0; /* Forzamos interlineado sencillo global */
                 }
 
-                /* TABLA DE ENCABEZADO */
                 /* Forzamos la tabla para que Word la reconozca como columnas */
                 .header-table { 
                     width: 100%; 
@@ -198,6 +197,12 @@
                     font-size: 1pt;
                     line-height: 1px;
                 }
+
+                .top-info h2 { 
+                    font-size: 13pt; 
+                    margin: 0; 
+                    text-transform: uppercase; 
+                }
                 
                 /* LA FECHA: Forzamos alineación derecha para Word */
                 .date-row { 
@@ -208,12 +213,12 @@
                     font-weight: bold;
                 }
 
-                /* DATOS DEL PACIENTE: El truco para eliminar el interlineado en Word */
+                /* DATOS DEL PACIENTE: Interlineado ultra-compacto */
                 .patient-data p { 
-                    margin: 0pt !important; 
-                    padding: 0pt !important;
-                    line-height: 1.0 !important;
-                    mso-line-height-rule: exactly; /* Comando especial para Word */
+                    margin: 0in !important;
+                    margin-bottom: .0001pt !important;
+                    line-height: 100% !important;
+                    mso-line-height-rule: exactly;
                 }
 
                 /* CONTENIDO DEL DOCUMENTO: Reducimos espacio entre bloques */

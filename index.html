@@ -144,45 +144,108 @@
             content = content.replace(/<img/g, '<img width="120" height="60"'); 
 
             var preHtml = `
-                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                <head>
-                    <meta charset='utf-8'>
-                    <!--[if gte mso 9]>
-                    <xml>
-                    <w:WordDocument>
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+            <meta charset='utf-8'>
+            <!--[if gte mso 9]>
+            <xml>
+                <w:WordDocument>
                     <w:View>Print</w:View>
                     <w:Zoom>100</w:Zoom>
-                    </w:WordDocument></xml>
-                    <![endif]-->
-                    <style>
-                        @page { size: 8.5in 11in; margin: 0.4in; }
-                        body { font-family: 'Times New Roman', serif; }
-                        .header-table { width: 100%; }
-                        .logo-cell { width: 35%; }
-                        .info-cell { width: 65%; text-align: center; }
-                        .header-divider { border-top: 3pt solid #000000; }
-                        .date-row { text-align: right; font-weight: bold; }
-                        .doc-title { text-align: center; font-size: 16pt; font-weight: bold; text-decoration: underline; }
-                        h3 { font-size: 11pt; font-weight: bold; }
-                        footer { margin-top: 30pt; text-align: center; }
-                    </style>
-                </head>
-                <body>`;
+                    <w:DoNotOptimizeForBrowser/>
+                </w:WordDocument>
+            </xml>
+            <![endif]-->
+            <style>
+                /* Configuración de la página Carta */
+                @page { 
+                    size: 8.5in 11in; 
+                    margin: 0.5in 0.7in 0.5in 0.7in; 
+                }
                 
-            var postHtml = "</body></html>";
-            var html = preHtml + content + postHtml;
+                body { 
+                    font-family: 'Times New Roman', serif; 
+                    font-size: 11pt; 
+                }
 
-            var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-            var url = URL.createObjectURL(blob);
-            var filename = 'Solicitud_' + (document.getElementById('nombre').innerText || 'Paciente') + '.doc';
-            
-            var downloadLink = document.createElement("a");
-            document.body.appendChild(downloadLink);
-            downloadLink.href = url;
-            downloadLink.download = filename;
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-        }
+                /* Forzamos la tabla para que Word la reconozca como columnas */
+                .header-table { 
+                    width: 100%; 
+                    border-collapse: collapse; 
+                    border: none;
+                    mso-table-lspace: 0pt; 
+                    mso-table-rspace: 0pt;
+                }
+                
+                .logo-cell { 
+                    width: 35%; 
+                    vertical-align: middle; 
+                }
+                
+                .info-cell { 
+                    width: 65%; 
+                    text-align: center; 
+                    vertical-align: middle;
+                }
+
+                /* La línea negra gruesa que Word sí entiende */
+                .header-divider { 
+                    border-top: 2.5pt solid #000000; 
+                    height: 1pt;
+                    margin: 5pt 0;
+                    font-size: 1pt;
+                    line-height: 1px;
+                }
+
+                .top-info h2 { 
+                    font-size: 13pt; 
+                    margin: 0; 
+                    text-transform: uppercase; 
+                }
+                
+                .dra-name { 
+                    font-size: 12pt; 
+                    margin: 2pt 0; 
+                }
+
+                .bottom-info { 
+                    font-size: 10pt; 
+                    color: #000000; 
+                }
+
+                /* Compactar los datos del paciente en Word */
+                .patient-data p { 
+                    margin: 0; 
+                    margin-bottom: 1pt; 
+                    line-height: 1.0;
+                }
+
+                .doc-title { 
+                    text-align: center; 
+                    font-size: 14pt; 
+                    font-weight: bold; 
+                    text-decoration: underline; 
+                    margin: 20pt 0;
+                }
+            </style>
+        </head>
+        <body>`;
+        
+    var postHtml = "</body></html>";
+    var html = preHtml + content + postHtml;
+
+    // 3. Crear el archivo para descarga
+    var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+    var url = URL.createObjectURL(blob);
+    var filename = 'Solicitud_' + (document.getElementById('nombre').innerText || 'Paciente') + '.doc';
+    
+    var downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
+    downloadLink.href = url;
+    downloadLink.download = filename;
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
     </script>
 </body>
 </html>

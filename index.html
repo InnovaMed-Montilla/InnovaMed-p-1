@@ -42,7 +42,13 @@
 
         /* Cuerpo del documento */
         .date-row { text-align: right; margin: 15px 0; font-weight: bold; font-size: 0.95em; }
-        .patient-data { margin-bottom: 20px; font-size: 0.95em; line-height: 0.90; }
+        .patient-data { margin-bottom: 25px; font-size: 0.95em;}
+/* Esto fuerza a que CADA LÍNEA de datos se pegue a la anterior */
+.patient-data p {
+    margin: 0 !important;   /* Elimina cualquier espacio entre líneas */
+    padding: 0 !important;  /* Elimina rellenos internos */
+    line-height: 1.1;       /* Un valor entre 1.0 y 1.1 es el punto dulce para Times New Roman */
+}
         
         .doc-title { text-align: center; color: #000; font-size: 1.1em; text-decoration: underline; margin: 35px 0; font-weight: bold; }
         .clinical-block { margin-bottom: 25px; }

@@ -152,31 +152,29 @@
     procesarCampo('not', 'wrap-not');
 
     function exportToWord() {
-    // Clonamos el contenido para manipularlo sin afectar la vista web
     var exportElement = document.getElementById("exportContent").cloneNode(true);
     
-    // Eliminamos elementos ocultos
+    // 1. Limpieza de elementos ocultos
     var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
     hiddenElements.forEach(el => el.remove());
 
     var content = exportElement.innerHTML;
     
-    // Limpieza total de estilos inline previos para que no choquen con los de Word
+    // 2. Limpieza agresiva de estilos previos para que Word no se confunda
     content = content.replace(/style="[^"]*"/g, "");
     
-    // 1. AJUSTE DE IMAGEN
+    // 3. Ajuste de imagen
     content = content.replace(/<img/g, '<img width="180" height="90"');
     
-    // 2. ESTILO PARA DATOS Y BLOQUES CLÍNICOS (Interlineado Sencillo Real)
-    // Usamos mso-line-height-rule:exactly y eliminamos márgenes alt de Word
-    var tightStyle = 'style="margin:0in; margin-bottom:.0001pt; mso-margin-top-alt:0pt; mso-margin-bottom-alt:0pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
+    // 4. TRANSFORMACIÓN A TABLA (El "Truco Maestro")
+    // Envolvemos cada párrafo y bloque clínico en una fila de tabla para forzar interlineado
+    var tightCell = '<p style="margin:0in;margin-bottom:.0001pt;line-height:100%;mso-line-height-rule:exactly;font-family:\'Times New Roman\',serif;font-size:11pt;">';
     
-    // Aplicamos a párrafos y bloques de contenido
-    content = content.replace(/<p/g, '<p ' + tightStyle);
-    content = content.replace(/<div class="clinical-block"/g, '<div ' + tightStyle);
-    
-    // 3. ESTILO PARA CABECERAS DE SECCIÓN (Antecedentes, Examen, etc.)
-    var sectionHeaderStyle = 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:8pt; margin-bottom:2pt; border-left:4pt solid black; mso-margin-top-alt:8pt; mso-margin-bottom-alt:2pt;"';
+    content = content.replace(/<p/g, tightCell);
+    content = content.replace(/<div class="clinical-block"/g, '<div ' + tightCell.replace('<p ', ''));
+
+    // 5. Estilo de los encabezados de sección
+    var sectionHeaderStyle = 'style="background-color:#f0f0f0;font-weight:bold;text-transform:uppercase;font-size:10pt;padding:2pt;margin-top:6pt;margin-bottom:0pt;border-left:4pt solid black;mso-line-height-rule:exactly;line-height:100%;"';
     content = content.replace(/class="section-header"/g, sectionHeaderStyle);
 
     var preHtml = `
@@ -195,22 +193,22 @@
         <style>
             @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
             body { font-family: 'Times New Roman', serif; }
-            .header-table { width: 100%; border: none; border-collapse: collapse; }
-            .info-cell { text-align: center; }
-            
-            /* Estilos específicos para el encabezado en Word */
-            .main-title { font-family: Arial, sans-serif; font-size: 11pt; font-weight: bold; margin:0; line-height:1.0; mso-line-height-rule:exactly; }
-            .sub-title { font-family: Arial, sans-serif; font-size: 10pt; margin:0; line-height:1.0; mso-line-height-rule:exactly; }
-            .bottom-info { font-family: Arial, sans-serif; font-size: 9pt; margin:0; line-height:1.0; mso-line-height-rule:exactly; }
-            
-            .date-row { text-align: right !important; width: 100%; display: block; margin: 5pt 0; font-weight: bold; }
+            /* Forzamos el estilo "Normal" de Word para que no tenga espacio */
+            p.MsoNormal, li.MsoNormal, div.MsoNormal {
+                margin: 0in; margin-bottom: .0001pt; line-height: 1.0;
+                mso-line-height-rule: exactly;
+            }
+            .header-table { width: 100%; border-collapse: collapse; }
+            .main-title { font-family: Arial, sans-serif; font-size: 11pt; font-weight: bold; line-height: 1.0; mso-line-height-rule: exactly; }
+            .sub-title { font-family: Arial, sans-serif; font-size: 10pt; line-height: 1.0; mso-line-height-rule: exactly; }
+            .bottom-info { font-family: Arial, sans-serif; font-size: 8.5pt; line-height: 1.0; mso-line-height-rule: exactly; }
+            .date-row { text-align: right !important; font-weight: bold; margin-top: 5pt; }
             .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 10pt 0; }
-            h3 { font-size: 11pt; font-weight: bold; }
         </style>
     </head>
     <body>`;
     
-    // Aseguramos alineaciones finales
+    // Alineaciones finales
     var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
     finalContent = finalContent.replace('class="doc-title"', 'class="doc-title" align="center"');
     finalContent = finalContent.replace('class="info-cell"', 'class="info-cell" align="center"');

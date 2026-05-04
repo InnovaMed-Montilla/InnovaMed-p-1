@@ -217,60 +217,59 @@
     function exportToWord() {
     var exportElement = document.getElementById("exportContent").cloneNode(true);
     
-    // Eliminamos campos vacíos
+    // Eliminamos lo que esté oculto
     var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
     hiddenElements.forEach(el => el.remove());
 
     var content = exportElement.innerHTML;
     
-    // Limpiamos estilos previos
+    // Limpieza de estilos inline
     content = content.replace(/style="[^"]*"/g, "");
     
-    // ESTILO CRÍTICO: Pegamos el texto del encabezado en Word
-    var headerSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:Arial,sans-serif;"';
+    // Ajuste de imagen
+    content = content.replace(/<img/g, '<img width="180" height="85"');
     
-    // Aplicamos el estilo de "pegado" específicamente al encabezado
-    content = content.replace(/<h2/g, '<h2 ' + headerSpacingStyle);
-    content = content.replace(/<p/g, '<p ' + headerSpacingStyle);
+    // ESTILO PARA PEGAR EL TEXTO (Interlineado Exacto)
+    var tightStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:Arial,sans-serif;"';
     
+    // Aplicamos a los nuevos contenedores de texto
+    content = content.replace(/<div class="main-title"/g, '<div ' + tightStyle + ' align="center"><b>');
+    content = content.replace(/<\/div><!--title-end-->/g, '</b></div>'); // Si decides usar cierres marcados
+    content = content.replace(/<div class="sub-title"/g, '<div ' + tightStyle + ' align="center">');
+    content = content.replace(/<div class="bottom-info"/g, '<div ' + tightStyle + ' align="center">');
+    
+    // Datos del paciente (Times New Roman)
+    var patientStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.1; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
+    content = content.replace(/<p/g, '<p ' + patientStyle);
+
     var preHtml = `
     <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
     <head>
         <meta charset='utf-8'>
         <!--[if gte mso 9]>
-            <xml>
-                <w:WordDocument>
-                    <w:View>Print</w:View>
-                    <w:Zoom>100</w:Zoom>
-                    <w:DoNotOptimizeForBrowser/>
-                </w:WordDocument>
-            </xml>
-            <![endif]-->
+        <xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml>
+        <![endif]-->
         <style>
             @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
             body { font-family: 'Times New Roman', serif; }
-            .header-table { width: 100%; border-collapse: collapse; }
-            .header-divider-row { border-bottom: 1.5pt solid #000; height: 1pt; }
+            .header-table { width: 100%; }
+            .header-divider { border-top: 1.5pt solid #000; margin: 2pt 0; }
             .date-row { text-align: right !important; font-weight: bold; margin: 5pt 0; }
-            .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 10pt 0; }
         </style>
     </head>
     <body>`;
     
-    var postHtml = "</body></html>";
     var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
-    
-    var html = preHtml + finalContent + postHtml;
+    var html = preHtml + finalContent + "</body></html>";
+
     var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
     var url = URL.createObjectURL(blob);
-    var filename = 'Informe_Medico_' + (document.getElementById('n').innerText || 'Paciente') + '.doc';
+    var filename = 'Informe_' + (document.getElementById('n').innerText || 'Paciente') + '.doc';
     
     var downloadLink = document.createElement("a");
-    document.body.appendChild(downloadLink);
     downloadLink.href = url;
     downloadLink.download = filename;
     downloadLink.click();
-    document.body.removeChild(downloadLink);
 }
     </script>
 </body>

@@ -50,7 +50,7 @@
                     <div class="main-title">CONSULTORIO MÉDICO DERMATOLÓGICO</div>
                     <div class="sub-title">Dra. Luisa Montilla - Dermatólogo UCV</div>
                     <div class="header-divider"></div>
-                    <div class="bottom-info">Torre Cavendes - Caracas. Teléfono: 0414-9172983 / @draluisamontilla <br> Whatsapp: 04269198665</div>
+                    <div class="bottom-info">Torre Cavendes - Caracas. Teléfono: 0414-9172983  <br> Whatsapp: 04269198665 / @draluisamontilla </div>
                 </td>
             </tr>
         </table>
@@ -152,57 +152,82 @@
     procesarCampo('not', 'wrap-not');
 
     function exportToWord() {
-        var exportElement = document.getElementById("exportContent").cloneNode(true);
-        var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
-        hiddenElements.forEach(el => el.remove());
+    // Clonamos el contenido para manipularlo sin afectar la vista web
+    var exportElement = document.getElementById("exportContent").cloneNode(true);
+    
+    // Eliminamos elementos ocultos
+    var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
+    hiddenElements.forEach(el => el.remove());
 
-        var content = exportElement.innerHTML;
-        content = content.replace(/style="[^"]*"/g, "");
-        content = content.replace(/<img/g, '<img width="180" height="90"');
-        
-        var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
-        content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
-        
-        var sectionHeaderStyle = 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"';
-        content = content.replace(/class="section-header"/g, sectionHeaderStyle);
+    var content = exportElement.innerHTML;
+    
+    // Limpieza total de estilos inline previos para que no choquen con los de Word
+    content = content.replace(/style="[^"]*"/g, "");
+    
+    // 1. AJUSTE DE IMAGEN
+    content = content.replace(/<img/g, '<img width="180" height="90"');
+    
+    // 2. ESTILO PARA DATOS Y BLOQUES CLÍNICOS (Interlineado Sencillo Real)
+    // Usamos mso-line-height-rule:exactly y eliminamos márgenes alt de Word
+    var tightStyle = 'style="margin:0in; margin-bottom:.0001pt; mso-margin-top-alt:0pt; mso-margin-bottom-alt:0pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
+    
+    // Aplicamos a párrafos y bloques de contenido
+    content = content.replace(/<p/g, '<p ' + tightStyle);
+    content = content.replace(/<div class="clinical-block"/g, '<div ' + tightStyle);
+    
+    // 3. ESTILO PARA CABECERAS DE SECCIÓN (Antecedentes, Examen, etc.)
+    var sectionHeaderStyle = 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:8pt; margin-bottom:2pt; border-left:4pt solid black; mso-margin-top-alt:8pt; mso-margin-bottom-alt:2pt;"';
+    content = content.replace(/class="section-header"/g, sectionHeaderStyle);
 
-        var preHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-            <meta charset='utf-8'>
-            <!--[if gte mso 9]>
-            <xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml>
-            <![endif]-->
-            <style>
-                @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
-                body { font-family: 'Times New Roman', serif; font-size: 10pt; }
-                .header-table { width: 100%; border: none; }
-                .info-cell { text-align: center; }
-                .main-title { font-family: Arial, sans-serif; font-size: 11pt; font-weight: bold; margin: 0; line-height: 1.0; mso-line-height-rule: exactly; }
-                .sub-title { font-family: Arial, sans-serif; font-size: 10pt; margin: 0; line-height: 1.0; mso-line-height-rule: exactly; }
-                .bottom-info { font-family: Arial, sans-serif; font-size: 9pt; color: #000000; line-height: 1.0; }
-                .date-row { text-align: right !important; width: 100%; display: block; margin: 5pt 0; font-weight: bold; }
-                .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 15pt 0; }
-                h3 { font-size: 11pt; font-weight: bold; display: inline; }
-            </style>
-        </head>
-        <body>`;
-        
-        var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
-        finalContent = finalContent.replace('class="doc-title"', 'class="doc-title" align="center"');
-        var html = preHtml + finalContent + "</body></html>";
+    var preHtml = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head>
+        <meta charset='utf-8'>
+        <!--[if gte mso 9]>
+        <xml>
+            <w:WordDocument>
+                <w:View>Print</w:View>
+                <w:Zoom>100</w:Zoom>
+                <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+        </xml>
+        <![endif]-->
+        <style>
+            @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
+            body { font-family: 'Times New Roman', serif; }
+            .header-table { width: 100%; border: none; border-collapse: collapse; }
+            .info-cell { text-align: center; }
+            
+            /* Estilos específicos para el encabezado en Word */
+            .main-title { font-family: Arial, sans-serif; font-size: 11pt; font-weight: bold; margin:0; line-height:1.0; mso-line-height-rule:exactly; }
+            .sub-title { font-family: Arial, sans-serif; font-size: 10pt; margin:0; line-height:1.0; mso-line-height-rule:exactly; }
+            .bottom-info { font-family: Arial, sans-serif; font-size: 9pt; margin:0; line-height:1.0; mso-line-height-rule:exactly; }
+            
+            .date-row { text-align: right !important; width: 100%; display: block; margin: 5pt 0; font-weight: bold; }
+            .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 10pt 0; }
+            h3 { font-size: 11pt; font-weight: bold; }
+        </style>
+    </head>
+    <body>`;
+    
+    // Aseguramos alineaciones finales
+    var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
+    finalContent = finalContent.replace('class="doc-title"', 'class="doc-title" align="center"');
+    finalContent = finalContent.replace('class="info-cell"', 'class="info-cell" align="center"');
 
-        var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-        var url = URL.createObjectURL(blob);
-        var filename = 'Informe_' + (document.getElementById('n').innerText || 'Paciente') + '.doc';
-        
-        var downloadLink = document.createElement("a");
-        document.body.appendChild(downloadLink);
-        downloadLink.href = url;
-        downloadLink.download = filename;
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    }
+    var html = preHtml + finalContent + "</body></html>";
+
+    var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+    var url = URL.createObjectURL(blob);
+    var filename = 'Informe_' + (document.getElementById('n').innerText || 'Paciente') + '.doc';
+    
+    var downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
+    downloadLink.href = url;
+    downloadLink.download = filename;
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
     </script>
 </body>
 </html>

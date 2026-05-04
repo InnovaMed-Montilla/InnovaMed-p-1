@@ -155,153 +155,79 @@
         document.getElementById('info-clinica').innerText = params.get('ic') || '';
         document.getElementById('diag-clinico').innerText = params.get('dc') || '';
 
-      function exportToWord() {
-    var content = document.getElementById("exportContent").innerHTML;
+     function exportToWord() {
+    // Clonamos el contenido para manipularlo sin afectar la vista web
+    var exportElement = document.getElementById("exportContent").cloneNode(true);
     
-    // Limpiamos estilos inline del HTML para que no choquen con los de Word
+    // --- LÓGICA PARA NO MOSTRAR TÍTULOS VACÍOS ---
+    // Buscamos todos los elementos que deberían estar ocultos (display: none) y los eliminamos del clon
+    var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
+    hiddenElements.forEach(el => el.remove());
+
+    var content = exportElement.innerHTML;
+    
+    // Limpiamos estilos inline del HTML original para evitar conflictos
     content = content.replace(/style="[^"]*"/g, "");
     
-    // Ajuste de imagen para Word
+    // Ajuste de imagen para Word (Logo)
     content = content.replace(/<img/g, '<img width="180" height="90"');
     
     // --- SOLUCIÓN PARA EL INTERLINEADO ---
-    // Definimos un estilo que Word entiende perfectamente para interlineado sencillo y sin espacios
+    // Estilo para interlineado sencillo y sin espacios (mso-line-height-rule:exactly)
     var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
     
-    // Aplicamos este estilo a CADA etiqueta <p> que encuentre en el contenido
-    // Esto fuerza a Word a quitar el espacio entre Nombre, C.I., Edad, etc.
+    // Aplicamos a párrafos y bloques clínicos
     content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
     
-    // Otros ajustes de estructura
-    content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:10pt; margin-bottom:10pt;">');
+    // Ajustes de estructura de contenedores
+    content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:5pt; margin-bottom:5pt; border-bottom:1pt solid #000;">');
     content = content.replace(/<\/section>/g, '</div>');
-    content = content.replace(/<footer>/g, '<footer align="center" style="text-align:center;">');
-    content = content.replace(/<div class="signature-line"><\/div>/g, '<div align="center" style="margin-left:auto; margin-right:auto; width:200pt; border-top:1pt solid black; height:1pt;"></div>');  
-          var preHtml = `
-         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-            <meta charset='utf-8'>
-            <!--[if gte mso 9]>
-            <xml>
-                <w:WordDocument>
-                    <w:View>Print</w:View>
-                    <w:Zoom>100</w:Zoom>
-                    <w:DoNotOptimizeForBrowser/>
-                </w:WordDocument>
-            </xml>
-            <![endif]-->
-            <style>
-                @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
-                
-                /* Estilos Base para Word */
-                body { font-family: 'Times New Roman', serif; font-size: 10pt; }
+    
+    // Estilo para las cabeceras de sección (Antecedentes, Examen Físico, etc.)
+    var sectionHeaderStyle = 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"';
+    content = content.replace(/class="section-header"/g, sectionHeaderStyle);
 
-                /* 1. CORRECCIÓN DEL ENCABEZADO (Tabla y Texto) */
-                .header-table { width: 100%; border: none; }
-                .info-cell { text-align: center; }
-                
-                /* Bajamos el tamaño de "CONSULTORIO MÉDICO..." y quitamos espacio */
-                .top-info h2 { 
-                    font-family: Arial, sans-serif; 
-                    font-size: 11pt; /* Letra más pequeña */
-                    margin: 0; 
-                    padding: 0;
-                    line-height: 1.0;
-                    mso-line-height-rule: exactly;
-                }
-                .dra-name { 
-                    font-family: Arial, sans-serif; 
-                    font-size: 10pt; 
-                    margin: 0; 
-                    line-height: 1.0;
-                    mso-line-height-rule: exactly;
-                }
-                .bottom-info { 
-                    font-family: Arial, sans-serif; 
-                    font-size: 9pt; /* Información de contacto más pequeña */
-                    color: #444444;
-                    line-height: 1.0;
-                    mso-line-height-rule: exactly;
-                }
-                 /* LA FECHA: A la derecha y con espacio */
-                .date-row { 
-                    text-align: right !important; 
-                    width: 100%;
-                    display: block;
-                    margin: 10pt 0;
-                    font-weight: bold;
-                }
-                /* 2. CORRECCIÓN DE LOS DATOS DEL PACIENTE (Interlineado) */
-                .patient-data p { 
-                    margin: 0pt !important; /* Elimina el espacio que Word pone entre párrafos */
-                    padding: 0pt !important;
-                    font-size: 11pt; 
-                    line-height: 1.1; /* Interlineado pegadito */
-                    mso-line-height-rule: exactly; /* Obliga a Word a respetar el line-height */
-                }
-                    .doc-title { 
-                    text-align: center; 
-                    font-size: 14pt; 
-                    font-weight: bold; 
-                    text-decoration: underline; 
-                    margin: 15pt 0;
-                }
-
-                /* CONTENIDO DEL DOCUMENTO: Reducimos espacio entre bloques */
-                .clinical-block { 
-                    margin-top: 5pt; /* cambiando de 10 a 5 */
-                    margin-bottom: 5pt; 
-                }
-                
-                .clinical-block h3 { 
-                    margin: 0; 
-                    font-size: 11pt;
-                    font-weight: bold
-                    }
-
-                .content-box { 
-                    margin: 0; 
-                    padding-top: 2pt;
-                    line-height: 1.1; 
-                }
-                 footer { 
-                    margin-top: 100pt; /* Aumentamos el espacio para bajarlo a la parte medio-baja */
-                    text-align: center;
-                    width: 100%;
-                }
-
-                .signature-container {
-                    margin-left: auto;
-                    margin-right: auto;
-                    width: 250pt; /* Ancho de la línea de firma */
-                    text-align: center;
-                }
-
-                .signature-line { 
-                    border-top: 1.0pt solid #000000; 
-                    width: 100%; 
-                    margin-bottom: 5pt;
-                }
-
-                .signature-text {
-                    font-family: 'Times New Roman', serif;
-                    font-size: 11pt;
-                    font-weight: bold;
-                }
-            </style>
-        </head>
-        <body>`;
-        
+    var preHtml = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head>
+        <meta charset='utf-8'>
+        <!--[if gte mso 9]>
+        <xml>
+            <w:WordDocument>
+                <w:View>Print</w:View>
+                <w:Zoom>100</w:Zoom>
+                <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+        </xml>
+        <![endif]-->
+        <style>
+            @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
+            body { font-family: 'Times New Roman', serif; font-size: 10pt; }
+            .header-table { width: 100%; border: none; }
+            .info-cell { text-align: center; }
+            .top-info h2 { font-family: Arial, sans-serif; font-size: 11pt; margin: 0; line-height: 1.0; mso-line-height-rule: exactly; }
+            .bottom-info { font-family: Arial, sans-serif; font-size: 9pt; color: #444444; line-height: 1.0; }
+            .date-row { text-align: right !important; width: 100%; display: block; margin: 10pt 0; font-weight: bold; }
+            .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 15pt 0; }
+            h3 { font-size: 11pt; font-weight: bold; display: inline; }
+        </style>
+    </head>
+    <body>`;
+    
     var postHtml = "</body></html>";
     
-    // Aseguramos la alineación de la fecha en el HTML final
+    // Aseguramos la alineación de la fecha y títulos en el HTML final
     var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
+    finalContent = finalContent.replace('class="doc-title"', 'class="doc-title" align="center"');
 
     var html = preHtml + finalContent + postHtml;
 
     var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
     var url = URL.createObjectURL(blob);
-    var filename = 'Solicitud_' + (document.getElementById('nombre').innerText || 'Paciente') + '.doc';
+    
+    // Nombre del archivo basado en el paciente
+    var nombrePaciente = document.getElementById('n').innerText || 'Paciente';
+    var filename = 'Informe_' + nombrePaciente + '.doc';
     
     var downloadLink = document.createElement("a");
     document.body.appendChild(downloadLink);

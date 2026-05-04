@@ -168,108 +168,101 @@
     <script>
     const params = new URLSearchParams(window.location.search);
 
-    function procesarCampo(paramId, wrapId = null) {
-        const valor = params.get(paramId);
-        const campoElemento = document.getElementById(paramId);
-        const wrapElemento = wrapId ? document.getElementById(wrapId) : null;
-
-        if (valor && valor.trim() !== "" && valor.toLowerCase() !== "null") {
-            if (campoElemento) campoElemento.innerText = valor;
-        } else {
-            if (wrapElemento) {
-                wrapElemento.style.display = "none";
-            } else if (campoElemento) {
-                campoElemento.innerText = "";
-            }
-        }
-    }
-
-    // Campos fijos
-    document.getElementById('fecha').innerText = params.get('fecha') || '';
-    document.getElementById('n').innerText = params.get('n') || '';
-    document.getElementById('c').innerText = params.get('c') || '';
-    document.getElementById('e').innerText = params.get('e') || '';
-    document.getElementById('tel').innerText = params.get('tel') || '';
-    document.getElementById('dir').innerText = params.get('dir') || '';
-    document.getElementById('ocu').innerText = params.get('ocu') || '';
-    document.getElementById('mot').innerText = params.get('mot') || '';
-    document.getElementById('antp').innerText = params.get('antp') || '';
-    document.getElementById('ale').innerText = params.get('ale') || '';
-    document.getElementById('qui').innerText = params.get('qui') || '';
-    document.getElementById('exf').innerText = params.get('exf') || '';
-    document.getElementById('diag').innerText = params.get('diag') || '';
-    document.getElementById('tra').innerText = params.get('tra') || '';
-
-    // Campos opcionales
-    procesarCampo('alesp', 'wrap-alesp');
-    procesarCampo('quiesp', 'wrap-quiesp');
-    procesarCampo('fot', 'wrap-fot');
-    procesarCampo('tur', 'wrap-tur');
-    procesarCampo('pie', 'wrap-pie');
-    procesarCampo('uñ', 'wrap-uñ');
-    procesarCampo('pel', 'wrap-pel');
-    procesarCampo('pla', 'wrap-pla');
-    procesarCampo('mic', 'wrap-mic');
-    procesarCampo('lab', 'wrap-lab');
-    procesarCampo('con', 'wrap-con');
-    procesarCampo('not', 'wrap-not');
-
     function exportToWord() {
+    // Clonamos el contenido para manipularlo sin afectar la vista web
     var exportElement = document.getElementById("exportContent").cloneNode(true);
     
-    // Eliminamos lo que esté oculto
+    // --- LÓGICA PARA NO MOSTRAR TÍTULOS VACÍOS ---
     var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
     hiddenElements.forEach(el => el.remove());
 
     var content = exportElement.innerHTML;
     
-    // Limpieza de estilos inline
+    // Limpiamos estilos inline del HTML original para evitar conflictos
     content = content.replace(/style="[^"]*"/g, "");
     
-    // Ajuste de imagen
-    content = content.replace(/<img/g, '<img width="180" height="85"');
+    // Ajuste de imagen para Word (Logo)
+    content = content.replace(/<img/g, '<img width="180" height="90"');
     
-    // ESTILO PARA PEGAR EL TEXTO (Interlineado Exacto)
-    var tightStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:Arial,sans-serif;"';
+    // --- SOLUCIÓN PARA EL INTERLINEADO ---
+    // Estilo para interlineado sencillo y sin espacios (mso-line-height-rule:exactly)
+    var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
     
-    // Aplicamos a los nuevos contenedores de texto
-    content = content.replace(/<div class="main-title"/g, '<div ' + tightStyle + ' align="center"><b>');
-    content = content.replace(/<\/div><!--title-end-->/g, '</b></div>'); // Si decides usar cierres marcados
-    content = content.replace(/<div class="sub-title"/g, '<div ' + tightStyle + ' align="center">');
-    content = content.replace(/<div class="bottom-info"/g, '<div ' + tightStyle + ' align="center">');
+    // Aplicamos a párrafos y bloques clínicos (divs de contenido)
+    content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
+    content = content.replace(/<div class="clinical-block"/g, '<div ' + wordSpacingStyle);
     
-    // Datos del paciente (Times New Roman)
-    var patientStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.1; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
-    content = content.replace(/<p/g, '<p ' + patientStyle);
+    // Ajustes de estructura de contenedores
+    content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:5pt; margin-bottom:5pt; border-bottom:1pt solid #000;">');
+    content = content.replace(/<\/section>/g, '</div>');
+    
+    // Estilo para las cabeceras de sección (Antecedentes, Examen Físico, etc.)
+    var sectionHeaderStyle = 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"';
+    content = content.replace(/class="section-header"/g, sectionHeaderStyle);
 
     var preHtml = `
     <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
     <head>
         <meta charset='utf-8'>
         <!--[if gte mso 9]>
-        <xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml>
+        <xml>
+            <w:WordDocument>
+                <w:View>Print</w:View>
+                <w:Zoom>100</w:Zoom>
+                <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+        </xml>
         <![endif]-->
         <style>
             @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
-            body { font-family: 'Times New Roman', serif; }
-            .header-table { width: 100%; }
+            body { font-family: 'Times New Roman', serif; font-size: 10pt; }
+            .header-table { width: 100%; border: none; }
+            .info-cell { text-align: center; }
+            
+            /* FUERZA EL PEGADO EN EL ENCABEZADO */
+            .top-info h2, .top-info p, .bottom-info { 
+                font-family: Arial, sans-serif !important; 
+                margin: 0 !important; 
+                padding: 0 !important; 
+                line-height: 1.0 !important;
+                mso-line-height-rule: exactly;
+            }
+            
+            .top-info h2 { font-size: 11pt; font-weight: bold; }
+            .bottom-info { font-size: 9pt; color: #000000; }
+            
             .header-divider { border-top: 1.5pt solid #000; margin: 2pt 0; }
-            .date-row { text-align: right !important; font-weight: bold; margin: 5pt 0; }
+            
+            .date-row { text-align: right !important; width: 100%; display: block; margin: 5pt 0; font-weight: bold; }
+            .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 15pt 0; }
+            h3 { font-size: 11pt; font-weight: bold; display: inline; }
         </style>
     </head>
     <body>`;
     
+    var postHtml = "</body></html>";
+    
+    // Aseguramos alineaciones críticas que Word a veces ignora en el CSS
     var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
-    var html = preHtml + finalContent + "</body></html>";
+    finalContent = finalContent.replace('class="doc-title"', 'class="doc-title" align="center"');
+    finalContent = finalContent.replace('class="info-cell"', 'class="info-cell" align="center"');
+    finalContent = finalContent.replace('class="bottom-info"', 'class="bottom-info" align="center"');
+
+    var html = preHtml + finalContent + postHtml;
 
     var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
     var url = URL.createObjectURL(blob);
-    var filename = 'Informe_' + (document.getElementById('n').innerText || 'Paciente') + '.doc';
+    
+    // Nombre del archivo basado en el paciente
+    var nombrePaciente = document.getElementById('n').innerText || 'Paciente';
+    var filename = 'Informe_' + nombrePaciente + '.doc';
     
     var downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
     downloadLink.href = url;
     downloadLink.download = filename;
     downloadLink.click();
+    document.body.removeChild(downloadLink);
 }
     </script>
 </body>

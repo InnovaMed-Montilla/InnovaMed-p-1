@@ -49,17 +49,11 @@
        
         .doc-title { text-align: center; font-size: 1.2em; text-decoration: underline; margin: 20px 0; font-weight: bold; text-transform: none; }
 
-        .clinical-block { 
-    margin-bottom: 10px !important; 
-    padding-bottom: 0px !important;
-}
-        .clinical-block h3 { font-size: 0.95em; margin-top: 0px !important; margin-bottom: 2px !important;
-    line-height: 1.1; font-weight: bold
-}
-.content-box {
-    margin-top: 0px !important;
-    padding-top: 0px !important;
-}        
+        .clinical-block { margin-bottom: 10px !important;  padding-bottom: 0px !important;}
+        .clinical-block h3 {display: inline; font-size: 0.95em; margin-top: 0px !important; margin-bottom: 2px !important; line-height: 1.1; font-weight: bold}
+        .content-box { display: inline; margin-top: 0px !important; padding-top: 0px !important;}       
+
+    
         /* Footer posicionado abajo */
         footer { 
             margin-top: auto; /* Empuja el footer al fondo */
@@ -114,23 +108,23 @@
             <h1 class="doc-title">Solicitud de Biopsia</h1>
             
             <div class="clinical-block">
-                <h3>Muestra de:</h3> <div id="muestra" class="content-box"></div>
+                <h3>Muestra de:</h3> <span id="muestra" class="content-box"></span>
             </div>
             
             <div class="clinical-block">
-                <h3>Tiempo de evolución:</h3> <div id="evolucion" class="content-box"></div>
+                <h3>Tiempo de evolución:</h3> <span id="evolucion" class="content-box"></span>
             </div>
 
             <div class="clinical-block">
-                <h3>Sitio de la lesión:</h3> <div id="sitio" class="content-box"></div>
+                <h3>Sitio de la lesión:</h3> <span id="sitio" class="content-box"></span>
             </div>
 
             <div class="clinical-block">
-                <h3>Información clínica:</h3> <div id="info-clinica" class="content-box"></div>
+                <h3>Información clínica:</h3> <span id="info-clinica" class="content-box"></span>
             </div>
             
             <div class="clinical-block">
-                <h3>Diagnóstico clínico:</h3> <div id="diag-clinico" class="content-box"></div>
+                <h3>Diagnóstico clínico:</h3> <span id="diag-clinico" class="content-box"></span>
             </div>
         </main>
 

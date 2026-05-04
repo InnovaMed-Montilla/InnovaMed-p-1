@@ -154,28 +154,30 @@
         document.getElementById('info-clinica').innerText = params.get('ic') || '';
         document.getElementById('diag-clinico').innerText = params.get('dc') || '';
 
-       function exportToWord() {
+      function exportToWord() {
     var content = document.getElementById("exportContent").innerHTML;
-            
-            content = content.replace(/style="[^"]*"/g, "");
     
-            content = content.replace(/<img/g, '<img width="180" height="90"');
-            
-var patientStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:10pt;"';
+    // Limpiamos estilos inline del HTML para que no choquen con los de Word
+    content = content.replace(/style="[^"]*"/g, "");
     
-    // Aplicamos el estilo directamente a los párrafos de esa sección
-    content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:15pt; margin-bottom:15pt;">');
+    // Ajuste de imagen para Word
+    content = content.replace(/<img/g, '<img width="180" height="90"');
+    
+    // --- SOLUCIÓN PARA EL INTERLINEADO ---
+    // Definimos un estilo que Word entiende perfectamente para interlineado sencillo y sin espacios
+    var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
+    
+    // Aplicamos este estilo a CADA etiqueta <p> que encuentre en el contenido
+    // Esto fuerza a Word a quitar el espacio entre Nombre, C.I., Edad, etc.
+    content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
+    
+    // Otros ajustes de estructura
+    content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:10pt; margin-bottom:10pt;">');
     content = content.replace(/<\/section>/g, '</div>');
-    
-    // Este reemplazo asegura que CADA línea de datos tenga el comando de "interlineado exacto" de Word
-    content = content.replace(/<p><strong>Nombre/g, '<p ' + patientStyle + '><strong>Nombre');
-    content = content.replace(/<p><strong>C.I./g, '<p ' + patientStyle + '><strong>C.I.');
-    content = content.replace(/<p><strong>Edad/g, '<p ' + patientStyle + '><strong>Edad');
-
-content = content.replace(/<footer>/g, '<footer align="center" style="text-align:center;">');
-content = content.replace(/<div class="signature-line"><\/div>/g, '<div class="signature-line" align="center" style="margin-left:auto; margin-right:auto; width:200pt; border-top:1pt solid black; height:1pt;"></div>');
-    var preHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    content = content.replace(/<footer>/g, '<footer align="center" style="text-align:center;">');
+    content = content.replace(/<div class="signature-line"><\/div>/g, '<div align="center" style="margin-left:auto; margin-right:auto; width:200pt; border-top:1pt solid black; height:1pt;"></div>');  
+          var preHtml = `
+         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
         <head>
             <meta charset='utf-8'>
             <!--[if gte mso 9]>
@@ -246,7 +248,7 @@ content = content.replace(/<div class="signature-line"><\/div>/g, '<div class="s
 
                 /* CONTENIDO DEL DOCUMENTO: Reducimos espacio entre bloques */
                 .clinical-block { 
-                    margin-top: 10pt; 
+                    margin-top: 5pt; /* cambiando de 10 a 5 */
                     margin-bottom: 5pt; 
                 }
                 

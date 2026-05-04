@@ -34,6 +34,33 @@
     border-top: 1.5pt solid #000;
     margin: 2px 0 4px 0; /* Espacio mínimo alrededor de la línea */
 }
+
+        .header-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.main-title {
+    font-family: Arial, sans-serif;
+    font-size: 14pt;
+    font-weight: bold;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.1;
+}
+.sub-title {
+    font-family: Arial, sans-serif;
+    font-size: 11pt;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.1;
+}
+.header-divider {
+    border-top: 1.5pt solid #000;
+    margin: 2px 0;
+    width: 100%;
+}
     
         .bottom-info { font-size: 0.8em; line-height: 1.1; }
 
@@ -61,13 +88,13 @@
 </head>
 <body>
     <div id="exportContent" class="document-container">
-        <table class="header-table">
+       <table class="header-table">
     <tr>
         <td class="logo-cell"><img src="https://lh3.googleusercontent.com/d/1b0xVc6U0mUzyTCTHS29LsfUf9yiV3Euk" alt="Logo"></td>
         <td class="info-cell">
             <div class="header-text-container">
                 <div class="main-title">CONSULTORIO MÉDICO DERMATOLÓGICO</div>
-                <p class="sub-title">Dra. Luisa Montilla - Dermatólogo UCV</p>
+                <div class="sub-title">Dra. Luisa Montilla - Dermatólogo UCV</div>
             </div>
             <div class="header-divider"></div>
             <div class="bottom-info">Torre Cavendes - Caracas. Teléfono: 0414-9172983 / @draluisamontilla</div>

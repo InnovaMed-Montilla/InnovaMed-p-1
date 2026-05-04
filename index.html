@@ -139,9 +139,21 @@
 
         function exportToWord() {
     var content = document.getElementById("exportContent").innerHTML;
+            
+            content = content.replace(/style="[^"]*"/g, "");
     
-            content = content.replace(/<img/g, '<img width="220" height="120"'); 
-
+            content = content.replace(/<img/g, '<img width="220" height="120"');
+            
+var patientStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:10pt;"';
+    
+    // Aplicamos el estilo directamente a los párrafos de esa sección
+    content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:15pt; margin-bottom:15pt;">');
+    content = content.replace(/<\/section>/g, '</div>');
+    
+    // Este reemplazo asegura que CADA línea de datos tenga el comando de "interlineado exacto" de Word
+    content = content.replace(/<p><strong>Nombre/g, '<p ' + patientStyle + '><strong>Nombre');
+    content = content.replace(/<p><strong>C.I./g, '<p ' + patientStyle + '><strong>C.I.');
+    content = content.replace(/<p><strong>Edad/g, '<p ' + patientStyle + '><strong>Edad');
     var preHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
         <head>

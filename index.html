@@ -140,7 +140,7 @@
         function exportToWord() {
     var content = document.getElementById("exportContent").innerHTML;
     
-            content = content.replace(/<img/g, '<img width="120" height="60"'); 
+            content = content.replace(/<img/g, '<img width="220" height="120"'); 
 
     var preHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -169,10 +169,10 @@
 
                 .header-table { 
                     width: 100%; 
-                    border-collapse: collapse; 
+                    border-collapse: collapse !important; 
                     border: none;
-                    mso-table-lspace: 0pt; 
-                    mso-table-rspace: 0pt;
+                    mso-table-lspace: 0pt !important;
+                    mso-table-rspace: 0pt !important;
                 }
                 
                 .logo-cell { width: 35%; vertical-align: middle; }
@@ -196,6 +196,9 @@
                  .patient-data p { 
                     margin: 0pt !important; 
                     padding: 0pt !important;
+                    padding-top: 2pt;
+                    margin-top: 10pt; 
+                    margin-bottom: 5pt;
                     line-height: 1.0 !important;
                     mso-line-height-rule: exactly; /* Comando especial para Word */
                 }

@@ -12,9 +12,29 @@
         .logo-cell { width: 30%; vertical-align: middle; }
         .logo-cell img { width: 100%; max-width: 280px; height: auto; display: block; }
         .info-cell { width: 65%; vertical-align: middle; text-align: center; }
-        .top-info h2 { margin: 0; font-size: 0.9em; text-transform: uppercase; }
-        .dra-name { margin: 2px 0; font-size: 0.9em; }
-        .header-divider { border-top: 2pt solid #000; margin: 5px 0; width: 100%; }
+        
+        .top-info h2 {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.0 !important; /* Fuerza a que no haya espacio entre líneas */
+    font-family: Arial, sans-serif;
+    font-size: 1.0em;
+        text-transform: uppercase;
+        }
+
+        top-info p {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.0 !important; /* Pega el nombre de la Dra al título superior */
+    font-family: Arial, sans-serif;
+    font-size: 11pt;
+}
+
+.header-divider {
+    border-top: 1.5pt solid #000;
+    margin: 2px 0 4px 0; /* Espacio mínimo alrededor de la línea */
+}
+    
         .bottom-info { font-size: 0.8em; line-height: 1.1; }
 
         /* Cuerpo e Interlineado */
@@ -167,24 +187,29 @@
     procesarCampo('not', 'wrap-not');
 
     function exportToWord() {
-        var content = document.getElementById("exportContent").innerHTML;
-        var nombrePaciente = document.getElementById('n').innerText || 'Paciente';
-        
-        content = content.replace(/style="[^"]*"/g, "");
-        content = content.replace(/<img/g, '<img width="160" height="80"');
-        
-        var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
-        content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
-        
-        content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:5pt; margin-bottom:5pt; border-bottom:1pt solid #eee;">');
-        content = content.replace(/<\/section>/g, '</div>');
-        content = content.replace(/class="section-header"/g, 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"');
+    var exportElement = document.getElementById("exportContent").cloneNode(true);
+    
+    // Eliminamos campos vacíos
+    var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
+    hiddenElements.forEach(el => el.remove());
 
-        var preHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-            <meta charset='utf-8'>
-            <!--[if gte mso 9]>
+    var content = exportElement.innerHTML;
+    
+    // Limpiamos estilos previos
+    content = content.replace(/style="[^"]*"/g, "");
+    
+    // ESTILO CRÍTICO: Pegamos el texto del encabezado en Word
+    var headerSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:Arial,sans-serif;"';
+    
+    // Aplicamos el estilo de "pegado" específicamente al encabezado
+    content = content.replace(/<h2/g, '<h2 ' + headerSpacingStyle);
+    content = content.replace(/<p/g, '<p ' + headerSpacingStyle);
+    
+    var preHtml = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head>
+        <meta charset='utf-8'>
+        <!--[if gte mso 9]>
             <xml>
                 <w:WordDocument>
                     <w:View>Print</w:View>
@@ -193,33 +218,32 @@
                 </w:WordDocument>
             </xml>
             <![endif]-->
-            <style>
-                @page { size: 8.5in 11in; margin: 0.5in 0.7in; }
-                body { font-family: 'Times New Roman', serif; }
-                .header-table { width: 100%; }
-                .date-row { text-align: right !important; margin: 10pt 0; font-weight: bold; }
-                .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 15pt 0; }
-                h3 { font-size: 11pt; font-weight: bold; display: inline; }
-                .content-box { font-size: 11pt; display: inline; }
-            </style>
-        </head>
-        <body>`;
-        
-        var postHtml = "</body></html>";
-        var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
-        var html = preHtml + finalContent + postHtml;
-
-        var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-        var url = URL.createObjectURL(blob);
-        var filename = 'Informe_' + nombrePaciente + '.doc';
-        
-        var downloadLink = document.createElement("a");
-        document.body.appendChild(downloadLink);
-        downloadLink.href = url;
-        downloadLink.download = filename;
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    }
+        <style>
+            @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
+            body { font-family: 'Times New Roman', serif; }
+            .header-table { width: 100%; border-collapse: collapse; }
+            .header-divider-row { border-bottom: 1.5pt solid #000; height: 1pt; }
+            .date-row { text-align: right !important; font-weight: bold; margin: 5pt 0; }
+            .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 10pt 0; }
+        </style>
+    </head>
+    <body>`;
+    
+    var postHtml = "</body></html>";
+    var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
+    
+    var html = preHtml + finalContent + postHtml;
+    var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+    var url = URL.createObjectURL(blob);
+    var filename = 'Informe_Medico_' + (document.getElementById('n').innerText || 'Paciente') + '.doc';
+    
+    var downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
+    downloadLink.href = url;
+    downloadLink.download = filename;
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
     </script>
 </body>
 </html>

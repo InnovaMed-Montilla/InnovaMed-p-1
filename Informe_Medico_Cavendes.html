@@ -8,76 +8,31 @@
         .document-container { background-color: white; width: 816px; min-height: 1056px; margin: 20px auto; padding: 40px 60px; box-shadow: 0 0 10px rgba(0,0,0,0.1); box-sizing: border-box; display: flex; flex-direction: column; }
         
         /* Encabezado */
-        .header-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; border: none; }
+        .header-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; }
         .logo-cell { width: 30%; vertical-align: middle; }
-        .logo-cell img { width: 100%; max-width: 280px; height: auto; display: block; }
-        .info-cell { width: 65%; vertical-align: middle; text-align: center; }
+        .logo-cell img { width: 100%; max-width: 220px; height: auto; display: block; }
+        .info-cell { width: 70%; vertical-align: middle; text-align: center; }
         
-        .top-info h2 {
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1.0 !important; /* Fuerza a que no haya espacio entre líneas */
-    font-family: Arial, sans-serif;
-    font-size: 1.0em;
-        text-transform: uppercase;
-        }
+        /* Texto del encabezado pegadito */
+        .main-title { font-family: Arial, sans-serif; font-size: 14pt; font-weight: bold; margin: 0; line-height: 1.0; }
+        .sub-title { font-family: Arial, sans-serif; font-size: 11pt; margin: 0; line-height: 1.0; }
+        .header-divider { border-top: 1.5pt solid #000; margin: 4px 0; width: 100%; }
+        .bottom-info { font-family: Arial, sans-serif; font-size: 8.5pt; line-height: 1.0; margin-top: 2px; }
 
-        top-info p {
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1.0 !important; /* Pega el nombre de la Dra al título superior */
-    font-family: Arial, sans-serif;
-    font-size: 11pt;
-}
-
-.header-divider {
-    border-top: 1.5pt solid #000;
-    margin: 2px 0 4px 0; /* Espacio mínimo alrededor de la línea */
-}
-
-        .header-text-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.main-title {
-    font-family: Arial, sans-serif;
-    font-size: 12pt;
-    font-weight: bold;
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1.1;
-}
-.sub-title {
-    font-family: Arial, sans-serif;
-    font-size: 10pt;
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1.1;
-}
-.header-divider {
-    border-top: 1.5pt solid #000;
-    margin: 2px 0;
-    width: 100%;
-}
-    
-        .bottom-info { font-size: 0.8em; line-height: 1.1; }
-
-        /* Cuerpo e Interlineado */
-        .date-row { text-align: right; margin-bottom: 10px; font-weight: bold; }
+        .date-row { text-align: right; margin-bottom: 10px; font-weight: bold; width: 100%; }
+        
+        /* Datos del Paciente */
         .patient-data { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 15px; font-size: 0.95em; border-bottom: 1pt solid #eee; padding-bottom: 10px; }
         .full-width { grid-column: span 2; }
         .patient-data p { margin: 0 !important; padding: 0 !important; line-height: 1.2; }
         
-        .doc-title { text-align: center; font-size: 1.2em; text-decoration: underline; margin: 10px 0; font-weight: bold; text-transform: none; }
+        .doc-title { text-align: center; font-size: 1.2em; text-decoration: underline; margin: 10px 0; font-weight: bold; text-transform: uppercase; }
 
-        /* Bloques de Informe */
+        /* Secciones */
         .section-header { background-color: #f9f9f9; padding: 3px 5px; font-weight: bold; text-transform: uppercase; font-size: 0.85em; border-left: 3pt solid #000; margin: 10px 0 5px 0; }
         .clinical-block { margin-bottom: 4px !important; }
         .clinical-block h3 { display: inline; font-size: 0.9em; font-weight: bold; margin: 0; }
-        .content-box { display: inline; font-size: 0.9em; }
-
+        
         .button-container { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
         .btn { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
         .btn-print { background-color: #27649d; color: white; }
@@ -88,21 +43,18 @@
 </head>
 <body>
     <div id="exportContent" class="document-container">
-       <table class="header-table">
-    <tr>
-        <td class="logo-cell"><img src="https://lh3.googleusercontent.com/d/1b0xVc6U0mUzyTCTHS29LsfUf9yiV3Euk" alt="Logo"></td>
-        <td class="info-cell">
-            <div class="header-text-container">
-                <div class="main-title">CONSULTORIO MÉDICO DERMATOLÓGICO</div>
-                <div class="sub-title">Dra. Luisa Montilla - Dermatólogo UCV</div>
-            </div>
-            <div class="header-divider"></div>
-            <div class="bottom-info">
-                        Torre Cavendes - Caracas. Teléfono: 0414-9172983<br>
-                        Whatsapp: 04269198665 / @draluisamontilla </div>
-        </td>
-    </tr>
-</table>
+        <table class="header-table">
+            <tr>
+                <td class="logo-cell"><img src="https://lh3.googleusercontent.com/d/1b0xVc6U0mUzyTCTHS29LsfUf9yiV3Euk" alt="Logo"></td>
+                <td class="info-cell">
+                    <div class="main-title">CONSULTORIO MÉDICO DERMATOLÓGICO</div>
+                    <div class="sub-title">Dra. Luisa Montilla - Dermatólogo UCV</div>
+                    <div class="header-divider"></div>
+                    <div class="bottom-info">Torre Cavendes - Caracas. Teléfono: 0414-9172983 / @draluisamontilla <br> Whatsapp: 04269198665</div>
+                </td>
+            </tr>
+        </table>
+
         <div class="date-row">Fecha: <span id="fecha"></span></div>
 
         <section class="patient-data">
@@ -114,50 +66,40 @@
             <p class="full-width"><strong>Dirección:</strong> <span id="dir"></span></p>
         </section>
 
-        <main>
-            <h1 class="doc-title">INFORME MÉDICO</h1>
-            
-            <div class="clinical-block"><h3>Motivo de consulta:</h3> <span id="mot"></span></div>
-            
-            <div class="section-header">Antecedentes</div>
-            <div class="clinical-block"><h3>Personales:</h3> <span id="antp"></span></div>
-            
-            <div class="clinical-block">
-                <h3>Alergias:</h3> <span id="ale"></span> 
-                <span id="wrap-alesp"> (Especifique: <span id="alesp"></span>)</span>
-            </div>
-            <div class="clinical-block">
-                <h3>Quirúrgicos:</h3> <span id="qui"></span> 
-                <span id="wrap-quiesp"> (Especifique: <span id="quiesp"></span>)</span>
-            </div>
+        <h1 class="doc-title">INFORME MÉDICO</h1>
+        
+        <div class="clinical-block"><h3>Motivo de consulta:</h3> <span id="mot"></span></div>
+        
+        <div class="section-header">Antecedentes</div>
+        <div class="clinical-block"><h3>Personales:</h3> <span id="antp"></span></div>
+        <div class="clinical-block" id="wrap-ale"><h3>Alergias:</h3> <span id="ale"></span> <span id="wrap-alesp"> (Especifique: <span id="alesp"></span>)</span></div>
+        <div class="clinical-block" id="wrap-qui"><h3>Quirúrgicos:</h3> <span id="qui"></span> <span id="wrap-quiesp"> (Especifique: <span id="quiesp"></span>)</span></div>
 
-            <div class="section-header">Examen Físico</div>
-            <div class="clinical-block"><h3>Descripción:</h3> <span id="exf"></span></div>
-            
-            <div class="clinical-block">
-                <span id="wrap-fot"><strong>Fototipo:</strong> <span id="fot"></span> | </span>
-                <span id="wrap-tur"><strong>Turgor:</strong> <span id="tur"></span> | </span>
-                <span id="wrap-pie"><strong>Piel:</strong> <span id="pie"></span></span>
-            </div>
-            <div class="clinical-block">
-                <span id="wrap-uñ"><strong>Uñas:</strong> <span id="uñ"></span> | </span>
-                <span id="wrap-pel"><strong>Pelo:</strong> <span id="pel"></span></span>
-            </div>
+        <div class="section-header">Examen Físico</div>
+        <div class="clinical-block"><h3>Descripción:</h3> <span id="exf"></span></div>
+        <div class="clinical-block">
+            <span id="wrap-fot"><strong>Fototipo:</strong> <span id="fot"></span> | </span>
+            <span id="wrap-tur"><strong>Turgor:</strong> <span id="tur"></span> | </span>
+            <span id="wrap-pie"><strong>Piel:</strong> <span id="pie"></span></span>
+        </div>
+        <div class="clinical-block">
+            <span id="wrap-uñ"><strong>Uñas:</strong> <span id="uñ"></span> | </span>
+            <span id="wrap-pel"><strong>Pelo:</strong> <span id="pel"></span></span>
+        </div>
 
-            <div class="section-header">Conclusión Médica</div>
-            <div class="clinical-block"><h3>Diagnósticos:</h3> <span id="diag"></span></div>
-            <div class="clinical-block"><h3>Tratamiento/Conducta:</h3> <span id="tra"></span></div>
-            <div id="wrap-pla" class="clinical-block"><h3>Plan/Sugerencias:</h3> <span id="pla"></span></div>
+        <div class="section-header">Conclusión Médica</div>
+        <div class="clinical-block"><h3>Diagnósticos:</h3> <span id="diag"></span></div>
+        <div class="clinical-block"><h3>Tratamiento/Conducta:</h3> <span id="tra"></span></div>
+        <div id="wrap-pla" class="clinical-block"><h3>Plan/Sugerencias:</h3> <span id="pla"></span></div>
 
-            <div class="section-header">Exámenes Complementarios</div>
-            <div id="wrap-mic" class="clinical-block"><h3>Micológico/Parasitológico:</h3> <span id="mic"></span> <span id="micesp"></span></div>
-            <div id="wrap-lab" class="clinical-block"><h3>Laboratorios:</h3> <span id="lab"></span> <span id="labesp"></span></div>
-            
-            <div style="margin-top:10px;">
-                <div id="wrap-con" class="clinical-block"><h3>Control:</h3> <span id="con"></span></div>
-                <div id="wrap-not" class="clinical-block"><h3>Nota:</h3> <span id="not"></span></div>
-            </div>
-        </main>
+        <div class="section-header">Exámenes Complementarios</div>
+        <div id="wrap-mic" class="clinical-block"><h3>Micológico/Parasitológico:</h3> <span id="mic"></span> <span id="micesp"></span></div>
+        <div id="wrap-lab" class="clinical-block"><h3>Laboratorios:</h3> <span id="lab"></span> <span id="labesp"></span></div>
+        
+        <div style="margin-top:10px;">
+            <div id="wrap-con" class="clinical-block"><h3>Control:</h3> <span id="con"></span></div>
+            <div id="wrap-not" class="clinical-block"><h3>Nota:</h3> <span id="not"></span></div>
+        </div>
     </div>
 
     <div class="button-container no-print">
@@ -168,102 +110,99 @@
     <script>
     const params = new URLSearchParams(window.location.search);
 
+    function procesarCampo(paramId, wrapId = null) {
+        const valor = params.get(paramId);
+        const campoElemento = document.getElementById(paramId);
+        const wrapElemento = wrapId ? document.getElementById(wrapId) : null;
+
+        if (valor && valor.trim() !== "" && valor.toLowerCase() !== "null") {
+            if (campoElemento) campoElemento.innerText = valor;
+        } else {
+            if (wrapElemento) wrapElemento.style.display = "none";
+        }
+    }
+
+    // Llenado de datos
+    document.getElementById('fecha').innerText = params.get('fecha') || '';
+    document.getElementById('n').innerText = params.get('n') || '';
+    document.getElementById('c').innerText = params.get('c') || '';
+    document.getElementById('e').innerText = params.get('e') || '';
+    document.getElementById('tel').innerText = params.get('tel') || '';
+    document.getElementById('dir').innerText = params.get('dir') || '';
+    document.getElementById('ocu').innerText = params.get('ocu') || '';
+    document.getElementById('mot').innerText = params.get('mot') || '';
+    document.getElementById('antp').innerText = params.get('antp') || '';
+    document.getElementById('ale').innerText = params.get('ale') || '';
+    document.getElementById('qui').innerText = params.get('qui') || '';
+    document.getElementById('exf').innerText = params.get('exf') || '';
+    document.getElementById('diag').innerText = params.get('diag') || '';
+    document.getElementById('tra').innerText = params.get('tra') || '';
+
+    procesarCampo('alesp', 'wrap-alesp');
+    procesarCampo('quiesp', 'wrap-quiesp');
+    procesarCampo('fot', 'wrap-fot');
+    procesarCampo('tur', 'wrap-tur');
+    procesarCampo('pie', 'wrap-pie');
+    procesarCampo('uñ', 'wrap-uñ');
+    procesarCampo('pel', 'wrap-pel');
+    procesarCampo('pla', 'wrap-pla');
+    procesarCampo('mic', 'wrap-mic');
+    procesarCampo('lab', 'wrap-lab');
+    procesarCampo('con', 'wrap-con');
+    procesarCampo('not', 'wrap-not');
+
     function exportToWord() {
-    // Clonamos el contenido para manipularlo sin afectar la vista web
-    var exportElement = document.getElementById("exportContent").cloneNode(true);
-    
-    // --- LÓGICA PARA NO MOSTRAR TÍTULOS VACÍOS ---
-    var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
-    hiddenElements.forEach(el => el.remove());
+        var exportElement = document.getElementById("exportContent").cloneNode(true);
+        var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
+        hiddenElements.forEach(el => el.remove());
 
-    var content = exportElement.innerHTML;
-    
-    // Limpiamos estilos inline del HTML original para evitar conflictos
-    content = content.replace(/style="[^"]*"/g, "");
-    
-    // Ajuste de imagen para Word (Logo)
-    content = content.replace(/<img/g, '<img width="180" height="90"');
-    
-    // --- SOLUCIÓN PARA EL INTERLINEADO ---
-    // Estilo para interlineado sencillo y sin espacios (mso-line-height-rule:exactly)
-    var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
-    
-    // Aplicamos a párrafos y bloques clínicos (divs de contenido)
-    content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
-    content = content.replace(/<div class="clinical-block"/g, '<div ' + wordSpacingStyle);
-    
-    // Ajustes de estructura de contenedores
-    content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:5pt; margin-bottom:5pt; border-bottom:1pt solid #000;">');
-    content = content.replace(/<\/section>/g, '</div>');
-    
-    // Estilo para las cabeceras de sección (Antecedentes, Examen Físico, etc.)
-    var sectionHeaderStyle = 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"';
-    content = content.replace(/class="section-header"/g, sectionHeaderStyle);
+        var content = exportElement.innerHTML;
+        content = content.replace(/style="[^"]*"/g, "");
+        content = content.replace(/<img/g, '<img width="180" height="90"');
+        
+        var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
+        content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
+        
+        var sectionHeaderStyle = 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"';
+        content = content.replace(/class="section-header"/g, sectionHeaderStyle);
 
-    var preHtml = `
-    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-    <head>
-        <meta charset='utf-8'>
-        <!--[if gte mso 9]>
-        <xml>
-            <w:WordDocument>
-                <w:View>Print</w:View>
-                <w:Zoom>100</w:Zoom>
-                <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-        </xml>
-        <![endif]-->
-        <style>
-            @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
-            body { font-family: 'Times New Roman', serif; font-size: 10pt; }
-            .header-table { width: 100%; border: none; }
-            .info-cell { text-align: center; }
-            
-            /* FUERZA EL PEGADO EN EL ENCABEZADO */
-            .top-info h2, .top-info p, .bottom-info { 
-                font-family: Arial, sans-serif !important; 
-                margin: 0 !important; 
-                padding: 0 !important; 
-                line-height: 1.0 !important;
-                mso-line-height-rule: exactly;
-            }
-            
-            .top-info h2 { font-size: 11pt; font-weight: bold; }
-            .bottom-info { font-size: 9pt; color: #000000; }
-            
-            .header-divider { border-top: 1.5pt solid #000; margin: 2pt 0; }
-            
-            .date-row { text-align: right !important; width: 100%; display: block; margin: 5pt 0; font-weight: bold; }
-            .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 15pt 0; }
-            h3 { font-size: 11pt; font-weight: bold; display: inline; }
-        </style>
-    </head>
-    <body>`;
-    
-    var postHtml = "</body></html>";
-    
-    // Aseguramos alineaciones críticas que Word a veces ignora en el CSS
-    var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
-    finalContent = finalContent.replace('class="doc-title"', 'class="doc-title" align="center"');
-    finalContent = finalContent.replace('class="info-cell"', 'class="info-cell" align="center"');
-    finalContent = finalContent.replace('class="bottom-info"', 'class="bottom-info" align="center"');
+        var preHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+            <meta charset='utf-8'>
+            <!--[if gte mso 9]>
+            <xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml>
+            <![endif]-->
+            <style>
+                @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
+                body { font-family: 'Times New Roman', serif; font-size: 10pt; }
+                .header-table { width: 100%; border: none; }
+                .info-cell { text-align: center; }
+                .main-title { font-family: Arial, sans-serif; font-size: 11pt; font-weight: bold; margin: 0; line-height: 1.0; mso-line-height-rule: exactly; }
+                .sub-title { font-family: Arial, sans-serif; font-size: 10pt; margin: 0; line-height: 1.0; mso-line-height-rule: exactly; }
+                .bottom-info { font-family: Arial, sans-serif; font-size: 9pt; color: #000000; line-height: 1.0; }
+                .date-row { text-align: right !important; width: 100%; display: block; margin: 5pt 0; font-weight: bold; }
+                .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 15pt 0; }
+                h3 { font-size: 11pt; font-weight: bold; display: inline; }
+            </style>
+        </head>
+        <body>`;
+        
+        var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
+        finalContent = finalContent.replace('class="doc-title"', 'class="doc-title" align="center"');
+        var html = preHtml + finalContent + "</body></html>";
 
-    var html = preHtml + finalContent + postHtml;
-
-    var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-    var url = URL.createObjectURL(blob);
-    
-    // Nombre del archivo basado en el paciente
-    var nombrePaciente = document.getElementById('n').innerText || 'Paciente';
-    var filename = 'Informe_' + nombrePaciente + '.doc';
-    
-    var downloadLink = document.createElement("a");
-    document.body.appendChild(downloadLink);
-    downloadLink.href = url;
-    downloadLink.download = filename;
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-}
+        var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+        var url = URL.createObjectURL(blob);
+        var filename = 'Informe_' + (document.getElementById('n').innerText || 'Paciente') + '.doc';
+        
+        var downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+        downloadLink.href = url;
+        downloadLink.download = filename;
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
     </script>
 </body>
 </html>

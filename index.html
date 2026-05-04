@@ -140,8 +140,7 @@
         function exportToWord() {
     var content = document.getElementById("exportContent").innerHTML;
     
-    // 1. Logo: Volvemos al tamaño que daba estabilidad a la tabla
-    content = content.replace(/<img/g, '<img width="120" height="60"'); 
+            content = content.replace(/<img/g, '<img width="120" height="60"'); 
 
     var preHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -171,6 +170,7 @@
                 .header-table { 
                     width: 100%; 
                     border-collapse: collapse; 
+                    border: none;
                     mso-table-lspace: 0pt; 
                     mso-table-rspace: 0pt;
                 }
@@ -193,11 +193,11 @@
                 }
 
                 /* DATOS DEL PACIENTE: Aquí SÍ aplicamos el interlineado compacto */
-                .patient-data p { 
-                    margin: 0in !important;
-                    margin-bottom: .0001pt !important;
-                    line-height: 100% !important;
-                    mso-line-height-rule: exactly;
+                 .patient-data p { 
+                    margin: 0pt !important; 
+                    padding: 0pt !important;
+                    line-height: 1.0 !important;
+                    mso-line-height-rule: exactly; /* Comando especial para Word */
                 }
 
                 .doc-title { 
@@ -208,8 +208,24 @@
                     margin: 15pt 0;
                 }
 
-                .clinical-block { margin-top: 10pt; margin-bottom: 5pt; }
-                .content-box { line-height: 1.1; }
+                /* CONTENIDO DEL DOCUMENTO: Reducimos espacio entre bloques */
+                .clinical-block { 
+                    margin-top: 10pt; 
+                    margin-bottom: 5pt; 
+                }
+                
+                .clinical-block h3 { 
+                    margin: 0; 
+                    font-size: 11pt;
+                    font-weight: bold
+                    }
+
+                .content-box { 
+                    margin: 0; 
+                    padding-top: 2pt;
+                    line-height: 1.1; 
+                }
+                 footer { margin-top: 40pt; text-align: center; }
             </style>
         </head>
         <body>`;

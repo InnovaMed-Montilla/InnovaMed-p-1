@@ -69,47 +69,54 @@
         </section>
 
         <main>
-            <h1 class="doc-title">INFORME MÉDICO</h1>
-            
-            <div class="clinical-block"><h3>Motivo de consulta:</h3> <span id="mot" class="content-box"></span></div>
-            
-            <div class="section-header">Antecedentes</div>
-            <div class="clinical-block"><h3>Personales:</h3> <span id="antp" class="content-box"></span></div>
-            <div class="clinical-block"><h3>Alergias:</h3> <span id="ale" class="content-box"></span>. <span id="alesp"></span></div>
-            <div class="clinical-block"><h3>Quirúrgicos:</h3> <span id="qui" class="content-box"></span>. <span id="quiesp"></span></div>
+            <main>
+    <h1 class="doc-title">INFORME MÉDICO</h1>
+    
+    <div class="clinical-block"><h3>Motivo de consulta:</h3> <span id="mot"></span></div>
+    
+    <div class="section-header">Antecedentes</div>
+    <div class="clinical-block"><h3>Personales:</h3> <span id="antp"></span></div>
+    
+    <!-- Alergias y Quirúrgicos: Se muestran siempre, pero el "especifique" es opcional -->
+    <div class="clinical-block">
+        <h3>Alergias:</h3> <span id="ale"></span>. 
+        <span id="wrap-alesp"> (Especifique: <span id="alesp"></span>)</span>
+    </div>
+    <div class="clinical-block">
+        <h3>Quirúrgicos:</h3> <span id="qui"></span>. 
+        <span id="wrap-quiesp"> (Especifique: <span id="quiesp"></span>)</span>
+    </div>
 
-            <div class="section-header">Examen Físico</div>
-            <div class="clinical-block"><h3>Descripción:</h3> <span id="exf" class="content-box"></span></div>
-            <div class="clinical-block">
-                <strong>Fototipo:</strong> <span id="fot"></span> | 
-                <strong>Turgor:</strong> <span id="tur"></span> | 
-                <strong>Piel:</strong> <span id="pie"></span>
-            </div>
-            <div class="clinical-block">
-                <strong>Uñas:</strong> <span id="uñ"></span> | 
-                <strong>Pelo:</strong> <span id="pel"></span>
-            </div>
+    <div class="section-header">Examen Físico</div>
+    <div class="clinical-block"><h3>Descripción:</h3> <span id="exf"></span></div>
+    
+    <!-- Campos de examen físico opcionales -->
+    <div class="clinical-block">
+        <span id="wrap-fot"><strong>Fototipo:</strong> <span id="fot"></span> | </span>
+        <span id="wrap-tur"><strong>Turgor:</strong> <span id="tur"></span> | </span>
+        <span id="wrap-pie"><strong>Piel:</strong> <span id="pie"></span></span>
+    </div>
+    <div class="clinical-block">
+        <span id="wrap-uñ"><strong>Uñas:</strong> <span id="uñ"></span> | </span>
+        <span id="wrap-pel"><strong>Pelo:</strong> <span id="pel"></span></span>
+    </div>
 
-            <div class="section-header">Conclusión Médica</div>
-            <div class="clinical-block"><h3>Diagnósticos:</h3> <span id="diag" class="content-box"></span></div>
-            <div class="clinical-block"><h3>Tratamiento/Conducta:</h3> <span id="tra" class="content-box"></span></div>
-            <div class="clinical-block"><h3>Plan/Sugerencias:</h3> <span id="pla" class="content-box"></span></div>
+    <div class="section-header">Conclusión Médica</div>
+    <div class="clinical-block"><h3>Diagnósticos:</h3> <span id="diag"></span></div>
+    <div class="clinical-block"><h3>Tratamiento/Conducta:</h3> <span id="tra"></span></div>
+    <div id="wrap-pla" class="clinical-block"><h3>Plan/Sugerencias:</h3> <span id="pla"></span></div>
 
-            <div class="section-header">Exámenes Complementarios</div>
-            <div class="clinical-block"><h3>Micológico/Parasitológico:</h3> <span id="mic" class="content-box"></span> <span id="micesp"></span></div>
-            <div class="clinical-block"><h3>Laboratorios:</h3> <span id="lab" class="content-box"></span> <span id="labesp"></span></div>
-            
-            <div style="margin-top:10px;">
-                <div class="clinical-block"><h3>Control:</h3> <span id="con" class="content-box"></span></div>
-                <div class="clinical-block"><h3>Nota:</h3> <span id="not" class="content-box"></span></div>
-            </div>
+    <div class="section-header">Exámenes Complementarios</div>
+    <div id="wrap-mic" class="clinical-block"><h3>Micológico/Parasitológico:</h3> <span id="mic"></span> <span id="micesp"></span></div>
+    <div id="wrap-lab" class="clinical-block"><h3>Laboratorios:</h3> <span id="lab"></span> <span id="labesp"></span></div>
+    
+    <div style="margin-top:10px;">
+        <div id="wrap-con" class="clinical-block"><h3>Control:</h3> <span id="con"></span></div>
+        <div id="wrap-not" class="clinical-block"><h3>Nota:</h3> <span id="not"></span></div>
+    </div>
         </main>
 
-        <footer>
-            <div class="signature-line"></div>
-            <p><strong>Firma y Sello Médico</strong></p>
-        </footer>
-    </div>
+        </div>
 
     <div class="button-container no-print">
         <button class="btn btn-print" onclick="window.print()">Imprimir PDF</button>
@@ -117,9 +124,27 @@
     </div>
 
     <script>
+    <script>
     const params = new URLSearchParams(window.location.search);
-    
-    // Esta lista asocia el ID del HTML con la letra que enviamos desde AppSheet
+
+    // Función para procesar campos: si no hay dato, oculta el contenedor
+    function procesarCampo(paramId, wrapId = null) {
+        const valor = params.get(paramId);
+        const campoElemento = document.getElementById(paramId);
+        const wrapElemento = wrapId ? document.getElementById(wrapId) : null;
+
+        if (valor && valor.trim() !== "" && valor.toLowerCase() !== "null") {
+            if (campoElemento) campoElemento.innerText = valor;
+        } else {
+            if (wrapElemento) {
+                wrapElemento.style.display = "none"; // Oculta el bloque completo
+            } else if (campoElemento) {
+                campoElemento.innerText = ""; // Limpia el texto si no tiene envoltorio
+            }
+        }
+    }
+
+    // 1. Campos fijos (Siempre aparecen)
     document.getElementById('fecha').innerText = params.get('fecha') || '';
     document.getElementById('n').innerText = params.get('n') || '';
     document.getElementById('c').innerText = params.get('c') || '';
@@ -127,37 +152,27 @@
     document.getElementById('tel').innerText = params.get('tel') || '';
     document.getElementById('dir').innerText = params.get('dir') || '';
     document.getElementById('ocu').innerText = params.get('ocu') || '';
-    
-    // Datos médicos
     document.getElementById('mot').innerText = params.get('mot') || '';
     document.getElementById('antp').innerText = params.get('antp') || '';
     document.getElementById('ale').innerText = params.get('ale') || '';
-    document.getElementById('alesp').innerText = params.get('alesp') || '';
     document.getElementById('qui').innerText = params.get('qui') || '';
-    document.getElementById('quiesp').innerText = params.get('quiesp') || '';
     document.getElementById('exf').innerText = params.get('exf') || '';
-    
-    // Examen físico detallado
-    document.getElementById('fot').innerText = params.get('fot') || '';
-    document.getElementById('tur').innerText = params.get('tur') || '';
-    document.getElementById('pie').innerText = params.get('pie') || '';
-    document.getElementById('uñ').innerText = params.get('uñ') || '';
-    document.getElementById('pel').innerText = params.get('pel') || '';
-    
-    // Diagnósticos y Plan
     document.getElementById('diag').innerText = params.get('diag') || '';
     document.getElementById('tra').innerText = params.get('tra') || '';
-    document.getElementById('pla').innerText = params.get('pla') || '';
-    
-    // Laboratorios y complementarios
-    document.getElementById('mic').innerText = params.get('mic') || '';
-    document.getElementById('micesp').innerText = params.get('micesp') || '';
-    document.getElementById('lab').innerText = params.get('lab') || '';
-    document.getElementById('labesp').innerText = params.get('labesp') || '';
-    
-    // Control y Notas
-    document.getElementById('con').innerText = params.get('con') || '';
-    document.getElementById('not').innerText = params.get('not') || '';
+
+    // 2. Campos opcionales (Se ocultan si están vacíos)
+    procesarCampo('alesp', 'wrap-alesp');
+    procesarCampo('quiesp', 'wrap-quiesp');
+    procesarCampo('fot', 'wrap-fot');
+    procesarCampo('tur', 'wrap-tur');
+    procesarCampo('pie', 'wrap-pie');
+    procesarCampo('uñ', 'wrap-uñ');
+    procesarCampo('pel', 'wrap-pel');
+    procesarCampo('pla', 'wrap-pla');
+    procesarCampo('mic', 'wrap-mic');
+    procesarCampo('lab', 'wrap-lab');
+    procesarCampo('con', 'wrap-con');
+    procesarCampo('not', 'wrap-not');
 
        function exportToWord() {
     // 1. Capturamos el contenido actual del informe
@@ -181,11 +196,7 @@
     // Ajuste para los títulos de sección (Antecedentes, Examen Físico, etc.)
     content = content.replace(/class="section-header"/g, 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"');
 
-    // 6. Footer y Firma
-    content = content.replace(/<footer>/g, '<footer align="center" style="text-align:center; margin-top:50pt;">');
-    content = content.replace(/<div class="signature-line"><\/div>/g, '<div align="center" style="margin-left:auto; margin-right:auto; width:200pt; border-top:1pt solid black; height:1pt;"></div>');
-
-    // 7. Construcción del documento completo (Cabeceras XML para Word)
+      // 7. Construcción del documento completo (Cabeceras XML para Word)
     var preHtml = `
     <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
     <head>

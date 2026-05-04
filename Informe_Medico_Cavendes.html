@@ -153,20 +153,18 @@
     procesarCampo('not', 'wrap-not');
 
     function exportToWord() {
-    // Clonamos para no dañar lo que ves en pantalla
     var node = document.getElementById("exportContent");
     var exportElement = node.cloneNode(true);
     
-    // Quitamos lo que esté vacío (Lógica de AppSheet)
     var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
     hiddenElements.forEach(el => el.remove());
 
     var content = exportElement.innerHTML;
     
-    // Ajuste de imagen
-    content = content.replace(/<img/g, '<img width="180" height="90"');
+    // 1. Aseguramos que el logo tenga su tamaño y no empuje el texto
+    content = content.replace(/<img/g, '<img width="180" height="90" style="display:block;"');
     
-    // Estilo de los banners grises (Antecedentes, etc.)
+    // 2. Estilo de los banners grises (Antecedentes, etc.)
     var sectionHeaderStyle = 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"';
     content = content.replace(/class="section-header"/g, sectionHeaderStyle);
 
@@ -174,17 +172,8 @@
     <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
     <head>
         <meta charset='utf-8'>
-        <!--[if gte mso 9]>
-        <xml>
-            <w:WordDocument>
-                <w:View>Print</w:View>
-                <w:Zoom>100</w:Zoom>
-                <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-        </xml>
-        <![endif]-->
         <style>
-            /* ELIMINA ESPACIOS EXTRA EN WORD */
+            /* Interlineado sencillo que ya nos funcionó */
             p, div, span, strong { 
                 margin: 0in !important; 
                 margin-bottom: .0001pt !important; 
@@ -192,17 +181,29 @@
                 mso-line-height-rule: exactly !important;
             }
             body { font-family: 'Times New Roman', serif; font-size: 11pt; }
-            .main-title { font-family: Arial, sans-serif !important; font-size: 11pt !important; font-weight: bold; }
-            .sub-title { font-family: Arial, sans-serif !important; font-size: 10pt !important; }
+            
+            /* FUERZA EL CENTRADO DEL ENCABEZADO EN WORD */
+            .header-table { width: 100% !important; }
+            .info-cell { text-align: center !important; }
+            .main-title { font-family: Arial, sans-serif !important; font-size: 11pt !important; font-weight: bold; text-align: center !important; }
+            .sub-title { font-family: Arial, sans-serif !important; font-size: 10pt !important; text-align: center !important; }
+            .bottom-info { font-family: Arial, sans-serif !important; font-size: 8.5pt !important; text-align: center !important; }
+            
             .date-row { text-align: right !important; font-weight: bold; margin: 10pt 0 !important; }
             .doc-title { text-align: center !important; font-size: 14pt !important; font-weight: bold; text-decoration: underline; margin: 15pt 0 !important; }
         </style>
     </head>
     <body>`;
     
-    // Forzamos alineaciones que Word a veces ignora
-    var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
-    finalContent = finalContent.replace('class="doc-title"', 'class="doc-title" align="center"');
+    // 3. REFUERZO DE ALINEACIÓN: Esto busca las clases y les pone el atributo 'align' que Word entiende mejor que el CSS
+    var finalContent = content.replace(/class="info-cell"/g, 'class="info-cell" align="center"');
+    finalContent = finalContent.replace(/class="doc-title"/g, 'class="doc-title" align="center"');
+    finalContent = finalContent.replace(/class="date-row"/g, 'class="date-row" align="right"');
+    
+    // Forzamos que los divs dentro de info-cell también se alineen al centro
+    finalContent = finalContent.replace(/<div class="main-title">/g, '<div class="main-title" align="center">');
+    finalContent = finalContent.replace(/<div class="sub-title">/g, '<div class="sub-title" align="center">');
+    finalContent = finalContent.replace(/<div class="bottom-info">/g, '<div class="bottom-info" align="center">');
 
     var html = preHtml + finalContent + "</body></html>";
 
@@ -217,6 +218,7 @@
     downloadLink.click();
     document.body.removeChild(downloadLink);
 }
+        
     </script>
 </body>
 </html>

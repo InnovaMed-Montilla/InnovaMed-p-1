@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Informe Médico - Innova Med</title>
+    <style>
+        body { font-family: 'Times New Roman', Times, serif; line-height: 1.1; background-color: #f4f4f4; padding: 20px; color: #000; display: flex; flex-direction: column; align-items: center; }
+        .document-container { background-color: white; width: 816px; min-height: 1056px; margin: 20px auto; padding: 40px 60px; box-shadow: 0 0 10px rgba(0,0,0,0.1); box-sizing: border-box; display: flex; flex-direction: column; }
+        
+        /* Encabezado */
+        .header-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; border: none; }
+        .logo-cell { width: 30%; vertical-align: middle; }
+        .logo-cell img { width: 100%; max-width: 220px; height: auto; display: block; }
+        .info-cell { width: 70%; vertical-align: middle; text-align: center; }
+        .top-info h2 { margin: 0; font-size: 0.9em; text-transform: uppercase; }
+        .header-divider { border-top: 2pt solid #000; margin: 5px 0; width: 100%; }
+        .bottom-info { font-size: 0.8em; }
+
+        /* Cuerpo e Interlineado */
+        .date-row { text-align: right; margin-bottom: 10px; font-weight: bold; }
+        .patient-data { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 15px; font-size: 0.95em; border-bottom: 1pt solid #eee; padding-bottom: 10px; }
+        .full-width { grid-column: span 2; }
+        .patient-data p { margin: 0 !important; padding: 0 !important; line-height: 1.2; }
+        
+        .doc-title { text-align: center; font-size: 1.2em; text-decoration: underline; margin: 10px 0; font-weight: bold; }
+
+        /* Bloques de Informe */
+        .section-header { background-color: #f9f9f9; padding: 3px 5px; font-weight: bold; text-transform: uppercase; font-size: 0.85em; border-left: 3pt solid #000; margin: 10px 0 5px 0; }
+        .clinical-block { margin-bottom: 4px !important; }
+        .clinical-block h3 { display: inline; font-size: 0.9em; font-weight: bold; margin: 0; }
+        .content-box { display: inline; font-size: 0.9em; }
+
+        footer { margin-top: auto; padding-top: 30px; padding-bottom: 40px; text-align: center; width: 100%; }
+        .signature-line { width: 200px; border-top: 1.5px solid #000; margin: 0 auto 5px; }
+        
+        .button-container { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
+        .btn { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
+        .btn-print { background-color: #27649d; color: white; }
+        .btn-word { background-color: #2b579a; color: white; }
+        
+        @media print { .no-print { display: none; } .document-container { box-shadow: none; margin: 0; padding: 20px; } }
+    </style>
+</head>
+<body>
+    <div id="exportContent" class="document-container">
+        <table class="header-table">
+            <tr>
+                <td class="logo-cell"><img src="https://lh3.googleusercontent.com/d/1b0xVc6U0mUzyTCTHS29LsfUf9yiV3Euk" alt="Logo"></td>
+                <td class="info-cell">
+                    <div class="top-info">
+                        <h2>CONSULTORIO MÉDICO DERMATOLÓGICO</h2>
+                        <p>Dra. Luisa Montilla - Dermatólogo UCV</p>
+                    </div>
+                    <div class="header-divider"></div>
+                    <div class="bottom-info">Torre Cavendes - Caracas. Teléfono: 0414-9172983 / @draluisamontilla</div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="date-row">Fecha: <span id="fecha"></span></div>
+
+        <section class="patient-data">
+            <p class="full-width"><strong>Paciente:</strong> <span id="n"></span></p>
+            <p><strong>C.I:</strong> <span id="c"></span></p>
+            <p><strong>Edad:</strong> <span id="e"></span></p>
+            <p><strong>Telf:</strong> <span id="tel"></span></p>
+            <p><strong>Ocupación:</strong> <span id="ocu"></span></p>
+            <p class="full-width"><strong>Dirección:</strong> <span id="dir"></span></p>
+        </section>
+
+        <main>
+            <h1 class="doc-title">INFORME MÉDICO</h1>
+            
+            <div class="clinical-block"><h3>Motivo de consulta:</h3> <span id="mot" class="content-box"></span></div>
+            
+            <div class="section-header">Antecedentes</div>
+            <div class="clinical-block"><h3>Personales:</h3> <span id="antp" class="content-box"></span></div>
+            <div class="clinical-block"><h3>Alergias:</h3> <span id="ale" class="content-box"></span>. <span id="alesp"></span></div>
+            <div class="clinical-block"><h3>Quirúrgicos:</h3> <span id="qui" class="content-box"></span>. <span id="quiesp"></span></div>
+
+            <div class="section-header">Examen Físico</div>
+            <div class="clinical-block"><h3>Descripción:</h3> <span id="exf" class="content-box"></span></div>
+            <div class="clinical-block">
+                <strong>Fototipo:</strong> <span id="fot"></span> | 
+                <strong>Turgor:</strong> <span id="tur"></span> | 
+                <strong>Piel:</strong> <span id="pie"></span>
+            </div>
+            <div class="clinical-block">
+                <strong>Uñas:</strong> <span id="uñ"></span> | 
+                <strong>Pelo:</strong> <span id="pel"></span>
+            </div>
+
+            <div class="section-header">Conclusión Médica</div>
+            <div class="clinical-block"><h3>Diagnósticos:</h3> <span id="diag" class="content-box"></span></div>
+            <div class="clinical-block"><h3>Tratamiento/Conducta:</h3> <span id="tra" class="content-box"></span></div>
+            <div class="clinical-block"><h3>Plan/Sugerencias:</h3> <span id="pla" class="content-box"></span></div>
+
+            <div class="section-header">Exámenes Complementarios</div>
+            <div class="clinical-block"><h3>Micológico/Parasitológico:</h3> <span id="mic" class="content-box"></span> <span id="micesp"></span></div>
+            <div class="clinical-block"><h3>Laboratorios:</h3> <span id="lab" class="content-box"></span> <span id="labesp"></span></div>
+            
+            <div style="margin-top:10px;">
+                <div class="clinical-block"><h3>Control:</h3> <span id="con" class="content-box"></span></div>
+                <div class="clinical-block"><h3>Nota:</h3> <span id="not" class="content-box"></span></div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="signature-line"></div>
+            <p><strong>Firma y Sello Médico</strong></p>
+        </footer>
+    </div>
+
+    <div class="button-container no-print">
+        <button class="btn btn-print" onclick="window.print()">Imprimir PDF</button>
+        <button class="btn btn-word" onclick="exportToWord()">Descargar Word</button>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const fields = {
+            'fecha': 'Fecha', 'n': 'Nombre y Apellido', 'c': 'Cedula', 'e': 'Edad', 'tel': 'Telefono', 
+            'dir': 'Dirección', 'ocu': 'Ocupación', 'mot': 'Motivo de consulta/ Enfermedad actual',
+            'antp': 'Antecedentes Personales', 'ale': 'Alergias', 'alesp': 'especifique',
+            'qui': 'Quirúrgicos', 'quiesp': 'Especifique:', 'exf': 'Examen físico',
+            'fot': 'Fototipo', 'tur': 'Turgor y elasticidad', 'pie': 'Piel', 'uñ': 'Uñas', 'pel': 'Pelo',
+            'diag': 'Diagnósticos clínicos', 'tra': 'Tratamiento/Conducta', 'pla': 'Plan/Sugerencias',
+            'mic': 'Directo micológico/parasitológico', 'micesp': 'Especifique.:',
+            'lab': 'Laboratorios', 'labesp': 'Especifique..:', 'con': 'Control', 'not': 'Nota'
+        };
+
+        Object.keys(fields).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = params.get(id) || '';
+        });
+
+        function exportToWord() {
+            var content = document.getElementById("exportContent").innerHTML;
+            var preHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><style>@page { size: 8.5in 11in; margin: 0.5in; } body { font-family: 'Times New Roman', serif; font-size: 10pt; } .section-header { background-color: #f0f0f0; font-weight: bold; padding: 2pt; margin-top: 10pt; } h3 { display: inline; font-size: 10pt; } .clinical-block { margin-bottom: 4pt; }</style></head><body>`;
+            var postHtml = "</body></html>";
+            var blob = new Blob(['\ufeff', preHtml + content + postHtml], { type: 'application/msword' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = 'Informe_' + (params.get('n') || 'Medico') + '.doc';
+            a.click();
+        }
+    </script>
+</body>
+</html>

@@ -117,34 +117,119 @@
     </div>
 
     <script>
-        const params = new URLSearchParams(window.location.search);
-        const fields = {
-            'fecha': 'Fecha', 'n': 'Nombre y Apellido', 'c': 'Cedula', 'e': 'Edad', 'tel': 'Telefono', 
-            'dir': 'Dirección', 'ocu': 'Ocupación', 'mot': 'Motivo de consulta/ Enfermedad actual',
-            'antp': 'Antecedentes Personales', 'ale': 'Alergias', 'alesp': 'especifique',
-            'qui': 'Quirúrgicos', 'quiesp': 'Especifique:', 'exf': 'Examen físico',
-            'fot': 'Fototipo', 'tur': 'Turgor y elasticidad', 'pie': 'Piel', 'uñ': 'Uñas', 'pel': 'Pelo',
-            'diag': 'Diagnósticos clínicos', 'tra': 'Tratamiento/Conducta', 'pla': 'Plan/Sugerencias',
-            'mic': 'Directo micológico/parasitológico', 'micesp': 'Especifique.:',
-            'lab': 'Laboratorios', 'labesp': 'Especifique..:', 'con': 'Control', 'not': 'Nota'
-        };
+    const params = new URLSearchParams(window.location.search);
+    
+    // Esta lista asocia el ID del HTML con la letra que enviamos desde AppSheet
+    document.getElementById('fecha').innerText = params.get('fecha') || '';
+    document.getElementById('n').innerText = params.get('n') || '';
+    document.getElementById('c').innerText = params.get('c') || '';
+    document.getElementById('e').innerText = params.get('e') || '';
+    document.getElementById('tel').innerText = params.get('tel') || '';
+    document.getElementById('dir').innerText = params.get('dir') || '';
+    document.getElementById('ocu').innerText = params.get('ocu') || '';
+    
+    // Datos médicos
+    document.getElementById('mot').innerText = params.get('mot') || '';
+    document.getElementById('antp').innerText = params.get('antp') || '';
+    document.getElementById('ale').innerText = params.get('ale') || '';
+    document.getElementById('alesp').innerText = params.get('alesp') || '';
+    document.getElementById('qui').innerText = params.get('qui') || '';
+    document.getElementById('quiesp').innerText = params.get('quiesp') || '';
+    document.getElementById('exf').innerText = params.get('exf') || '';
+    
+    // Examen físico detallado
+    document.getElementById('fot').innerText = params.get('fot') || '';
+    document.getElementById('tur').innerText = params.get('tur') || '';
+    document.getElementById('pie').innerText = params.get('pie') || '';
+    document.getElementById('uñ').innerText = params.get('uñ') || '';
+    document.getElementById('pel').innerText = params.get('pel') || '';
+    
+    // Diagnósticos y Plan
+    document.getElementById('diag').innerText = params.get('diag') || '';
+    document.getElementById('tra').innerText = params.get('tra') || '';
+    document.getElementById('pla').innerText = params.get('pla') || '';
+    
+    // Laboratorios y complementarios
+    document.getElementById('mic').innerText = params.get('mic') || '';
+    document.getElementById('micesp').innerText = params.get('micesp') || '';
+    document.getElementById('lab').innerText = params.get('lab') || '';
+    document.getElementById('labesp').innerText = params.get('labesp') || '';
+    
+    // Control y Notas
+    document.getElementById('con').innerText = params.get('con') || '';
+    document.getElementById('not').innerText = params.get('not') || '';
 
-        Object.keys(fields).forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.innerText = params.get(id) || '';
-        });
+       function exportToWord() {
+    // 1. Capturamos el contenido actual del informe
+    var content = document.getElementById("exportContent").innerHTML;
+    var nombrePaciente = document.getElementById('n').innerText || 'Paciente';
+    
+    // 2. Limpieza de estilos que estorban en Word
+    content = content.replace(/style="[^"]*"/g, "");
+    
+    // 3. Ajuste de imagen (Logo) para Word
+    content = content.replace(/<img/g, '<img width="160" height="80"');
+    
+    // 4. Configuración de interlineado y fuentes para párrafos (Estilo Microsoft Word)
+    var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
+    content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
+    
+    // 5. Ajustes de estructura y secciones
+    content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:5pt; margin-bottom:5pt; border-bottom:1pt solid #eee;">');
+    content = content.replace(/<\/section>/g, '</div>');
+    
+    // Ajuste para los títulos de sección (Antecedentes, Examen Físico, etc.)
+    content = content.replace(/class="section-header"/g, 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"');
 
-        function exportToWord() {
-            var content = document.getElementById("exportContent").innerHTML;
-            var preHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><style>@page { size: 8.5in 11in; margin: 0.5in; } body { font-family: 'Times New Roman', serif; font-size: 10pt; } .section-header { background-color: #f0f0f0; font-weight: bold; padding: 2pt; margin-top: 10pt; } h3 { display: inline; font-size: 10pt; } .clinical-block { margin-bottom: 4pt; }</style></head><body>`;
-            var postHtml = "</body></html>";
-            var blob = new Blob(['\ufeff', preHtml + content + postHtml], { type: 'application/msword' });
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement("a");
-            a.href = url;
-            a.download = 'Informe_' + (params.get('n') || 'Medico') + '.doc';
-            a.click();
-        }
+    // 6. Footer y Firma
+    content = content.replace(/<footer>/g, '<footer align="center" style="text-align:center; margin-top:50pt;">');
+    content = content.replace(/<div class="signature-line"><\/div>/g, '<div align="center" style="margin-left:auto; margin-right:auto; width:200pt; border-top:1pt solid black; height:1pt;"></div>');
+
+    // 7. Construcción del documento completo (Cabeceras XML para Word)
+    var preHtml = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head>
+        <meta charset='utf-8'>
+        <!--[if gte mso 9]>
+            <xml>
+                <w:WordDocument>
+                    <w:View>Print</w:View>
+                    <w:Zoom>100</w:Zoom>
+                    <w:DoNotOptimizeForBrowser/>
+                </w:WordDocument>
+            </xml>
+            <![endif]-->
+        <style>
+            @page { size: 8.5in 11in; margin: 0.5in 0.7in; }
+            body { font-family: 'Times New Roman', serif; }
+            .header-table { width: 100%; }
+            .date-row { text-align: right !important; margin: 10pt 0; font-weight: bold; }
+            .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 15pt 0; }
+            h3 { font-size: 11pt; font-weight: bold; display: inline; }
+            .content-box { font-size: 11pt; display: inline; }
+        </style>
+    </head>
+    <body>`;
+    
+    var postHtml = "</body></html>";
+    
+    // Aseguramos alineación de fecha
+    var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
+
+    var html = preHtml + finalContent + postHtml;
+
+    // 8. Creación del archivo y descarga
+    var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+    var url = URL.createObjectURL(blob);
+    var filename = 'Informe_' + nombrePaciente + '.doc';
+    
+    var downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
+    downloadLink.href = url;
+    downloadLink.download = filename;
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
     </script>
 </body>
 </html>

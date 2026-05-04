@@ -30,9 +30,6 @@
         .clinical-block h3 { display: inline; font-size: 0.9em; font-weight: bold; margin: 0; }
         .content-box { display: inline; font-size: 0.9em; }
 
-        footer { margin-top: auto; padding-top: 30px; padding-bottom: 40px; text-align: center; width: 100%; }
-        .signature-line { width: 200px; border-top: 1.5px solid #000; margin: 0 auto 5px; }
-        
         .button-container { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
         .btn { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
         .btn-print { background-color: #27649d; color: white; }
@@ -69,54 +66,50 @@
         </section>
 
         <main>
-            <main>
-    <h1 class="doc-title">INFORME MÉDICO</h1>
-    
-    <div class="clinical-block"><h3>Motivo de consulta:</h3> <span id="mot"></span></div>
-    
-    <div class="section-header">Antecedentes</div>
-    <div class="clinical-block"><h3>Personales:</h3> <span id="antp"></span></div>
-    
-    <!-- Alergias y Quirúrgicos: Se muestran siempre, pero el "especifique" es opcional -->
-    <div class="clinical-block">
-        <h3>Alergias:</h3> <span id="ale"></span>. 
-        <span id="wrap-alesp"> (Especifique: <span id="alesp"></span>)</span>
-    </div>
-    <div class="clinical-block">
-        <h3>Quirúrgicos:</h3> <span id="qui"></span>. 
-        <span id="wrap-quiesp"> (Especifique: <span id="quiesp"></span>)</span>
-    </div>
+            <h1 class="doc-title">INFORME MÉDICO</h1>
+            
+            <div class="clinical-block"><h3>Motivo de consulta:</h3> <span id="mot"></span></div>
+            
+            <div class="section-header">Antecedentes</div>
+            <div class="clinical-block"><h3>Personales:</h3> <span id="antp"></span></div>
+            
+            <div class="clinical-block">
+                <h3>Alergias:</h3> <span id="ale"></span> 
+                <span id="wrap-alesp"> (Especifique: <span id="alesp"></span>)</span>
+            </div>
+            <div class="clinical-block">
+                <h3>Quirúrgicos:</h3> <span id="qui"></span> 
+                <span id="wrap-quiesp"> (Especifique: <span id="quiesp"></span>)</span>
+            </div>
 
-    <div class="section-header">Examen Físico</div>
-    <div class="clinical-block"><h3>Descripción:</h3> <span id="exf"></span></div>
-    
-    <!-- Campos de examen físico opcionales -->
-    <div class="clinical-block">
-        <span id="wrap-fot"><strong>Fototipo:</strong> <span id="fot"></span> | </span>
-        <span id="wrap-tur"><strong>Turgor:</strong> <span id="tur"></span> | </span>
-        <span id="wrap-pie"><strong>Piel:</strong> <span id="pie"></span></span>
-    </div>
-    <div class="clinical-block">
-        <span id="wrap-uñ"><strong>Uñas:</strong> <span id="uñ"></span> | </span>
-        <span id="wrap-pel"><strong>Pelo:</strong> <span id="pel"></span></span>
-    </div>
+            <div class="section-header">Examen Físico</div>
+            <div class="clinical-block"><h3>Descripción:</h3> <span id="exf"></span></div>
+            
+            <div class="clinical-block">
+                <span id="wrap-fot"><strong>Fototipo:</strong> <span id="fot"></span> | </span>
+                <span id="wrap-tur"><strong>Turgor:</strong> <span id="tur"></span> | </span>
+                <span id="wrap-pie"><strong>Piel:</strong> <span id="pie"></span></span>
+            </div>
+            <div class="clinical-block">
+                <span id="wrap-uñ"><strong>Uñas:</strong> <span id="uñ"></span> | </span>
+                <span id="wrap-pel"><strong>Pelo:</strong> <span id="pel"></span></span>
+            </div>
 
-    <div class="section-header">Conclusión Médica</div>
-    <div class="clinical-block"><h3>Diagnósticos:</h3> <span id="diag"></span></div>
-    <div class="clinical-block"><h3>Tratamiento/Conducta:</h3> <span id="tra"></span></div>
-    <div id="wrap-pla" class="clinical-block"><h3>Plan/Sugerencias:</h3> <span id="pla"></span></div>
+            <div class="section-header">Conclusión Médica</div>
+            <div class="clinical-block"><h3>Diagnósticos:</h3> <span id="diag"></span></div>
+            <div class="clinical-block"><h3>Tratamiento/Conducta:</h3> <span id="tra"></span></div>
+            <div id="wrap-pla" class="clinical-block"><h3>Plan/Sugerencias:</h3> <span id="pla"></span></div>
 
-    <div class="section-header">Exámenes Complementarios</div>
-    <div id="wrap-mic" class="clinical-block"><h3>Micológico/Parasitológico:</h3> <span id="mic"></span> <span id="micesp"></span></div>
-    <div id="wrap-lab" class="clinical-block"><h3>Laboratorios:</h3> <span id="lab"></span> <span id="labesp"></span></div>
-    
-    <div style="margin-top:10px;">
-        <div id="wrap-con" class="clinical-block"><h3>Control:</h3> <span id="con"></span></div>
-        <div id="wrap-not" class="clinical-block"><h3>Nota:</h3> <span id="not"></span></div>
-    </div>
+            <div class="section-header">Exámenes Complementarios</div>
+            <div id="wrap-mic" class="clinical-block"><h3>Micológico/Parasitológico:</h3> <span id="mic"></span> <span id="micesp"></span></div>
+            <div id="wrap-lab" class="clinical-block"><h3>Laboratorios:</h3> <span id="lab"></span> <span id="labesp"></span></div>
+            
+            <div style="margin-top:10px;">
+                <div id="wrap-con" class="clinical-block"><h3>Control:</h3> <span id="con"></span></div>
+                <div id="wrap-not" class="clinical-block"><h3>Nota:</h3> <span id="not"></span></div>
+            </div>
         </main>
-
-        </div>
+    </div>
 
     <div class="button-container no-print">
         <button class="btn btn-print" onclick="window.print()">Imprimir PDF</button>
@@ -124,10 +117,8 @@
     </div>
 
     <script>
-    <script>
     const params = new URLSearchParams(window.location.search);
 
-    // Función para procesar campos: si no hay dato, oculta el contenedor
     function procesarCampo(paramId, wrapId = null) {
         const valor = params.get(paramId);
         const campoElemento = document.getElementById(paramId);
@@ -137,14 +128,14 @@
             if (campoElemento) campoElemento.innerText = valor;
         } else {
             if (wrapElemento) {
-                wrapElemento.style.display = "none"; // Oculta el bloque completo
+                wrapElemento.style.display = "none";
             } else if (campoElemento) {
-                campoElemento.innerText = ""; // Limpia el texto si no tiene envoltorio
+                campoElemento.innerText = "";
             }
         }
     }
 
-    // 1. Campos fijos (Siempre aparecen)
+    // Campos fijos
     document.getElementById('fecha').innerText = params.get('fecha') || '';
     document.getElementById('n').innerText = params.get('n') || '';
     document.getElementById('c').innerText = params.get('c') || '';
@@ -160,7 +151,7 @@
     document.getElementById('diag').innerText = params.get('diag') || '';
     document.getElementById('tra').innerText = params.get('tra') || '';
 
-    // 2. Campos opcionales (Se ocultan si están vacíos)
+    // Campos opcionales
     procesarCampo('alesp', 'wrap-alesp');
     procesarCampo('quiesp', 'wrap-quiesp');
     procesarCampo('fot', 'wrap-fot');
@@ -174,34 +165,25 @@
     procesarCampo('con', 'wrap-con');
     procesarCampo('not', 'wrap-not');
 
-       function exportToWord() {
-    // 1. Capturamos el contenido actual del informe
-    var content = document.getElementById("exportContent").innerHTML;
-    var nombrePaciente = document.getElementById('n').innerText || 'Paciente';
-    
-    // 2. Limpieza de estilos que estorban en Word
-    content = content.replace(/style="[^"]*"/g, "");
-    
-    // 3. Ajuste de imagen (Logo) para Word
-    content = content.replace(/<img/g, '<img width="160" height="80"');
-    
-    // 4. Configuración de interlineado y fuentes para párrafos (Estilo Microsoft Word)
-    var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
-    content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
-    
-    // 5. Ajustes de estructura y secciones
-    content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:5pt; margin-bottom:5pt; border-bottom:1pt solid #eee;">');
-    content = content.replace(/<\/section>/g, '</div>');
-    
-    // Ajuste para los títulos de sección (Antecedentes, Examen Físico, etc.)
-    content = content.replace(/class="section-header"/g, 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"');
+    function exportToWord() {
+        var content = document.getElementById("exportContent").innerHTML;
+        var nombrePaciente = document.getElementById('n').innerText || 'Paciente';
+        
+        content = content.replace(/style="[^"]*"/g, "");
+        content = content.replace(/<img/g, '<img width="160" height="80"');
+        
+        var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
+        content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
+        
+        content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:5pt; margin-bottom:5pt; border-bottom:1pt solid #eee;">');
+        content = content.replace(/<\/section>/g, '</div>');
+        content = content.replace(/class="section-header"/g, 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"');
 
-      // 7. Construcción del documento completo (Cabeceras XML para Word)
-    var preHtml = `
-    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-    <head>
-        <meta charset='utf-8'>
-        <!--[if gte mso 9]>
+        var preHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+            <meta charset='utf-8'>
+            <!--[if gte mso 9]>
             <xml>
                 <w:WordDocument>
                     <w:View>Print</w:View>
@@ -210,37 +192,33 @@
                 </w:WordDocument>
             </xml>
             <![endif]-->
-        <style>
-            @page { size: 8.5in 11in; margin: 0.5in 0.7in; }
-            body { font-family: 'Times New Roman', serif; }
-            .header-table { width: 100%; }
-            .date-row { text-align: right !important; margin: 10pt 0; font-weight: bold; }
-            .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 15pt 0; }
-            h3 { font-size: 11pt; font-weight: bold; display: inline; }
-            .content-box { font-size: 11pt; display: inline; }
-        </style>
-    </head>
-    <body>`;
-    
-    var postHtml = "</body></html>";
-    
-    // Aseguramos alineación de fecha
-    var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
+            <style>
+                @page { size: 8.5in 11in; margin: 0.5in 0.7in; }
+                body { font-family: 'Times New Roman', serif; }
+                .header-table { width: 100%; }
+                .date-row { text-align: right !important; margin: 10pt 0; font-weight: bold; }
+                .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 15pt 0; }
+                h3 { font-size: 11pt; font-weight: bold; display: inline; }
+                .content-box { font-size: 11pt; display: inline; }
+            </style>
+        </head>
+        <body>`;
+        
+        var postHtml = "</body></html>";
+        var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
+        var html = preHtml + finalContent + postHtml;
 
-    var html = preHtml + finalContent + postHtml;
-
-    // 8. Creación del archivo y descarga
-    var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-    var url = URL.createObjectURL(blob);
-    var filename = 'Informe_' + nombrePaciente + '.doc';
-    
-    var downloadLink = document.createElement("a");
-    document.body.appendChild(downloadLink);
-    downloadLink.href = url;
-    downloadLink.download = filename;
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-}
+        var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+        var url = URL.createObjectURL(blob);
+        var filename = 'Informe_' + nombrePaciente + '.doc';
+        
+        var downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+        downloadLink.href = url;
+        downloadLink.download = filename;
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
     </script>
 </body>
 </html>

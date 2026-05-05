@@ -33,14 +33,6 @@
         .btn-print { background-color: #27649d; color: white; }
         .btn-word { background-color: #2b579a; color: white; }
 
-        .footer-print { 
-        font-family: Arial, sans-serif; 
-        font-size: 8.5pt; 
-        text-align: center; 
-        width: 100%; 
-        border-top: 1pt solid #000; 
-        padding-top: 5px;
-        margin-top: 20px; /* Espacio mínimo si el informe es corto */
     }
 
    @media print { 
@@ -61,17 +53,7 @@
         width: 100%;
         box-sizing: border-box;
     }
-    
-    .footer-print { 
-        position: fixed; 
-        bottom: 10px; /* Lo bajamos un poco más aprovechando el margen 0 */
-        left: 60px; 
-        right: 60px; 
-        background: white;
-        display: block !important;
-        border-top: 1pt solid #000;
-    }
-}
+
         
 </style>
             
@@ -84,8 +66,7 @@
                 <td class="info-cell">
                     <div class="main-title">DRA. LUISA MONTILLA</div>
                     <div class="sub-title">Dermatólogo UCV</div>
-                    <div class="header-divider"></div>
-                </td>
+               </td>
             </tr>
         </table>
 
@@ -130,13 +111,6 @@
             <div id="wrap-con" class="clinical-block"><strong>Control:</strong> <span id="con"></span></div>
             <div id="wrap-not" class="clinical-block"><strong>Nota:</strong> <span id="not"></span></div>
         </div>
-
-        <!-- Footer HTML -->
-        <div class="footer-print" id="footerContacto">
-            Torre Cavendes - Caracas. Teléfono: 0414-9172983 <br> 
-            Whatsapp: 04269198665 / @draluisamontilla
-        </div>
-    </div>
 
     <div class="button-container no-print">
         <button class="btn btn-print" onclick="window.print()">Imprimir PDF</button>
@@ -191,11 +165,6 @@
         var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
         hiddenElements.forEach(el => el.remove());
 
-        // Extraemos el texto del footer y lo borramos del cuerpo para moverlo al pie de página real de Word
-        var footerText = document.getElementById("footerContacto").innerHTML;
-        var footerNode = exportElement.querySelector("#footerContacto");
-        if(footerNode) footerNode.remove();
-
         var content = exportElement.innerHTML;
         content = content.replace(/<img/g, '<img width="180" height="90" style="display:block; margin-bottom:5pt;"');
 
@@ -216,13 +185,8 @@
                 @page Section1 {
                     size: 8.5in 11in;
                     margin: 0.5in 0.7in 1.0in 0.7in;
-                    mso-footer: f1;
                 }
-                div.Section1 { page: Section1; }
-                p.MsoFooter, li.MsoFooter, div.MsoFooter {
-                    margin: 0in; margin-bottom: .0001pt; text-align: center;
-                    font-family: Arial, sans-serif; font-size: 8.5pt; border-top: 0.5pt solid black;
-                }
+               
                 p, div, span, strong { margin: 0in !important; margin-bottom: .0001pt !important; line-height: 1.15 !important; }
                 .clinical-block { margin-bottom: 6pt !important; display: block; text-align: justify !important; }
                 body { font-family: 'Times New Roman', serif; font-size: 11pt; }
@@ -234,14 +198,7 @@
                 .doc-title { text-align: center !important; font-size: 14pt !important; font-weight: bold; text-decoration: underline; margin: 10pt 0 !important; }
             </style>
         </head>
-        <body>
-            <div class="Section1">
-                ${content}
-                <div style='mso-element:footer' id="f1">
-                    <p class="MsoFooter">${footerText}</p>
-                </div>
-            </div>
-        </body></html>`;
+        <body>`;
         
         var finalContent = preHtml.replace(/class="info-cell"/g, 'class="info-cell" align="center"');
         finalContent = finalContent.replace(/class="doc-title"/g, 'class="doc-title" align="center"');

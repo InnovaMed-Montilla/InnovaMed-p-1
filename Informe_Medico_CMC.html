@@ -19,17 +19,6 @@
 
         .date-row { text-align: right; margin-top: 5px; margin-bottom: 10px; font-weight: bold; width: 100%; }
         
-        /* Pie de página en HTML */
-        .footer-print { 
-            font-family: Arial, sans-serif; 
-            font-size: 8.5pt; 
-            text-align: center; 
-            width: 100%; 
-            border-top: 1pt solid #000; 
-            padding-top: 5px; 
-            margin-top: auto; /* Empuja el footer al final en la pantalla */
-        }
-
         .patient-data { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 15px; font-size: 0.95em; border-bottom: 1pt solid #eee; padding-bottom: 10px; }
         .full-width { grid-column: span 2; }
         .patient-data p { margin: 0 !important; padding: 0 !important; line-height: 1.2; }
@@ -43,13 +32,49 @@
         .btn { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
         .btn-print { background-color: #27649d; color: white; }
         .btn-word { background-color: #2b579a; color: white; }
+
+        .footer-print { 
+        font-family: Arial, sans-serif; 
+        font-size: 8.5pt; 
+        text-align: center; 
+        width: 100%; 
+        border-top: 1pt solid #000; 
+        padding-top: 5px;
+        margin-top: 20px; /* Espacio mínimo si el informe es corto */
+    }
+
+   @media print { 
+    /* 1. Forzamos a la página a no tener márgenes externos */
+    @page {
+        margin: 0;
+    }
+
+    .no-print { display: none; } 
+
+    .document-container { 
+        box-shadow: none; 
+        margin: 0; 
+        /* 2. Ajustamos el espacio interno: 10px arriba para que no pegue al borde físico, 
+           60px laterales y 80px abajo para el footer */
+        padding: 10px 60px 80px 60px; 
+        min-height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .footer-print { 
+        position: fixed; 
+        bottom: 10px; /* Lo bajamos un poco más aprovechando el margen 0 */
+        left: 60px; 
+        right: 60px; 
+        background: white;
+        display: block !important;
+        border-top: 1pt solid #000;
+    }
+}
         
-        @media print { 
-            .no-print { display: none; } 
-            .document-container { box-shadow: none; margin: 0; padding: 20px; min-height: 100%; }
-            .footer-print { position: fixed; bottom: 0; left: 60px; right: 60px; background: white; }
-        }
-    </style>
+</style>
+            
 </head>
 <body>
     <div id="exportContent" class="document-container">

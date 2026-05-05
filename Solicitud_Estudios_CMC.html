@@ -4,54 +4,109 @@
     <meta charset="utf-8">
     <title>Solicitud de Estudios CMC - Innova Med</title>
     <style>
-           body { 
-    font-family: 'Times New Roman', Times, serif; 
-    line-height: 1.1; 
-    background-color: #f4f4f4; 
-    padding: 20px;
-    color: #000;
-    display: flex;
-    flex-direction: column; 
-    align-items: center;    
-}
-       .document-container {
-    background-color: white;
-    width: 816px; 
-    min-height: 1056px; 
-    margin: 20px auto; 
-    padding: 60px 80px; 
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    box-sizing: border-box; 
-    overflow: hidden;
-}
-        
-        /* Estructura de Tabla para el Encabezado */
-        .header-table { width: 100%; border-collapse: collapse; margin-bottom: 0px; }
-        .logo-cell { width: 50%; vertical-align: middle; padding-right: 0px; }
-        .logo-cell img { width: 100%; max-width: 300px; height: auto; display: block; }
-        .info-cell { width: 75%; vertical-align: middle; text-align: center; padding-left: 10px }
-        
-        .main-title { font-family: Arial, sans-serif; font-size: 15pt; margin: 0; line-height: 1.0; color: #666666; }
-        .sub-title { font-family: Arial, sans-serif; font-size: 12pt; margin: 0; line-height: 1.0; color: #666666; }
+    /* Reset global para el documento médico */
+    .document-container * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        /* Cuerpo del documento */
-        .date-row { text-align: right; margin: 15px 0; font-weight: bold; font-size: 0.95em; }
-        .patient-data { margin-bottom: 25px; font-size: 0.95em;}
-/* Esto fuerza a que CADA LÍNEA de datos se pegue a la anterior */
-.patient-data p {
-    margin: 0 !important;   /* Elimina cualquier espacio entre líneas */
-    padding: 0 !important;  /* Elimina rellenos internos */
-    line-height: 1.1;       /* Un valor entre 1.0 y 1.1 es el punto dulce para Times New Roman */
-}
-        
-        .doc-title { text-align: center; color: #000; font-size: 1.1em; text-decoration: underline; margin: 35px 0; font-weight: bold; }
-        .clinical-block { margin-bottom: 25px; }
-        .clinical-block h3 { font-size: 0.95em; margin-bottom: 2px; font-weight: bold; }
-        .content-box { min-height: 30px; boder-bottom: 1px solid #ccc; font-size: 0.95em; }
-        
-        footer { margin-top: 80px; text-align: center; }
-        .signature-line { width: 250px; border-top: 1.5px solid #000; margin: 0 auto 5px; }
-        
+    body { 
+        font-family: 'Times New Roman', Times, serif; 
+        line-height: 1.2; 
+        background-color: #f4f4f4; 
+        padding: 20px;
+        color: #000;
+    }
+
+    .document-container {
+        background-color: white;
+        width: 816px; 
+        min-height: 1056px; 
+        margin: 20px auto; 
+        padding: 50px 70px; 
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    /* ENCABEZADO: Forzamos alineación y eliminamos espacios extra */
+    .header-table { 
+        width: 100%; 
+        border-collapse: collapse; 
+        margin-bottom: 20px; 
+    }
+
+    .logo-cell { 
+        width: 40%; 
+        vertical-align: middle; 
+    }
+
+    .logo-cell img { 
+        max-width: 260px; 
+        height: auto; 
+        display: block; 
+    }
+
+    .info-cell { 
+        width: 60%; 
+        vertical-align: middle; 
+        text-align: center; 
+    }
+
+    .top-info h2 { 
+        font-family: Arial, sans-serif; 
+        font-size: 16pt; 
+        color: #666666; 
+        letter-spacing: 1px;
+    }
+
+    .dra-name { 
+        font-family: Arial, sans-serif; 
+        font-size: 11pt; 
+        color: #666666; 
+        margin-top: 2px;
+    }
+
+    /* DATOS DEL PACIENTE: Interlineado compacto */
+    .date-row { 
+        text-align: right; 
+        margin-bottom: 15px; 
+        font-weight: bold; 
+    }
+
+    .patient-data { 
+        margin-bottom: 30px; 
+    }
+
+    .patient-data p {
+        margin: 0 !important;
+        line-height: 1.1; /* Esto pega las líneas entre sí */
+        font-size: 11pt;
+    }
+
+    .doc-title { 
+        text-align: center; 
+        text-decoration: underline; 
+        margin: 30px 0; 
+        font-weight: bold; 
+        font-size: 14pt;
+        text-transform: uppercase;
+    }
+
+    /* BLOQUES CLÍNICOS */
+    .clinical-block { margin-bottom: 20px; }
+    .clinical-block h3 { font-size: 11pt; font-weight: bold; margin-bottom: 4px; }
+    .content-box { 
+        min-height: 20px; 
+        font-size: 11pt; 
+        border-bottom: 1px solid #eee; /* Línea sutil para guía visual */
+    }
+
+    footer { margin-top: 60px; text-align: center; }
+    .signature-line { 
+        width: 200px; 
+        border-top: 1.5px solid #000; 
+        margin: 0 auto 5px; 
+    }        
         /* Botonera */
         .button-container { margin-top: 30px; display: flex; justify-content: center; gap: 15px; width: 100%; }
         .btn { padding: 12px 25px; cursor: pointer; border: none; border-radius: 5px; font-family: 'Montserrat', sans-serif; font-weight: bold; transition: 0.3s; }

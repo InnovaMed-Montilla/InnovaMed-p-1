@@ -9,12 +9,12 @@
         
         /* Encabezado */
         .header-table { width: 100%; border-collapse: collapse; margin-bottom: 0px; }
-        .logo-cell { width: 30%; vertical-align: middle; }
+        .logo-cell { width: 50%; vertical-align: middle; }
         .logo-cell img { width: 100%; max-width: 300px; height: auto; display: block; }
         .info-cell { width: 70%; vertical-align: middle; text-align: center; }
         
-        .main-title { font-family: Arial, sans-serif; font-size: 15pt; font-weight: bold; margin: 0; line-height: 1.0; background-color: #666666 }
-        .sub-title { font-family: Arial, sans-serif; font-size: 12pt; margin: 0; line-height: 1.0; }
+        .main-title { font-family: Arial, sans-serif; font-size: 15pt; margin: 0; line-height: 1.0; font-color: #666666; }
+        .sub-title { font-family: Arial, sans-serif; font-size: 12pt; margin: 0; line-height: 1.0; font-color: #666666; }
 
         .date-row { text-align: right; margin-top: 5px; margin-bottom: 10px; font-weight: bold; width: 100%; }
         
@@ -60,7 +60,7 @@
             <p class="full-width"><strong>Dirección:</strong> <span id="dir"></span></p>
         </section>
 
-        <h1 class="doc-title">INFORME MÉDICO</h1>
+        <h1 class="doc-title">Informe Médico</h1>
         
         <div class="clinical-block"><strong>Motivo de consulta:</strong> <span id="mot"></span></div>
         <div class="clinical-block"><strong>Antecedentes personales:</strong> <span id="antp"></span></div>
@@ -149,7 +149,7 @@
 
         var content = exportElement.innerHTML;
         // Ajustar imagen para Word
-        content = content.replace(/<img/g, '<img width="180" height="90" style="display:block; margin-bottom:5pt;"');
+        content = content.replace(/<img/g, '<img width="220" height="120" style="display:block; margin-bottom:5pt;"');
 
         var preHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -172,8 +172,8 @@
                 .clinical-block { margin-bottom: 6pt !important; display: block; text-align: justify !important; }
                 .header-table { width: 100% !important; }
                 .info-cell { text-align: center !important; }
-                .main-title { font-family: Arial, sans-serif !important; font-size: 11pt !important; font-weight: bold; text-align: center !important; }
-                .sub-title { font-family: Arial, sans-serif !important; font-size: 10pt !important; text-align: center !important; }
+                .main-title { font-family: Arial, sans-serif !important; font-size: 15pt !important; font-color: #666666; text-align: center !important; }
+                .sub-title { font-family: Arial, sans-serif !important; font-size: 12pt !important;font-color: #666666; text-align: center !important; }
                 .date-row { text-align: right !important; font-weight: bold; margin-top: 5pt !important; margin-bottom: 5pt !important; }
                 .doc-title { text-align: center !important; font-size: 14pt !important; font-weight: bold; text-decoration: underline; margin: 10pt 0 !important; }
             </style>

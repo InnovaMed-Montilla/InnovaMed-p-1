@@ -149,7 +149,7 @@
 
         var content = exportElement.innerHTML;
         // Ajustar imagen para Word
-        content = content.replace(/<img/g, '<img width="220" height="120" style="display:block; margin-bottom:5pt;"');
+        content = content.replace(/<img/g, '<img width="250" height="180" style="display:block; margin-bottom:5pt;"');
 
         var preHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -172,8 +172,8 @@
                 .clinical-block { margin-bottom: 6pt !important; display: block; text-align: left !important; }
                 .header-table { width: 100% !important; }
                 .info-cell { text-align: center !important; }
-                .main-title { font-family: Arial, sans-serif !important; font-size: 15pt !important; font-color: #666666; text-align: center !important; }
-                .sub-title { font-family: Arial, sans-serif !important; font-size: 12pt !important;font-color: #666666; text-align: center !important; }
+                .main-title { font-family: Arial, sans-serif !important; font-size: 15pt !important; color: #666666; text-align: center !important; }
+                .sub-title { font-family: Arial, sans-serif !important; font-size: 12pt !important; color: #666666; text-align: center !important; }
                 .date-row { text-align: right !important; font-weight: bold; margin-top: 5pt !important; margin-bottom: 5pt !important; }
                 .doc-title { text-align: center !important; font-size: 14pt !important; font-weight: bold; text-decoration: underline; margin: 10pt 0 !important; }
             </style>

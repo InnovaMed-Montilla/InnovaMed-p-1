@@ -22,18 +22,16 @@
         .fecha-top { position: absolute; right: 0; top: 0; font-weight: bold; }
         .title-doc { text-align: center; font-size: 16pt; font-weight: bold; text-decoration: underline; margin: 20px 0; }
 
-        /* Grilla de Laboratorios (2 Columnas) */
+        /* Grilla de Laboratorios (Web) */
         .labs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
         
-        /* Tablas de Exámenes */
         table.lab-table { width: 100%; border-collapse: collapse; margin-bottom: 15pt; font-size: 10pt; }
         table.lab-table th, table.lab-table td { border: 1px solid black; padding: 3px 6px; }
         table.lab-table th { background-color: #f9f9f9; text-decoration: underline; font-weight: bold; }
-        .check-cell { width: 40px; text-align: center; font-weight: bold; font-size: 12pt; }
-        .cat-title { text-align: center; font-weight: bold; text-decoration: underline; }
+        .check-cell { width: 35px; text-align: center; font-weight: bold; font-size: 12pt; height: 20px; }
 
         .button-container { margin: 20px; display: flex; gap: 15px; }
-        .btn { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; color: white; }
+        .btn { padding: 12px 25px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; color: white; }
         .btn-print { background-color: #27649d; }
         .btn-word { background-color: #2b579a; }
 
@@ -63,12 +61,11 @@
 
         <div class="title-doc">Solicitud Examen Laboratorio</div>
 
-        <div class="labs-grid">
-            <div>
+        <div class="labs-grid" id="mainGrid">
+            <div id="col1">
                 <table class="lab-table">
                     <tr><td class="check-cell" id="val-Hemato"></td><td style="font-weight:bold;">Hematología Completa</td></tr>
                 </table>
-
                 <table class="lab-table">
                     <tr><th colspan="2">Química sanguínea</th></tr>
                     <tr><td class="check-cell" id="val-Glicemia"></td><td>Glicemia en Ayunas</td></tr>
@@ -79,7 +76,6 @@
                     <tr><td class="check-cell" id="val-LDH"></td><td>LDH</td></tr>
                     <tr><td class="check-cell" id="val-CK"></td><td>CK</td></tr>
                 </table>
-
                 <table class="lab-table">
                     <tr><th colspan="2">Perfil Hormonal / día 2 a 4 del ciclo</th></tr>
                     <tr><td class="check-cell" id="val-Estradiol"></td><td>Estradiol</td></tr>
@@ -94,7 +90,7 @@
                 </table>
             </div>
 
-            <div>
+            <div id="col2">
                 <table class="lab-table">
                     <tr><th colspan="2">Perfil Tiroideo</th></tr>
                     <tr><td class="check-cell" id="val-TSH"></td><td>TSH</td></tr>
@@ -102,25 +98,21 @@
                     <tr><td class="check-cell" id="val-T4L"></td><td>T4L</td></tr>
                     <tr><td class="check-cell" id="val-Anticuerpos"></td><td>Anticuerpos Antitiroideos</td></tr>
                 </table>
-
                 <table class="lab-table">
                     <tr><th colspan="2">Serología</th></tr>
                     <tr><td class="check-cell" id="val-HIV"></td><td>HIV</td></tr>
                     <tr><td class="check-cell" id="val-VDRL"></td><td>VDRL</td></tr>
                 </table>
-
                 <table class="lab-table">
                     <tr><th colspan="2">Orina</th></tr>
                     <tr><td class="check-cell" id="val-Uroanalisis"></td><td>Uroanálisis</td></tr>
                     <tr><td class="check-cell" id="val-Urocultivo"></td><td>Urocultivo</td></tr>
                 </table>
-
                 <table class="lab-table">
                     <tr><th colspan="2">Heces</th></tr>
                     <tr><td class="check-cell" id="val-Coproanalisis"></td><td>Coproanálisis:</td></tr>
                     <tr><td class="check-cell" id="val-Coprocultivo"></td><td>Coprocultivo</td></tr>
                 </table>
-
                 <table class="lab-table">
                     <tr><th colspan="2">Otros</th></tr>
                     <tr><td class="check-cell" id="val-Insulina"></td><td>Insulina Basal</td></tr>
@@ -142,7 +134,6 @@
     <script>
     const params = new URLSearchParams(window.location.search);
     
-    // Función para marcar con X si el valor es "Yes", "TRUE" o "X"
     function setCheck(id, param) {
         let val = params.get(param);
         if(val && (val.toUpperCase() === 'YES' || val.toUpperCase() === 'TRUE' || val.toUpperCase() === 'X')) {
@@ -150,14 +141,13 @@
         }
     }
 
-    // Datos básicos
+    // Carga de Datos
     document.getElementById('val-Fecha').innerText = params.get('f') || '';
     document.getElementById('val-Nombre').innerText = params.get('n') || '';
     document.getElementById('val-Cedula').innerText = params.get('c') || '';
     document.getElementById('val-Edad').innerText = params.get('e') || '';
     document.getElementById('val-OtrosText').innerText = params.get('ot') || '';
 
-    // Mapeo de Checks
     setCheck('val-Hemato', 'h'); setCheck('val-Glicemia', 'ga'); setCheck('val-Urea', 'uc');
     setCheck('val-AST', 'ast'); setCheck('val-Bilirrubina', 'btf'); setCheck('val-Colesterol', 'ct');
     setCheck('val-LDH', 'ldh'); setCheck('val-CK', 'ck'); setCheck('val-TSH', 'tsh');
@@ -171,11 +161,67 @@
     setCheck('val-VitB12', 'b12'); setCheck('val-AcidoFolico', 'af');
 
     function exportToWord() {
-        var node = document.getElementById("exportContent");
-        var content = node.innerHTML;
-        // (Aquí iría la misma lógica de tablas que usamos antes para asegurar el formato en Word)
-        // Por brevedad, te dejo la estructura lista para imprimir que es lo primordial
-        window.print(); 
+        var nombrePac = document.getElementById('val-Nombre').innerText.trim() || 'Paciente';
+        var col1Html = document.getElementById('col1').innerHTML;
+        var col2Html = document.getElementById('col2').innerHTML;
+        
+        var msoConfig = ``;
+
+        var wordBody = `
+            <table style="width:100%; border:none;">
+                <tr>
+                    <td style="width:35%; vertical-align:middle;"><img src="https://lh3.googleusercontent.com/d/1b0xVc6U0mUzyTCTHS29LsfUf9yiV3Euk" width="180"></td>
+                    <td style="width:65%; text-align:center;">
+                        <div style="font-family:Arial; font-size:11pt; font-weight:bold;">CONSULTORIO MÉDICO DERMATOLÓGICO</div>
+                        <div style="font-family:Arial; font-size:10pt;">Dra. Luisa Montilla - Dermatólogo UCV</div>
+                        <div style="border-top:1.5pt solid black; margin:4pt 10pt;"></div>
+                        <div style="font-family:Arial; font-size:8pt;">Torre Cavendes - Caracas. Teléfono: 0414-9172983</div>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="margin-top:20pt; font-family:'Times New Roman'; font-size:10pt;">
+                <div style="text-align:right; font-weight:bold;">Fecha: ${document.getElementById('val-Fecha').innerText}</div>
+                <div><strong>Nombre y Apellido:</strong> ${nombrePac}</div>
+                <div><strong>CI:</strong> ${document.getElementById('val-Cedula').innerText}</div>
+                <div><strong>Edad:</strong> ${document.getElementById('val-Edad').innerText}</div>
+            </div>
+
+            <div style="text-align:center; font-size:14pt; font-weight:bold; text-decoration:underline; margin:15pt 0;">Solicitud Examen Laboratorio</div>
+
+            <table style="width:100%; border:none;">
+                <tr>
+                    <td style="width:48%; vertical-align:top; padding-right:10pt;">${col1Html}</td>
+                    <td style="width:4%; border:none;"></td>
+                    <td style="width:48%; vertical-align:top;">${col2Html}</td>
+                </tr>
+            </table>
+        `;
+
+        var fullHtml = `
+            <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+            <head><meta charset='utf-8'>${msoConfig}
+            <style>
+                @page Section1 { size: 8.5in 11in; margin: 0.5in 0.6in; }
+                div.Section1 { page: Section1; }
+                table { border-collapse: collapse; }
+                .lab-table { width: 100%; border: 1px solid black; margin-bottom: 10pt; }
+                .lab-table td, .lab-table th { border: 1px solid black; font-family: 'Times New Roman'; font-size: 9pt; padding: 2pt; }
+                .check-cell { width: 25pt; text-align: center; font-weight: bold; }
+            </style>
+            </head>
+            <body><div class="Section1">${wordBody}</div></body></html>`;
+
+        var blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
+        var url = URL.createObjectURL(blob);
+        var filename = 'Laboratorio_' + nombrePac.replace(/[^a-z0-9]/gi, '_') + '.doc';
+
+        var downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+        downloadLink.href = url;
+        downloadLink.download = filename;
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
     }
     </script>
 </body>

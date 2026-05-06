@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Tratamiento y Conducta - Innova Med</title>
+    <style>
+        /* Base de diseño CMC */
+        body { font-family: 'Times New Roman', Times, serif; line-height: 1.1; background-color: #f4f4f4; padding: 20px; color: #000; display: flex; flex-direction: column; align-items: center; }
+        .document-container { background-color: white; width: 816px; min-height: 1056px; margin: 20px auto; padding: 30px 60px; box-shadow: 0 0 10px rgba(0,0,0,0.1); box-sizing: border-box; display: flex; flex-direction: column; position: relative; }
+        
+        /* Encabezado CMC */
+        .header-table { width: 100%; border-collapse: collapse; margin-bottom: 0px; }
+        .logo-cell { width: 40%; vertical-align: middle; padding-right: 0px; }
+        .logo-cell img { width: 100%; max-width: 260px; height: auto; display: block; }
+        .info-cell { width: 60%; vertical-align: middle; text-align: center; padding-left: 10px }
+        
+        .main-title { font-family: Arial, sans-serif; font-size: 15pt; margin: 0; line-height: 1.0; color: #666666; }
+        .sub-title { font-family: Arial, sans-serif; font-size: 12pt; margin: 0; line-height: 1.0; color: #666666; }
+
+        /* Título del Documento (Nombre del Paciente) y Fecha */
+        .document-header-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 30px; margin-bottom: 20px; border-bottom: 1.5pt solid #000; padding-bottom: 5px; }
+        .patient-title { font-size: 1.4em; font-weight: bold; text-transform: uppercase; }
+        .date-label { font-size: 1.1em; font-weight: bold; }
+        
+        /* Cuerpo del contenido */
+        .content-section { margin-top: 20px; flex-grow: 1; }
+        .section-label { font-size: 1.2em; font-weight: bold; text-decoration: underline; margin-bottom: 15px; display: block; }
+        .treatment-text { font-size: 12pt; text-align: justify; line-height: 1.4; white-space: pre-wrap; }
+
+        /* Botonera */
+        .button-container { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
+        .btn { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
+        .btn-print { background-color: #27649d; color: white; }
+        .btn-word { background-color: #2b579a; color: white; }
+
+        @media print { 
+            @page { margin: 0; size: letter; }
+            .no-print { display: none; } 
+            body { background-color: white; padding: 0; margin: 0; }
+            .document-container { box-shadow: none; margin: 0; padding: 40px 60px; width: 100% !important; box-sizing: border-box; }
+        }
+    </style>
+</head>
+<body>
+    <div id="exportContent" class="document-container">
+        <table class="header-table">
+            <tr>
+                <td class="logo-cell"><img src="https://lh3.googleusercontent.com/d/1AG-tPiSsSS3lK2I1X3qFj7iWVh0oC1bF" alt="Logo CMC"></td>
+                <td class="info-cell">
+                    <div class="main-title">DRA. LUISA MONTILLA</div>
+                    <div class="sub-title">Médico Dermatólogo UCV</div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="document-header-row">
+            <div class="patient-title"><span id="nombre"></span></div>
+            <div class="date-label">Fecha: <span id="fecha"></span></div>
+        </div>
+
+        <main class="content-section">
+            <span class="section-label">TRATAMIENTO / CONDUCTA:</span>
+            <div id="tratamiento" class="treatment-text"></div>
+        </main>
+    </div>
+
+    <div class="button-container no-print">
+        <button class="btn btn-print" onclick="window.print()">Imprimir PDF</button>
+        <button class="btn btn-word" onclick="exportToWord()">Descargar Word</button>
+    </div>
+
+    <script>
+    const params = new URLSearchParams(window.location.search);
+
+    // Carga de parámetros
+    document.getElementById('fecha').innerText = params.get('Fecha') || '';
+    document.getElementById('nombre').innerText = params.get('Nombre_Apellido') || '';
+    document.getElementById('tratamiento').innerText = params.get('Tratamiento_Conducta') || '';
+
+    function exportToWord() {
+        var node = document.getElementById("exportContent");
+        var exportElement = node.cloneNode(true);
+        var content = exportElement.innerHTML;
+
+        // Ajuste de imagen y estilos para Word
+        content = content.replace(/<img/g, '<img width="220" height="75" style="display:block; margin-bottom:5pt;"');
+
+        var preHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+            <meta charset='utf-8'>
+             <!--[if gte mso 9]>
+        <xml>
+            <w:WordDocument>
+                <w:View>Print</w:View>
+                <w:Zoom>100</w:Zoom>
+                <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+        </xml>
+        <![endif]-->
+            <style>
+                @page Section1 { size: 8.5in 11in; margin: 0.5in 0.7in; }
+                div.Section1 { page: Section1; }
+                body { font-family: 'Times New Roman', serif; font-size: 11pt; }
+                .main-title { font-family: Arial, sans-serif !important; font-size: 15pt !important; color: #666666; }
+                .sub-title { font-family: Arial, sans-serif !important; font-size: 12pt !important; color: #666666; }
+                .patient-title { font-size: 14pt !important; font-weight: bold; text-transform: uppercase; }
+                .date-label { font-weight: bold; }
+                .section-label { font-weight: bold; text-decoration: underline; margin-bottom: 10pt; }
+                .treatment-text { text-align: justify; line-height: 1.5; }
+            </style>
+        </head>
+        <body>
+            <div class="Section1">${content}</div>
+        </body>
+        </html>`;
+
+        // Asegurar alineaciones en Word
+        var finalContent = preHtml.replace(/class="info-cell"/g, 'class="info-cell" align="center"');
+        
+        var blob = new Blob(['\ufeff', finalContent], { type: 'application/msword' });
+        var url = URL.createObjectURL(blob);
+        
+        // Nombre del archivo: Tratamiento_Nombre_Fecha.doc
+        var nombrePac = document.getElementById('nombre').innerText.trim() || 'Paciente';
+        var fechaDoc = document.getElementById('fecha').innerText.trim() || '';
+        var filename = 'Tratamiento_' + nombrePac.replace(/[^a-z0-9]/gi, '_') + '.doc';
+
+        var downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+        downloadLink.href = url;
+        downloadLink.download = filename;
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    </script>
+</body>
+</html>

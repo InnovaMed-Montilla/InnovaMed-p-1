@@ -135,12 +135,15 @@
     const params = new URLSearchParams(window.location.search);
     
     function setCheck(id, param) {
-        let val = params.get(param);
-        if(val && (val.toUpperCase() === 'YES' || val.toUpperCase() === 'TRUE' || val.toUpperCase() === 'X')) {
+    let val = params.get(param);
+    // Esta versión acepta 'X', 'x', 'Yes', 'yes', 'True', 'true' o incluso 'Y'
+    if (val && val.trim() !== "") {
+        let cleanVal = val.toUpperCase().trim();
+        if (cleanVal === 'X' || cleanVal === 'YES' || cleanVal === 'TRUE' || cleanVal === 'Y') {
             document.getElementById(id).innerText = 'X';
         }
     }
-
+}
     // Carga de Datos
     document.getElementById('val-Fecha').innerText = params.get('f') || '';
     document.getElementById('val-Nombre').innerText = params.get('n') || '';

@@ -53,16 +53,6 @@
         .clinical-block h3 {display: inline; font-size: 0.95em; margin-top: 0px !important; margin-bottom: 2px !important; line-height: 1.1; font-weight: bold}
         .content-box { display: inline; margin-top: 0px !important; padding-top: 0px !important;}       
 
-    
-        /* Footer posicionado abajo */
-        footer { 
-            margin-top: auto; /* Empuja el footer al fondo */
-            padding-bottom: 80px;
-            text-align: center; 
-            width: 100%;
-        }
-        .signature-line { width: 250px; border-top: 1.5px solid #000; margin: 0 auto 5px; }
-        
         /* Botonera */
         .button-container { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
         .btn { padding: 12px 25px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
@@ -127,11 +117,6 @@
                 <h3>Diagnóstico clínico:</h3> <span id="diag-clinico" class="content-box"></span>
             </div>
         </main>
-
-        <footer>
-            <div class="signature-line"></div>
-            <p><strong>Firma y Sello Médico</strong></p>
-        </footer>
     </div>
 
     <div class="button-container no-print">
@@ -155,43 +140,27 @@
         document.getElementById('info-clinica').innerText = params.get('ic') || '';
         document.getElementById('diag-clinico').innerText = params.get('dc') || '';
 
-     function exportToWord() {
-    // Clonamos el contenido para manipularlo sin afectar la vista web
-    var exportElement = document.getElementById("exportContent").cloneNode(true);
-    
-    // --- LÓGICA PARA NO MOSTRAR TÍTULOS VACÍOS ---
-    // Buscamos todos los elementos que deberían estar ocultos (display: none) y los eliminamos del clon
-    var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
-    hiddenElements.forEach(el => el.remove());
+        function exportToWord() {
+            var node = document.getElementById("exportContent");
+            var exportElement = node.cloneNode(true);
+            
+            // Limpieza de elementos ocultos
+            var hiddenElements = exportElement.querySelectorAll('[style*="display: none"]');
+            hiddenElements.forEach(el => el.remove());
 
-    var content = exportElement.innerHTML;
-    
-    // Limpiamos estilos inline del HTML original para evitar conflictos
-    content = content.replace(/style="[^"]*"/g, "");
-    
-    // Ajuste de imagen para Word (Logo)
-    content = content.replace(/<img/g, '<img width="180" height="90"');
-    
-    // --- SOLUCIÓN PARA EL INTERLINEADO ---
-    // Estilo para interlineado sencillo y sin espacios (mso-line-height-rule:exactly)
-    var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
-    
-    // Aplicamos a párrafos y bloques clínicos
-    content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
-    
-    // Ajustes de estructura de contenedores
-    content = content.replace(/<section class="patient-data">/g, '<div style="margin-top:5pt; margin-bottom:5pt; border-bottom:1pt solid #000;">');
-    content = content.replace(/<\/section>/g, '</div>');
-    
-    // Estilo para las cabeceras de sección (Antecedentes, Examen Físico, etc.)
-    var sectionHeaderStyle = 'style="background-color:#f0f0f0; font-weight:bold; text-transform:uppercase; font-size:10pt; padding:2pt; margin-top:10pt; border-left:4pt solid black;"';
-    content = content.replace(/class="section-header"/g, sectionHeaderStyle);
+            var content = exportElement.innerHTML;
+            
+            // Ajuste de imagen para Word
+            content = content.replace(/<img/g, '<img width="180" height="90"');
+            
+            var wordSpacingStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.0; mso-line-height-rule:exactly; font-family:\'Times New Roman\',serif; font-size:11pt;"';
+            content = content.replace(/<p/g, '<p ' + wordSpacingStyle);
 
-    var preHtml = `
-    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-    <head>
-        <meta charset='utf-8'>
-        <!--[if gte mso 9]>
+            var preHtml = `
+            <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+            <head>
+                <meta charset='utf-8'>
+                <!--[if gte mso 9]>
         <xml>
             <w:WordDocument>
                 <w:View>Print</w:View>
@@ -200,42 +169,37 @@
             </w:WordDocument>
         </xml>
         <![endif]-->
-        <style>
-            @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
-            body { font-family: 'Times New Roman', serif; font-size: 10pt; }
-            .header-table { width: 100%; border: none; }
-            .info-cell { text-align: center; }
-            .top-info h2 { font-family: Arial, sans-serif; font-size: 11pt; margin: 0; line-height: 1.0; mso-line-height-rule: exactly; }
-            .bottom-info { font-family: Arial, sans-serif; font-size: 9pt; color: #444444; line-height: 1.0; }
-            .date-row { text-align: right !important; width: 100%; display: block; margin: 10pt 0; font-weight: bold; }
-            .doc-title { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 15pt 0; }
-            h3 { font-size: 11pt; font-weight: bold; display: inline; }
-        </style>
-    </head>
-    <body>`;
-    
-    var postHtml = "</body></html>";
-    
-    // Aseguramos la alineación de la fecha y títulos en el HTML final
-    var finalContent = content.replace('class="date-row"', 'class="date-row" align="right"');
-    finalContent = finalContent.replace('class="doc-title"', 'class="doc-title" align="center"');
+                <style>
+                    @page { size: 8.5in 11in; margin: 0.5in 0.8in; }
+                    body { font-family: 'Times New Roman', serif; font-size: 10pt; }
+                    .header-table { width: 100%; border: none; }
+                    .info-cell { text-align: center; }
+                    .top-info h2 { font-family: Arial, sans-serif; font-size: 11pt; margin: 0; }
+                    .bottom-info { font-family: Arial, sans-serif; font-size: 9pt; color: #444444; }
+                    .date-row { text-align: right !important; width: 100%; margin: 10pt 0; font-weight: bold; }
+                    .doc-title { text-align: center !important; font-size: 14pt !important; font-weight: bold; text-decoration: underline; margin: 15pt 0; }
+                </style>
+            </head>
+            <body>` + content + `</body></html>`;
 
-    var html = preHtml + finalContent + postHtml;
-
-    var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-    var url = URL.createObjectURL(blob);
-    
-    // Nombre del archivo basado en el paciente
-    var nombrePaciente = document.getElementById('n').innerText || 'Paciente';
-    var filename = 'Informe_' + nombrePaciente + '.doc';
-    
-    var downloadLink = document.createElement("a");
-    document.body.appendChild(downloadLink);
-    downloadLink.href = url;
-    downloadLink.download = filename;
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-}
+            var blob = new Blob(['\ufeff', preHtml], { type: 'application/msword' });
+            var url = URL.createObjectURL(blob);
+            
+            // CORRECCIÓN AQUÍ: Usamos 'nombre' que es el ID correcto en tu HTML
+            var nombrePaciente = document.getElementById('nombre').innerText.trim() || 'Paciente';
+            var filename = 'Biopsia_' + nombrePaciente.replace(/[^a-z0-9]/gi, '_') + '.doc';
+            
+            var downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+            downloadLink.href = url;
+            downloadLink.download = filename;
+            downloadLink.click();
+            
+            setTimeout(function() {
+                document.body.removeChild(downloadLink);
+                window.URL.revokeObjectURL(url);
+            }, 100);
+        }
     </script>
 </body>
 </html>

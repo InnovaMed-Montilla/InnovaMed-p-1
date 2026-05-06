@@ -86,8 +86,9 @@
     var tratamientoContenido = document.getElementById('tratamiento').innerHTML;
 
     // Estructura de tabla blindada para Word
+    // Estructura de tabla blindada para Word con espacio extra
     var wordContent = `
-        <table style="width:100%; border-collapse:collapse; border:none; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+        <table style="width:100%; border-collapse:collapse; border:none; mso-table-lspace:0pt; mso-line-height-rule:exactly;">
             <tr>
                 <td style="width:30%; vertical-align:middle; padding:0;">
                     <img src="https://lh3.googleusercontent.com/d/1b0xVc6U0mUzyTCTHS29LsfUf9yiV3Euk" width="160" height="80" style="display:block;">
@@ -95,9 +96,7 @@
                 <td style="width:70%; vertical-align:middle; text-align:center; padding:0;">
                     <div style="font-family:Arial, sans-serif; font-size:10pt; font-weight:bold; text-transform:uppercase; margin:0;">CONSULTORIO MÉDICO DERMATOLÓGICO</div>
                     <div style="font-family:Arial, sans-serif; font-size:10pt; margin:2pt 0;">Dra. Luisa Montilla - Dermatólogo UCV</div>
-                    
                     <div style="border-top:1.5pt solid black; margin:4pt 10pt;"></div>
-                    
                     <div style="font-family:Arial, sans-serif; font-size:8.5pt; color:#444444; line-height:1.1;">
                         Torre Cavendes - Caracas. Teléfono: 0414-9172983<br>
                         Whatsapp: 04269198665 / @draluisamontilla
@@ -106,29 +105,27 @@
             </tr>
         </table>
 
-        <div style="margin-top:25pt; border-bottom:1.5pt solid black; padding-bottom:3pt;">
-            <table style="width:100%; border-collapse:collapse; border:none;">
+        <div style="margin-top:40pt; mso-para-margin-top:40pt;"> <table style="width:100%; border-collapse:collapse; border:none;">
                 <tr>
-                    <td style="text-align:left; vertical-align:bottom;">
+                    <td style="text-align:left; vertical-align:bottom; border-bottom:1.5pt solid black; padding-top:30pt; padding-bottom:5pt;">
                         <span style="font-family:'Times New Roman', serif; font-size:14pt; font-weight:bold; text-transform:uppercase;">${nombrePac}</span>
                     </td>
-                    <td style="text-align:right; vertical-align:bottom;">
+                    <td style="text-align:right; vertical-align:bottom; border-bottom:1.5pt solid black; padding-top:30pt; padding-bottom:5pt;">
                         <span style="font-family:'Times New Roman', serif; font-size:11pt; font-weight:bold;">Fecha: ${fechaDoc}</span>
                     </td>
                 </tr>
             </table>
         </div>
 
-        <div style="margin-top:20pt;">
-            <p style="font-family:'Times New Roman', serif; font-size:11pt; font-weight:bold; text-decoration:underline; margin-bottom:10pt;">
+        <div style="margin-top:25pt;">
+            <p style="font-family:'Times New Roman', serif; font-size:11pt; font-weight:bold; text-decoration:underline; margin-bottom:12pt;">
                 TRATAMIENTO / CONDUCTA:
             </p>
-            <div style="font-family:'Times New Roman', serif; font-size:11pt; text-align:left; line-height:1.3;">
+            <div style="font-family:'Times New Roman', serif; font-size:11pt; text-align:left; line-height:1.4;">
                 ${tratamientoContenido.replace(/\n/g, '<br>')}
             </div>
         </div>
     `;
-
     var preHtml = `
     <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
     <head>

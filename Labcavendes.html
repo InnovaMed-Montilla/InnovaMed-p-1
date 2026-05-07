@@ -7,7 +7,6 @@
         body { font-family: 'Times New Roman', Times, serif; background-color: #f4f4f4; padding: 20px; color: #000; display: flex; flex-direction: column; align-items: center; }
         .document-container { background-color: white; width: 816px; min-height: 1056px; margin: 20px auto; padding: 40px 50px; box-shadow: 0 0 10px rgba(0,0,0,0.1); box-sizing: border-box; }
         
-        /* Encabezado Cavendes */
         .header-table { width: 100%; border-collapse: collapse; border: none; margin-bottom: 10px; }
         .logo-cell { width: 35%; vertical-align: middle; }
         .logo-cell img { width: 100%; max-width: 260px; height: auto; }
@@ -17,14 +16,11 @@
         .header-divider { border-top: 2pt solid #000; margin: 5px 0; }
         .bottom-info { font-size: 9pt; font-family: Arial, sans-serif; color: #444444; }
 
-        /* Datos del Paciente */
         .patient-data { margin: 20px 0; font-size: 11pt; line-height: 1.2; position: relative; }
         .fecha-top { position: absolute; right: 0; top: 0; font-weight: bold; }
         .title-doc { text-align: center; font-size: 16pt; font-weight: bold; text-decoration: underline; margin: 20px 0; }
 
-        /* Grilla de Laboratorios (Web) */
         .labs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
-        
         table.lab-table { width: 100%; border-collapse: collapse; margin-bottom: 15pt; font-size: 10pt; }
         table.lab-table th, table.lab-table td { border: 1px solid black; padding: 3px 6px; }
         table.lab-table th { background-color: #f9f9f9; text-decoration: underline; font-weight: bold; }
@@ -61,7 +57,7 @@
 
         <div class="title-doc">Solicitud Examen Laboratorio</div>
 
-        <div class="labs-grid" id="mainGrid">
+        <div class="labs-grid">
             <div id="col1">
                 <table class="lab-table">
                     <tr><td class="check-cell" id="val-Hemato"></td><td style="font-weight:bold;">Hematología Completa</td></tr>
@@ -135,22 +131,24 @@
     const params = new URLSearchParams(window.location.search);
     
     function setCheck(id, param) {
-    let val = params.get(param);
-    // Esta versión acepta 'X', 'x', 'Yes', 'yes', 'True', 'true' o incluso 'Y'
-    if (val && val.trim() !== "") {
-        let cleanVal = val.toUpperCase().trim();
-        if (cleanVal === 'X' || cleanVal === 'YES' || cleanVal === 'TRUE' || cleanVal === 'Y') {
-            document.getElementById(id).innerText = 'X';
+        let val = params.get(param);
+        if (val && val.trim() !== "") {
+            let cleanVal = val.toUpperCase().trim();
+            if (cleanVal === 'X' || cleanVal === 'YES' || cleanVal === 'TRUE' || cleanVal === 'Y') {
+                const el = document.getElementById(id);
+                if(el) el.innerText = 'X';
+            }
         }
     }
-}
-    // Carga de Datos
+
+    // Carga inicial de datos
     document.getElementById('val-Fecha').innerText = params.get('f') || '';
     document.getElementById('val-Nombre').innerText = params.get('n') || '';
     document.getElementById('val-Cedula').innerText = params.get('c') || '';
     document.getElementById('val-Edad').innerText = params.get('e') || '';
     document.getElementById('val-OtrosText').innerText = params.get('ot') || '';
 
+    // Mapeo de parámetros
     setCheck('val-Hemato', 'h'); setCheck('val-Glicemia', 'ga'); setCheck('val-Urea', 'uc');
     setCheck('val-AST', 'ast'); setCheck('val-Bilirrubina', 'btf'); setCheck('val-Colesterol', 'ct');
     setCheck('val-LDH', 'ldh'); setCheck('val-CK', 'ck'); setCheck('val-TSH', 'tsh');
@@ -168,17 +166,7 @@
         var col1Html = document.getElementById('col1').innerHTML;
         var col2Html = document.getElementById('col2').innerHTML;
         
-        var msoConfig = ``;
-        <!--[if gte mso 9]>
-        <xml>
-            <w:WordDocument>
-                <w:View>Print</w:View>
-                <w:Zoom>100</w:Zoom>
-                <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-        </xml>
-        <![endif]-->
-
+        // Estructura para el cuerpo del Word
         var wordBody = `
             <table style="width:100%; border:none;">
                 <tr>
@@ -191,37 +179,24 @@
                     </td>
                 </tr>
             </table>
-
             <div style="margin-top:20pt; font-family:'Times New Roman'; font-size:10pt;">
                 <div style="text-align:right; font-weight:bold;">Fecha: ${document.getElementById('val-Fecha').innerText}</div>
                 <div><strong>Nombre y Apellido:</strong> ${nombrePac}</div>
                 <div><strong>CI:</strong> ${document.getElementById('val-Cedula').innerText}</div>
                 <div><strong>Edad:</strong> ${document.getElementById('val-Edad').innerText}</div>
             </div>
-
             <div style="text-align:center; font-size:14pt; font-weight:bold; text-decoration:underline; margin:15pt 0;">Solicitud Examen Laboratorio</div>
-
             <table style="width:100%; border:none;">
                 <tr>
                     <td style="width:48%; vertical-align:top; padding-right:10pt;">${col1Html}</td>
                     <td style="width:4%; border:none;"></td>
                     <td style="width:48%; vertical-align:top;">${col2Html}</td>
                 </tr>
-            </table>
-        `;
+            </table>`;
 
         var fullHtml = `
             <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
             <head><meta charset='utf-8'>
-            <!--[if gte mso 9]>
-        <xml>
-            <w:WordDocument>
-                <w:View>Print</w:View>
-                <w:Zoom>100</w:Zoom>
-                <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-        </xml>
-        <![endif]-->
             <style>
                 @page Section1 { size: 8.5in 11in; margin: 0.5in 0.6in; }
                 div.Section1 { page: Section1; }
@@ -236,7 +211,6 @@
         var blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
         var url = URL.createObjectURL(blob);
         var filename = 'Laboratorio_' + nombrePac.replace(/[^a-z0-9]/gi, '_') + '.doc';
-
         var downloadLink = document.createElement("a");
         document.body.appendChild(downloadLink);
         downloadLink.href = url;

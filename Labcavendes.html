@@ -7,6 +7,7 @@
         body { font-family: 'Times New Roman', Times, serif; background-color: #f4f4f4; padding: 20px; color: #000; display: flex; flex-direction: column; align-items: center; }
         .document-container { background-color: white; width: 816px; min-height: 1056px; margin: 20px auto; padding: 40px 50px; box-shadow: 0 0 10px rgba(0,0,0,0.1); box-sizing: border-box; }
         
+        /* Encabezado Cavendes */
         .header-table { width: 100%; border-collapse: collapse; border: none; margin-bottom: 10px; }
         .logo-cell { width: 35%; vertical-align: middle; }
         .logo-cell img { width: 100%; max-width: 260px; height: auto; }
@@ -16,22 +17,30 @@
         .header-divider { border-top: 2pt solid #000; margin: 5px 0; }
         .bottom-info { font-size: 9pt; font-family: Arial, sans-serif; color: #444444; }
 
+        /* Datos del Paciente */
         .patient-data { margin: 20px 0; font-size: 11pt; line-height: 1.2; position: relative; }
         .fecha-top { position: absolute; right: 0; top: 0; font-weight: bold; }
         .title-doc { text-align: center; font-size: 16pt; font-weight: bold; text-decoration: underline; margin: 20px 0; }
 
+        /* Grilla de Laboratorios */
         .labs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+        
         table.lab-table { width: 100%; border-collapse: collapse; margin-bottom: 15pt; font-size: 10pt; }
         table.lab-table th, table.lab-table td { border: 1px solid black; padding: 3px 6px; }
         table.lab-table th { background-color: #f9f9f9; text-decoration: underline; font-weight: bold; }
         .check-cell { width: 35px; text-align: center; font-weight: bold; font-size: 12pt; height: 20px; }
 
-        .button-container { margin: 20px; display: flex; gap: 15px; }
-        .btn { padding: 12px 25px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; color: white; }
-        .btn-print { background-color: #27649d; }
-        .btn-word { background-color: #2b579a; }
+        /* Botonera Solo Imprimir */
+        .button-container { margin: 20px; display: flex; justify-content: center; }
+        .btn { padding: 12px 30px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; color: white; font-size: 11pt; }
+        .btn-print { background-color: #27649d; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-print:hover { background-color: #1d4d7a; }
 
-        @media print { .no-print { display: none; } .document-container { box-shadow: none; margin: 0; width: 100% !important; } }
+        @media print { 
+            .no-print { display: none; } 
+            body { background-color: white; padding: 0; }
+            .document-container { box-shadow: none; margin: 0; width: 100% !important; padding: 40px; } 
+        }
     </style>
 </head>
 <body>
@@ -58,7 +67,7 @@
         <div class="title-doc">Solicitud Examen Laboratorio</div>
 
         <div class="labs-grid">
-            <div id="col1">
+            <div>
                 <table class="lab-table">
                     <tr><td class="check-cell" id="val-Hemato"></td><td style="font-weight:bold;">Hematología Completa</td></tr>
                 </table>
@@ -86,7 +95,7 @@
                 </table>
             </div>
 
-            <div id="col2">
+            <div>
                 <table class="lab-table">
                     <tr><th colspan="2">Perfil Tiroideo</th></tr>
                     <tr><td class="check-cell" id="val-TSH"></td><td>TSH</td></tr>
@@ -123,8 +132,7 @@
     </div>
 
     <div class="button-container no-print">
-        <button class="btn btn-print" onclick="window.print()">Imprimir PDF</button>
-        <button class="btn btn-word" onclick="exportToWord()">Descargar Word</button>
+        <button class="btn btn-print" onclick="window.print()">Imprimir / Guardar PDF</button>
     </div>
 
     <script>
@@ -141,14 +149,14 @@
         }
     }
 
-    // Carga inicial de datos
+    // Carga de datos
     document.getElementById('val-Fecha').innerText = params.get('f') || '';
     document.getElementById('val-Nombre').innerText = params.get('n') || '';
     document.getElementById('val-Cedula').innerText = params.get('c') || '';
     document.getElementById('val-Edad').innerText = params.get('e') || '';
     document.getElementById('val-OtrosText').innerText = params.get('ot') || '';
 
-    // Mapeo de parámetros
+    // Marcar las X
     setCheck('val-Hemato', 'h'); setCheck('val-Glicemia', 'ga'); setCheck('val-Urea', 'uc');
     setCheck('val-AST', 'ast'); setCheck('val-Bilirrubina', 'btf'); setCheck('val-Colesterol', 'ct');
     setCheck('val-LDH', 'ldh'); setCheck('val-CK', 'ck'); setCheck('val-TSH', 'tsh');
@@ -160,64 +168,6 @@
     setCheck('val-FSH', 'fsh'); setCheck('val-Prolactina', 'pro'); setCheck('val-SHGB', 'shgb');
     setCheck('val-Insulina', 'ins'); setCheck('val-Ferritina', 'fer'); setCheck('val-Hierro', 'hie');
     setCheck('val-VitB12', 'b12'); setCheck('val-AcidoFolico', 'af');
-
-    function exportToWord() {
-        var nombrePac = document.getElementById('val-Nombre').innerText.trim() || 'Paciente';
-        var col1Html = document.getElementById('col1').innerHTML;
-        var col2Html = document.getElementById('col2').innerHTML;
-        
-        // Estructura para el cuerpo del Word
-        var wordBody = `
-            <table style="width:100%; border:none;">
-                <tr>
-                    <td style="width:35%; vertical-align:middle;"><img src="https://lh3.googleusercontent.com/d/1b0xVc6U0mUzyTCTHS29LsfUf9yiV3Euk" width="180"></td>
-                    <td style="width:65%; text-align:center;">
-                        <div style="font-family:Arial; font-size:11pt; font-weight:bold;">CONSULTORIO MÉDICO DERMATOLÓGICO</div>
-                        <div style="font-family:Arial; font-size:10pt;">Dra. Luisa Montilla - Dermatólogo UCV</div>
-                        <div style="border-top:1.5pt solid black; margin:4pt 10pt;"></div>
-                        <div style="font-family:Arial; font-size:8pt;">Torre Cavendes - Caracas. Teléfono: 0414-9172983</div>
-                    </td>
-                </tr>
-            </table>
-            <div style="margin-top:20pt; font-family:'Times New Roman'; font-size:10pt;">
-                <div style="text-align:right; font-weight:bold;">Fecha: ${document.getElementById('val-Fecha').innerText}</div>
-                <div><strong>Nombre y Apellido:</strong> ${nombrePac}</div>
-                <div><strong>CI:</strong> ${document.getElementById('val-Cedula').innerText}</div>
-                <div><strong>Edad:</strong> ${document.getElementById('val-Edad').innerText}</div>
-            </div>
-            <div style="text-align:center; font-size:14pt; font-weight:bold; text-decoration:underline; margin:15pt 0;">Solicitud Examen Laboratorio</div>
-            <table style="width:100%; border:none;">
-                <tr>
-                    <td style="width:48%; vertical-align:top; padding-right:10pt;">${col1Html}</td>
-                    <td style="width:4%; border:none;"></td>
-                    <td style="width:48%; vertical-align:top;">${col2Html}</td>
-                </tr>
-            </table>`;
-
-        var fullHtml = `
-            <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-            <head><meta charset='utf-8'>
-            <style>
-                @page Section1 { size: 8.5in 11in; margin: 0.5in 0.6in; }
-                div.Section1 { page: Section1; }
-                table { border-collapse: collapse; }
-                .lab-table { width: 100%; border: 1px solid black; margin-bottom: 10pt; }
-                .lab-table td, .lab-table th { border: 1px solid black; font-family: 'Times New Roman'; font-size: 9pt; padding: 2pt; }
-                .check-cell { width: 25pt; text-align: center; font-weight: bold; }
-            </style>
-            </head>
-            <body><div class="Section1">${wordBody}</div></body></html>`;
-
-        var blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
-        var url = URL.createObjectURL(blob);
-        var filename = 'Laboratorio_' + nombrePac.replace(/[^a-z0-9]/gi, '_') + '.doc';
-        var downloadLink = document.createElement("a");
-        document.body.appendChild(downloadLink);
-        downloadLink.href = url;
-        downloadLink.download = filename;
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    }
     </script>
 </body>
 </html>

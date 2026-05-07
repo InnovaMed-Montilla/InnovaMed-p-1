@@ -37,8 +37,23 @@
         .btn { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
         .btn-print { background-color: #27649d; color: white; }
         .btn-word { background-color: #2b579a; color: white; }
+
+        /* --- CONFIGURACIÓN DE IMPRESIÓN PDF --- */
+        @media print { 
+            @page {
+                size: letter;
+                margin: 0.7in; /* Margen físico de la hoja para evitar cortes */
+            }
+            .no-print { display: none; } 
+            body { background-color: white; padding: 0; margin: 0; }
+            .document-container { 
+                box-shadow: none; 
+                margin: 0; 
+                padding: 0 !important; /* El margen lo da @page */
+                width: 100% !important; 
+            } 
+        }
         
-        @media print { .no-print { display: none; } .document-container { box-shadow: none; margin: 0; padding: 20px; } }
     </style>
 </head>
 <body>

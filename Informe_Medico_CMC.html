@@ -163,7 +163,8 @@
         var content = exportElement.innerHTML;
         
         // Ajuste de imagen y tabla para Word
-        content = content.replace(/<img/g, '<img width="220"');
+       content = content.replace(/<img/g, '<img width="240" height="85" style="display:block; margin-bottom:5pt;"');
+
 
         var preHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>

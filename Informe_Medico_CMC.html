@@ -180,8 +180,14 @@
         </xml>
         <![endif]-->
             <style>
-                @page Section1 { size: 8.5in 11in; margin: 1.0in 0.75in 1.0in 0.75in; /* Sup e Inf: 2.54cm | Izq e Der: 1.91cm */}
-div.Section1 { page: Section1; }
+               @page Section1 { 
+                size: 8.5in 11in; 
+                margin: 1.0in 0.75in 1.0in 0.75in; /* 2.54cm y 1.91cm */
+                mso-header-margin: .5in; 
+                mso-footer-margin: .5in; 
+                mso-paper-source: 0; 
+            }
+            div.Section1 { page: Section1; }
                 body { font-family: 'Times New Roman', serif; font-size: 11pt; }
                 
                 /* Reset general para evitar espacios de Word */
@@ -219,21 +225,21 @@ div.Section1 { page: Section1; }
         </html>`;
 
         // Parches de alineación final
-        var finalContent = preHtml.replace(/class="info-cell"/g, 'class="info-cell" align="center"');
-        finalContent = finalContent.replace(/class="date-row"/g, 'class="date-row" align="right" style="text-align:right;"');
-        finalContent = finalContent.replace(/class="doc-title"/g, 'class="doc-title" align="center"');
+       var finalContent = preHtml.replace(/class="info-cell"/g, 'class="info-cell" align="center"');
+    finalContent = finalContent.replace(/class="date-row"/g, 'class="date-row" align="right"');
+    finalContent = finalContent.replace(/class="doc-title"/g, 'class="doc-title" align="center"');
 
-        var blob = new Blob(['\ufeff', finalContent], { type: 'application/msword' });
-        var url = URL.createObjectURL(blob);
-        var filename = 'Informe_CMC_' + (document.getElementById('n').innerText || 'Paciente') + '.doc';
-        
-        var downloadLink = document.createElement("a");
-        document.body.appendChild(downloadLink);
-        downloadLink.href = url;
-        downloadLink.download = filename;
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    }
+    var blob = new Blob(['\ufeff', finalContent], { type: 'application/msword' });
+    var url = URL.createObjectURL(blob);
+    var filename = 'Informe_CMC_' + (document.getElementById('n').innerText || 'Paciente') + '.doc';
+    
+    var downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
+    downloadLink.href = url;
+    downloadLink.download = filename;
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
     </script>
 </body>
 </html>

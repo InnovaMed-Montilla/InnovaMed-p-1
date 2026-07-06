@@ -141,8 +141,25 @@
         }
     }
 
+    // Función para formatear la fecha de m/d/a a d/m/a
+    function formatearFecha(fechaStr) {
+        if (!fechaStr) return '';
+        // Divide la fecha usando la barra diagonal '/'
+        const partes = fechaStr.split('/');
+        // Verifica si tiene los 3 componentes (mes, día, año)
+        if (partes.length === 3) {
+            const mes = partes[0];
+            const dia = partes[1];
+            const anio = partes[2];
+            return `${dia}/${mes}/${anio}`;
+        }
+        return fechaStr; // Retorna la original si no cumple el formato esperado
+    }
+
     // Llenado de datos
-    document.getElementById('fecha').innerText = params.get('fecha') || '';
+    const fechaOriginal = params.get('fecha') || '';
+    document.getElementById('fecha').innerText = formatearFecha(fechaOriginal);
+    
     document.getElementById('n').innerText = params.get('n') || '';
     document.getElementById('c').innerText = params.get('c') || '';
     document.getElementById('e').innerText = params.get('e') || '';
@@ -233,13 +250,13 @@
     
     // Reemplazos finales para asegurar que Word entienda el centrado
     var finalContent = content.replace(/class="info-cell"/g, 'class="info-cell" align="center"');
-    finalContent = finalContent.replace(/class="doc-title"/g, 'class="doc-title" align="center"');
-    finalContent = finalContent.replace(/class="date-row"/g, 'class="date-row" align="right"');
+    var finalContent = finalContent.replace(/class="doc-title"/g, 'class="doc-title" align="center"');
+    var finalContent = finalContent.replace(/class="date-row"/g, 'class="date-row" align="right"');
     
     // Aseguramos que los textos del membrete se centren por atributo
-    finalContent = finalContent.replace(/class="main-title"/g, 'class="main-title" align="center"');
-    finalContent = finalContent.replace(/class="sub-title"/g, 'class="sub-title" align="center"');
-    finalContent = finalContent.replace(/class="bottom-info"/g, 'class="bottom-info" align="center"');
+    var finalContent = finalContent.replace(/class="main-title"/g, 'class="main-title" align="center"');
+    var finalContent = finalContent.replace(/class="sub-title"/g, 'class="sub-title" align="center"');
+    var finalContent = finalContent.replace(/class="bottom-info"/g, 'class="bottom-info" align="center"');
 
     var html = preHtml + finalContent + "</body></html>";
 

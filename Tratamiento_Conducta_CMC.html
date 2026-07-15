@@ -70,99 +70,111 @@
     </div>
 
     <script>
+    // Función para formatear la fecha a dd/mm/aaaa evitando desfases horarios
+    function formatearFechaEspañol(fechaStr) {
+        if (!fechaStr) return '';
+        
+        // Reemplazamos '-' por '/' para asegurar consistencia de parsing en navegadores
+        const fechaObjeto = new Date(fechaStr.replace(/-/g, '\/'));
+        
+        if (isNaN(fechaObjeto.getTime())) {
+            return fechaStr; // Retorna el texto tal cual si no es una fecha válida
+        }
+
+        const dia = String(fechaObjeto.getDate()).padStart(2, '0');
+        const mes = String(fechaObjeto.getMonth() + 1).padStart(2, '0');
+        const anio = fechaObjeto.getFullYear();
+
+        return `${dia}/${mes}/${anio}`;
+    }
+
     const params = new URLSearchParams(window.location.search);
 
-    // Carga de parámetros
-    document.getElementById('fecha').innerText = params.get('Fecha') || '';
+    // Carga de parámetros con formateo de fecha integrado
+    const fechaOriginal = params.get('Fecha') || '';
+    const fechaFormateada = formatearFechaEspañol(fechaOriginal);
+
+    document.getElementById('fecha').innerText = fechaFormateada;
     document.getElementById('nombre').innerText = params.get('Nombre_Apellido') || '';
     document.getElementById('tratamiento').innerText = params.get('Tratamiento_Conducta') || '';
 
     function exportToWord() {
-    var node = document.getElementById("exportContent");
-    var exportElement = node.cloneNode(true);
-    
-    // Obtener los datos actuales
-    var nombrePac = document.getElementById('nombre').innerText.trim() || 'Paciente';
-    var fechaDoc = document.getElementById('fecha').innerText.trim() || '';
-    var tratamientoContenido = document.getElementById('tratamiento').innerHTML;
+        var node = document.getElementById("exportContent");
+        var exportElement = node.cloneNode(true);
+        
+        // Obtener los datos actuales formateados
+        var nombrePac = document.getElementById('nombre').innerText.trim() || 'Paciente';
+        var fechaDoc = document.getElementById('fecha').innerText.trim() || '';
+        var tratamientoContenido = document.getElementById('tratamiento').innerHTML;
 
-    // Construimos el cuerpo del Word con tablas para asegurar la posición
-    var wordContent = `
-        <table style="width:100%; border-collapse:collapse; border:none;">
-            <tr>
-                <td style="width:40%; vertical-align:middle;">
-                    <img src="https://lh3.googleusercontent.com/d/1AG-tPiSsSS3lK2I1X3qFj7iWVh0oC1bF" width="220" height="75">
-                </td>
-                <td style="width:60%; vertical-align:middle; text-align:center;">
-                    <div style="font-family:Arial; font-size:15pt; color:#666666; font-weight:bold;">DRA. LUISA MONTILLA</div>
-                    <div style="font-family:Arial; font-size:12pt; color:#666666;">Médico Dermatólogo UCV</div>
-                </td>
-            </tr>
-        </table>
-
-        <div style="margin-top:20pt; border-bottom:1.5pt solid black; padding-bottom:5pt;">
-            <table style="width:100%; border:none;">
+        // Construimos el cuerpo del Word con tablas para asegurar la posición
+        var wordContent = `
+            <table style="width:100%; border-collapse:collapse; border:none;">
                 <tr>
-                    <td style="text-align:left; vertical-align:baseline;">
-                        <span style="font-family:'Times New Roman'; font-size:14pt; font-weight:bold; text-transform:uppercase;">${nombrePac}</span>
+                    <td style="width:40%; vertical-align:middle;">
+                        <img src="https://lh3.googleusercontent.com/d/1AG-tPiSsSS3lK2I1X3qFj7iWVh0oC1bF" width="220" height="75">
                     </td>
-                    <td style="text-align:right; vertical-align:baseline;">
-                        <span style="font-family:'Times New Roman'; font-size:11pt; font-weight:bold;">Fecha: ${fechaDoc}</span>
+                    <td style="width:60%; vertical-align:middle; text-align:center;">
+                        <div style="font-family:Arial; font-size:15pt; color:#666666; font-weight:bold;">DRA. LUISA MONTILLA</div>
+                        <div style="font-family:Arial; font-size:12pt; color:#666666;">Médico Dermatólogo UCV</div>
                     </td>
                 </tr>
             </table>
-        </div>
 
-        <div style="margin-top:20pt;">
-            <p style="font-family:'Times New Roman'; font-size:12pt; font-weight:bold; text-decoration:underline; margin-bottom:10pt;">
-                TRATAMIENTO / CONDUCTA:
-            </p>
-            <div style="font-family:'Times New Roman'; font-size:11pt; text-align:left; line-height:1.3;">
-                ${tratamientoContenido.replace(/\n/g, '<br>')}
+            <div style="margin-top:20pt; border-bottom:1.5pt solid black; padding-bottom:5pt;">
+                <table style="width:100%; border:none;">
+                    <tr>
+                        <td style="text-align:left; vertical-align:baseline;">
+                            <span style="font-family:'Times New Roman'; font-size:14pt; font-weight:bold; text-transform:uppercase;">${nombrePac}</span>
+                        </td>
+                        <td style="text-align:right; vertical-align:baseline;">
+                            <span style="font-family:'Times New Roman'; font-size:11pt; font-weight:bold;">Fecha: ${fechaDoc}</span>
+                        </td>
+                    </tr>
+                </table>
             </div>
-        </div>
-    `;
 
-    var preHtml = `
-    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-    <head>
-        <meta charset='utf-8'>
-         <!--[if gte mso 9]>
-        <xml>
-            <w:WordDocument>
-                <w:View>Print</w:View>
-                <w:Zoom>100</w:Zoom>
-                <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-        </xml>
-        <![endif]-->
-        <style>
-            @page Section1 { size: 8.5in 11in; margin: 0.5in 0.7in; }
-            div.Section1 { page: Section1; }
-            body { font-family: 'Times New Roman', serif; }
-        </style>
-    </head>
-    <body>
-        <div class="Section1">${wordContent}</div>
-    </body>
-    </html>`;
+            <div style="margin-top:20pt;">
+                <p style="font-family:'Times New Roman'; font-size:12pt; font-weight:bold; text-decoration:underline; margin-bottom:10pt;">
+                    TRATAMIENTO / CONDUCTA:
+                </p>
+                <div style="font-family:'Times New Roman'; font-size:11pt; text-align:left; line-height:1.3;">
+                    ${tratamientoContenido.replace(/\n/g, '<br>')}
+                </div>
+            </div>
+        `;
 
-    var blob = new Blob(['\ufeff', preHtml], { type: 'application/msword' });
-    var url = URL.createObjectURL(blob);
-    
-    var filename = 'Tratamiento_' + nombrePac.replace(/[^a-z0-9]/gi, '_') + '.doc';
+        var preHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+            <meta charset='utf-8'>
+             <style>
+                @page Section1 { size: 8.5in 11in; margin: 0.5in 0.7in; }
+                div.Section1 { page: Section1; }
+                body { font-family: 'Times New Roman', serif; }
+            </style>
+        </head>
+        <body>
+            <div class="Section1">${wordContent}</div>
+        </body>
+        </html>`;
 
-    var downloadLink = document.createElement("a");
-    document.body.appendChild(downloadLink);
-    downloadLink.href = url;
-    downloadLink.download = filename;
-    downloadLink.click();
-    
-    setTimeout(function() {
-        document.body.removeChild(downloadLink);
-        window.URL.revokeObjectURL(url);
-    }, 100);
-}
+        var blob = new Blob(['\ufeff', preHtml], { type: 'application/msword' });
+        var url = URL.createObjectURL(blob);
+        
+        var filename = 'Tratamiento_' + nombrePac.replace(/[^a-z0-9]/gi, '_') + '.doc';
+
+        var downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+        downloadLink.href = url;
+        downloadLink.download = filename;
+        downloadLink.click();
+        
+        setTimeout(function() {
+            document.body.removeChild(downloadLink);
+            window.URL.revokeObjectURL(url);
+        }, 100);
+    }
     </script>
 </body>
 </html>

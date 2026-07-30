@@ -122,11 +122,13 @@
     const params = new URLSearchParams(window.location.search);
 
     // LÓGICA DE DETECCIÓN DE SEDE
-    const sedeParam = (params.get('sede') || '').toLowerCase();
+    // Decodifica, limpia espacios y pasa a minúsculas
+    const sedeRaw = params.get('sede') || '';
+    const sedeParam = decodeURIComponent(sedeRaw).trim().toLowerCase();
     const locationDiv = document.getElementById('header-location');
 
     // Comprueba si el parámetro recibido es CMC o Cavendes
-    if (sedeParam.includes('cmc')) {
+    if (sedeParam === 'cmc' || sedeParam.includes('cmc') || sedeParam.includes('caracas')) {
         locationDiv.innerHTML = 'Centro Médico Caracas - Anexo San Bernardino. Piso 2, Consultorio 212. <br> Teléfono: 0414-9172983 / Whatsapp: 04269198665 / @draluisamontilla';
     } else {
         locationDiv.innerHTML = 'Torre Cavendes - Caracas. Teléfono: 0414-9172983 <br> Whatsapp: 04269198665 / @draluisamontilla';

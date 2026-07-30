@@ -7,19 +7,20 @@
         body { font-family: 'Times New Roman', Times, serif; line-height: 1.1; background-color: #f4f4f4; padding: 20px; color: #000; display: flex; flex-direction: column; align-items: center; }
         .document-container { background-color: white; width: 816px; min-height: 1056px; margin: 20px auto; padding: 40px 60px; box-shadow: 0 0 10px rgba(0,0,0,0.1); box-sizing: border-box; display: flex; flex-direction: column; }
         
-        /* Encabezado */
+        /* --- ESTILOS DEL MEMBRETE --- */
         .header-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; }
-        .logo-cell { width: 30%; vertical-align: middle; }
-        .logo-cell img { width: 100%; max-width: 220px; height: auto; display: block; }
-        .info-cell { width: 70%; vertical-align: middle; text-align: center; }
+        .logo-cell { width: 35%; vertical-align: middle; text-align: left; }
+        .logo-cell img { width: 100%; max-width: 240px; height: auto; display: block; }
+        .info-cell { width: 65%; vertical-align: middle; text-align: center; }
         
-        /* Texto del encabezado */
-        .main-title { font-family: Arial, sans-serif; font-size: 12pt; font-weight: bold; margin: 0; line-height: 1.0; }
-        .sub-title { font-family: Arial, sans-serif; font-size: 10pt; margin: 0; line-height: 1.0; }
-        .header-divider { border-top: 1.5pt solid #000; margin: 4px 0; width: 100%; }
-        .bottom-info { font-family: Arial, sans-serif; font-size: 8.5pt; line-height: 1.0; margin-top: 2px; }
+        .main-title { font-family: Arial, sans-serif; font-size: 12pt; font-weight: bold; margin: 0; line-height: 1.1; }
+        .sub-title { font-family: Arial, sans-serif; font-size: 10pt; margin: 2px 0 0 0; line-height: 1.1; }
+        
+        /* Línea separadora interna del membrete */
+        .header-divider { border-top: 1.5pt solid #555; margin: 4px 0; width: 100%; }
+        .bottom-info { font-family: Arial, sans-serif; font-size: 8.5pt; line-height: 1.25; margin-top: 2px; }
 
-        .date-row { text-align: right; margin-bottom: 10px; font-weight: bold; width: 100%; }
+        .date-row { text-align: right; margin-top: 15px; margin-bottom: 10px; font-weight: bold; width: 100%; font-size: 11pt; }
         
         /* Datos del Paciente */
         .patient-data { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 15px; font-size: 0.95em; border-bottom: 1pt solid #eee; padding-bottom: 10px; }
@@ -28,10 +29,8 @@
         
         .doc-title { text-align: center; font-size: 1.2em; text-decoration: underline; margin: 10px 0; font-weight: bold; text-transform: none; }
 
-        /* Secciones */
-        .section-header { background-color: #f9f9f9; padding: 3px 5px; font-weight: bold; text-transform: uppercase; font-size: 0.85em; border-left: 3pt solid #000; margin: 10px 0 5px 0; }
-        .clinical-block { margin-bottom: 4px !important; text-align: left; }
-        .clinical-block h3 { display: inline; font-size: 0.9em; font-weight: bold; margin: 0; }
+        /* Secciones Clínicas */
+        .clinical-block { margin-bottom: 4px !important; text-align: left; font-size: 10.5pt; }
         
         .button-container { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
         .btn { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
@@ -57,14 +56,16 @@
 </head>
 <body>
     <div id="exportContent" class="document-container">
+        <!-- Membrete con Logo e Información Dinámica -->
         <table class="header-table">
             <tr>
-                <td class="logo-cell"><img src="https://lh3.googleusercontent.com/d/1b0xVc6U0mUzyTCTHS29LsfUf9yiV3Euk" alt="Logo"></td>
+                <td class="logo-cell">
+                    <img id="header-logo" src="" alt="Logo Sede">
+                </td>
                 <td class="info-cell">
                     <div class="main-title">CONSULTORIO MÉDICO DERMATOLÓGICO</div>
                     <div class="sub-title">Dra. Luisa Montilla - Dermatólogo UCV</div>
                     <div class="header-divider"></div>
-                    <!-- Membrete dinámico por JavaScript -->
                     <div class="bottom-info" id="header-location"></div>
                 </td>
             </tr>
@@ -119,19 +120,27 @@
     </div>
 
     <script>
+    const urlString = window.location.href.toLowerCase();
     const params = new URLSearchParams(window.location.search);
 
-    // LÓGICA DE DETECCIÓN DE SEDE
-    // Decodifica, limpia espacios y pasa a minúsculas
-    const sedeRaw = params.get('sede') || '';
-    const sedeParam = decodeURIComponent(sedeRaw).trim().toLowerCase();
+    // ENLACES DIRECTOS A LOS LOGOS EN GOOGLE DRIVE
+    const LOGO_CAVENDES = "https://lh3.googleusercontent.com/d/1bgSZuDe5k3WF6dtwwuMLQKhxm0yOlSAX";
+    const LOGO_CMC = "https://lh3.googleusercontent.com/d/1AG-tPiSsSS3lK2I1X3qFj7iWVh0oC1bF";
+
+    const logoImg = document.getElementById('header-logo');
     const locationDiv = document.getElementById('header-location');
 
-    // Comprueba si el parámetro recibido es CMC o Cavendes
-    if (sedeParam === 'cmc' || sedeParam.includes('cmc') || sedeParam.includes('caracas')) {
-        locationDiv.innerHTML = 'Centro Médico Caracas - Anexo San Bernardino. Piso 2, Consultorio 212. <br> Teléfono: 0414-9172983 / Whatsapp: 04269198665 / @draluisamontilla';
+    // DETECCIÓN MULTIPLE DE SEDE (Por parámetro explicitó o escaneando la URL)
+    const sedeValor = (params.get('sede') || '').toLowerCase();
+    
+    if (sedeValor === 'cmc' || sedeValor.includes('cmc') || urlString.includes('cmc')) {
+        // --- SEDE CENTRO MÉDICO DE CARACAS ---
+        logoImg.src = LOGO_CMC;
+        locationDiv.innerHTML = 'Centro Médico de Caracas. San Bernardino. Anexo A. Piso 3. Oficina 375A<br>Tlf: 0212-5517366 / 0424-1273432 / WhatsApp: 04269198665<br>Instagram: @draluisamontilla';
     } else {
-        locationDiv.innerHTML = 'Torre Cavendes - Caracas. Teléfono: 0414-9172983 <br> Whatsapp: 04269198665 / @draluisamontilla';
+        // --- SEDE CAVENDES ---
+        logoImg.src = LOGO_CAVENDES;
+        locationDiv.innerHTML = 'Torre Cavendes - Caracas. Teléfono: 0414-9172983<br>Whatsapp: 04269198665 / @draluisamontilla';
     }
 
     function procesarCampo(paramId, wrapId = null) {
@@ -155,7 +164,7 @@
         return fechaStr;
     }
 
-    // Llenado de datos
+    // Carga de campos del paciente y consulta
     const fechaOriginal = params.get('fecha') || '';
     document.getElementById('fecha').innerText = formatearFecha(fechaOriginal);
     

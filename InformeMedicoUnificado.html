@@ -11,13 +11,17 @@
         .header-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; }
         .logo-cell { width: 35%; vertical-align: middle; text-align: left; }
         .logo-cell img { width: 100%; max-width: 240px; height: auto; display: block; }
-        .info-cell { width: 65%; vertical-align: middle; text-align: center; }
+        .info-cell { width: 65%; vertical-align: middle; text-align: center; color: #000; }
         
+        /* Clase especial para gris en el membrete del CMC */
+        .info-cell.cmc-theme { color: #555555 !important; }
+        .info-cell.cmc-theme .header-divider { border-top-color: #555555 !important; }
+
         .main-title { font-family: Arial, sans-serif; font-size: 12pt; font-weight: bold; margin: 0; line-height: 1.1; }
         .sub-title { font-family: Arial, sans-serif; font-size: 10pt; margin: 2px 0 0 0; line-height: 1.1; }
         
         /* Línea separadora interna del membrete */
-        .header-divider { border-top: 1.5pt solid #555; margin: 4px 0; width: 100%; }
+        .header-divider { border-top: 1.5pt solid #000; margin: 4px 0; width: 100%; }
         .bottom-info { font-family: Arial, sans-serif; font-size: 8.5pt; line-height: 1.25; margin-top: 2px; }
 
         .date-row { text-align: right; margin-top: 15px; margin-bottom: 10px; font-weight: bold; width: 100%; font-size: 11pt; }
@@ -62,7 +66,7 @@
                 <td class="logo-cell">
                     <img id="header-logo" src="" alt="Logo Sede">
                 </td>
-                <td class="info-cell">
+                <td class="info-cell" id="info-cell-block">
                     <div class="main-title">CONSULTORIO MÉDICO DERMATOLÓGICO</div>
                     <div class="sub-title">Dra. Luisa Montilla - Dermatólogo UCV</div>
                     <div class="header-divider"></div>
@@ -123,23 +127,24 @@
     const urlString = window.location.href.toLowerCase();
     const params = new URLSearchParams(window.location.search);
 
-    // ENLACES DIRECTOS A LOS LOGOS EN GOOGLE DRIVE
     const LOGO_CAVENDES = "https://lh3.googleusercontent.com/d/1bgSZuDe5k3WF6dtwwuMLQKhxm0yOlSAX";
     const LOGO_CMC = "https://lh3.googleusercontent.com/d/1AG-tPiSsSS3lK2I1X3qFj7iWVh0oC1bF";
 
     const logoImg = document.getElementById('header-logo');
     const locationDiv = document.getElementById('header-location');
+    const infoCellBlock = document.getElementById('info-cell-block');
 
-    // DETECCIÓN MULTIPLE DE SEDE (Por parámetro explicitó o escaneando la URL)
     const sedeValor = (params.get('sede') || '').toLowerCase();
     
     if (sedeValor === 'cmc' || sedeValor.includes('cmc') || urlString.includes('cmc')) {
-        // --- SEDE CENTRO MÉDICO DE CARACAS ---
+        // SEDE CENTRO MÉDICO DE CARACAS (Con color gris en texto y línea)
         logoImg.src = LOGO_CMC;
+        infoCellBlock.classList.add('cmc-theme');
         locationDiv.innerHTML = 'Centro Médico de Caracas. San Bernardino. Anexo A. Piso 3. Oficina 375A<br>Tlf: 0212-5517366 / 0424-1273432 / WhatsApp: 04269198665<br>Instagram: @draluisamontilla';
     } else {
-        // --- SEDE CAVENDES ---
+        // SEDE CAVENDES (Negro estándar)
         logoImg.src = LOGO_CAVENDES;
+        infoCellBlock.classList.remove('cmc-theme');
         locationDiv.innerHTML = 'Torre Cavendes - Caracas. Teléfono: 0414-9172983<br>Whatsapp: 04269198665 / @draluisamontilla';
     }
 
@@ -164,7 +169,6 @@
         return fechaStr;
     }
 
-    // Carga de campos del paciente y consulta
     const fechaOriginal = params.get('fecha') || '';
     document.getElementById('fecha').innerText = formatearFecha(fechaOriginal);
     
@@ -225,6 +229,7 @@
                 body { font-family: 'Times New Roman', serif; font-size: 11pt; }
                 .header-table { width: 100% !important; }
                 .info-cell { text-align: center !important; }
+                .cmc-theme { color: #555555 !important; }
                 .main-title { font-family: Arial, sans-serif !important; font-size: 11pt !important; font-weight: bold; text-align: center !important; }
                 .sub-title { font-family: Arial, sans-serif !important; font-size: 10pt !important; text-align: center !important; }
                 .bottom-info { font-family: Arial, sans-serif !important; font-size: 8.5pt !important; text-align: center !important; }

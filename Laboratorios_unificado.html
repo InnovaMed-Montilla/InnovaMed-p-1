@@ -218,8 +218,29 @@
             headerContact.innerHTML = "Torre Cavendes - Caracas. Teléfono: 0414-9172983<br>Whatsapp: 04269198665 / @draluisamontilla";
         }
 
+        // Función para formatear fechas a dd/mm/aaaa
+        function formatearFecha(strFecha) {
+            if (!strFecha || strFecha.toLowerCase() === "null") return "";
+            
+            // Remover componente de hora si existe (ej. 2026-07-30 14:00)
+            let fechaLimpia = strFecha.split(' ')[0].split('T')[0];
+            
+            // Si viene en formato AAAA-MM-DD o AAAA/MM/DD
+            let partes = fechaLimpia.split(/[-/]/);
+            if (partes.length === 3) {
+                if (partes[0].length === 4) {
+                    // [AAAA, MM, DD] -> DD/MM/AAAA
+                    return `${partes[2].padStart(2, '0')}/${partes[1].padStart(2, '0')}/${partes[0]}`;
+                } else if (partes[2].length === 4) {
+                    // [DD, MM, AAAA] o [MM, DD, AAAA]
+                    return `${partes[0].padStart(2, '0')}/${partes[1].padStart(2, '0')}/${partes[2]}`;
+                }
+            }
+            return strFecha;
+        }
+
         // 2. Carga segura de datos del paciente
-        function procesarCampo(paramKeys, elementId) {
+        function procesarCampo(paramKeys, elementId, esFecha = false) {
             let valor = null;
             if (Array.isArray(paramKeys)) {
                 for (let key of paramKeys) {
@@ -232,11 +253,15 @@
             
             const el = document.getElementById(elementId);
             if (el) {
-                el.innerText = (valor && valor.toLowerCase() !== "null") ? valor : "";
+                if (esFecha) {
+                    el.innerText = formatearFecha(valor);
+                } else {
+                    el.innerText = (valor && valor.toLowerCase() !== "null") ? valor : "";
+                }
             }
         }
 
-        procesarCampo(['f', 'Fecha'], 'val-Fecha');
+        procesarCampo(['f', 'Fecha'], 'val-Fecha', true);
         procesarCampo(['n', 'Nombre_Apellido', 'Nombre y Apellido'], 'val-Nombre');
         procesarCampo(['c', 'Cedula', 'C.I.'], 'val-Cedula');
         procesarCampo(['e', 'Edad'], 'val-Edad');

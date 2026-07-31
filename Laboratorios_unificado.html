@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Solicitud de Laboratorio - Innova Med</title>
+    <style>
+        /* Estructura Base */
+        body { 
+            font-family: 'Times New Roman', Times, serif; 
+            background-color: #f4f4f4; 
+            padding: 20px; 
+            color: #000; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+        .document-container { 
+            background-color: white; 
+            width: 816px; 
+            min-height: 1056px; 
+            margin: 20px auto; 
+            padding: 40px 60px; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+            box-sizing: border-box; 
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Encabezado */
+        .header-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; border: none; }
+        .logo-cell { width: 35%; vertical-align: middle; }
+        .logo-cell img { width: 100%; max-width: 260px; height: auto; display: block; }
+        .info-cell { width: 65%; vertical-align: middle; text-align: center; }
+
+        .top-info h2 { margin: 0; font-size: 14pt; font-family: Arial, sans-serif; text-transform: uppercase; color: #000; }
+        .dra-name { margin: 2px 0; font-size: 11pt; font-family: Arial, sans-serif; color: #000; }
+        .header-divider { border-top: 2pt solid #000; margin: 5px 0; width: 100%; }
+        .bottom-info { font-size: 9pt; font-family: Arial, sans-serif; color: #444444; line-height: 1.1; }
+
+        /* Estilos Dinámicos Tema CMC */
+        .theme-cmc .logo-cell { width: 40%; }
+        .theme-cmc .info-cell { width: 60%; }
+        .theme-cmc .top-info h2 { font-size: 15pt; color: #555555; }
+        .theme-cmc .dra-name { font-size: 12pt; color: #555555; margin: 0; }
+        .theme-cmc .header-divider { border-top-color: #555555; }
+        .theme-cmc .bottom-info { font-size: 9pt; color: #555555; }
+
+        /* Datos del Paciente */
+        .patient-data { margin: 20px 0; font-size: 11pt; line-height: 1.3; position: relative; border-bottom: 1.5pt solid #000; padding-bottom: 10px; }
+        .patient-data p { margin: 0 !important; padding: 0 !important; line-height: 1.2; }
+        .fecha-top { position: absolute; right: 0; top: 0; font-weight: bold; }
+        .title-doc { text-align: center; font-size: 16pt; font-weight: bold; text-decoration: underline; margin: 20px 0; text-transform: uppercase; }
+
+        /* Grilla de Laboratorios */
+        .labs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+        
+        table.lab-table { width: 100%; border-collapse: collapse; margin-bottom: 15pt; font-size: 9.5pt; }
+        table.lab-table th, table.lab-table td { border: 1px solid black; padding: 3px 6px; }
+        table.lab-table th { background-color: #f2f2f2; font-weight: bold; text-align: center; }
+        .check-cell { width: 35px; text-align: center; font-weight: bold; font-size: 12pt; height: 18px; }
+
+        /* Firma */
+        footer { margin-top: auto; padding-top: 30px; padding-bottom: 10px; text-align: center; width: 100%; }
+        .signature-line { width: 250px; border-top: 1.5px solid #000; margin: 0 auto 5px; }
+
+        /* Botonera */
+        .button-container { margin: 20px; display: flex; justify-content: center; gap: 15px; width: 100%; }
+        .btn { padding: 12px 30px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; color: white; font-size: 11pt; transition: 0.3s; }
+        .btn-print { background-color: #27649d; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-print:hover { background-color: #1d4d7a; }
+        .btn-word { background-color: #2b579a; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-word:hover { background-color: #1e3c6b; }
+
+        @media print { 
+            @page { margin: 0; size: letter; }
+            .no-print { display: none; } 
+            body { background-color: white; padding: 0; margin: 0; }
+            .document-container { box-shadow: none; margin: 0; width: 100% !important; padding: 40px 60px; box-sizing: border-box; min-height: 100vh; } 
+        }
+    </style>
+</head>
+<body>
+    <div id="exportContent" class="document-container">
+        <!-- Encabezado Único Dinámico -->
+        <table class="header-table" id="headerTable">
+            <tr>
+                <td class="logo-cell">
+                    <img id="logoImg" src="https://lh3.googleusercontent.com/d/1b0xVc6U0mUzyTCTHS29LsfUf9yiV3Euk" alt="Logo">
+                </td>
+                <td class="info-cell">
+                    <div class="top-info">
+                        <h2 id="headerTitle">CONSULTORIO MÉDICO DERMATOLÓGICO</h2>
+                        <p class="dra-name" id="headerSubtitle">Dra. Luisa Montilla - Dermatólogo UCV</p>
+                    </div>
+                    <div class="header-divider"></div>
+                    <div class="bottom-info" id="headerContact">
+                        Torre Cavendes - Caracas. Teléfono: 0414-9172983<br>
+                        Whatsapp: 04269198665 / @draluisamontilla
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Datos del Paciente -->
+        <div class="patient-data">
+            <div class="fecha-top">Fecha: <span id="val-Fecha"></span></div>
+            <p><strong>Nombre y Apellido:</strong> <span id="val-Nombre"></span></p>
+            <p><strong>C.I.:</strong> <span id="val-Cedula"></span></p>
+            <p><strong>Edad:</strong> <span id="val-Edad"></span></p>
+        </div>
+
+        <div class="title-doc">Solicitud Examen Laboratorio</div>
+
+        <!-- Grilla de Exámenes de Laboratorio -->
+        <div class="labs-grid">
+            <div>
+                <table class="lab-table">
+                    <tr><td class="check-cell" id="val-Hemato"></td><td style="font-weight:bold;">Hematología Completa</td></tr>
+                </table>
+                <table class="lab-table">
+                    <tr><th colspan="2">Química sanguínea</th></tr>
+                    <tr><td class="check-cell" id="val-Glicemia"></td><td>Glicemia en Ayunas</td></tr>
+                    <tr><td class="check-cell" id="val-Urea"></td><td>Urea y creatinina</td></tr>
+                    <tr><td class="check-cell" id="val-AST"></td><td>AST / ALT</td></tr>
+                    <tr><td class="check-cell" id="val-Bilirrubina"></td><td>Bilirrubina T y F</td></tr>
+                    <tr><td class="check-cell" id="val-Colesterol"></td><td>Colesterol y Triglicéridos</td></tr>
+                    <tr><td class="check-cell" id="val-LDH"></td><td>LDH</td></tr>
+                    <tr><td class="check-cell" id="val-CK"></td><td>CK</td></tr>
+                </table>
+                <table class="lab-table">
+                    <tr><th colspan="2">Perfil Hormonal (Día 2-4 del ciclo)</th></tr>
+                    <tr><td class="check-cell" id="val-Estradiol"></td><td>Estradiol</td></tr>
+                    <tr><td class="check-cell" id="val-Andros"></td><td>Androstenediona</td></tr>
+                    <tr><td class="check-cell" id="val-Testo"></td><td>Testosterona T y L</td></tr>
+                    <tr><td class="check-cell" id="val-17OH"></td><td>17-OH Progesterona</td></tr>
+                    <tr><td class="check-cell" id="val-DHEA"></td><td>DHEA-S</td></tr>
+                    <tr><td class="check-cell" id="val-LH"></td><td>LH</td></tr>
+                    <tr><td class="check-cell" id="val-FSH"></td><td>FSH</td></tr>
+                    <tr><td class="check-cell" id="val-Prolactina"></td><td>Prolactina</td></tr>
+                    <tr><td class="check-cell" id="val-SHGB"></td><td>SHGB</td></tr>
+                </table>
+            </div>
+
+            <div>
+                <table class="lab-table">
+                    <tr><th colspan="2">Perfil Tiroideo</th></tr>
+                    <tr><td class="check-cell" id="val-TSH"></td><td>TSH</td></tr>
+                    <tr><td class="check-cell" id="val-T3L"></td><td>T3L</td></tr>
+                    <tr><td class="check-cell" id="val-T4L"></td><td>T4L</td></tr>
+                    <tr><td class="check-cell" id="val-Anticuerpos"></td><td>Anticuerpos Antitiroideos</td></tr>
+                </table>
+                <table class="lab-table">
+                    <tr><th colspan="2">Serología</th></tr>
+                    <tr><td class="check-cell" id="val-HIV"></td><td>HIV</td></tr>
+                    <tr><td class="check-cell" id="val-VDRL"></td><td>VDRL</td></tr>
+                </table>
+                <table class="lab-table">
+                    <tr><th colspan="2">Orina</th></tr>
+                    <tr><td class="check-cell" id="val-Uroanalisis"></td><td>Uroanálisis</td></tr>
+                    <tr><td class="check-cell" id="val-Urocultivo"></td><td>Urocultivo</td></tr>
+                </table>
+                <table class="lab-table">
+                    <tr><th colspan="2">Heces</th></tr>
+                    <tr><td class="check-cell" id="val-Coproanalisis"></td><td>Coproanálisis</td></tr>
+                    <tr><td class="check-cell" id="val-Coprocultivo"></td><td>Coprocultivo</td></tr>
+                </table>
+                <table class="lab-table">
+                    <tr><th colspan="2">Otros</th></tr>
+                    <tr><td class="check-cell" id="val-Insulina"></td><td>Insulina Basal</td></tr>
+                    <tr><td class="check-cell" id="val-Ferritina"></td><td>Niveles de ferritina</td></tr>
+                    <tr><td class="check-cell" id="val-Hierro"></td><td>Hierro Sérico</td></tr>
+                    <tr><td class="check-cell" id="val-VitB12"></td><td>Niveles de Vit B12</td></tr>
+                    <tr><td class="check-cell" id="val-AcidoFolico"></td><td>Niveles de Ácido Fólico</td></tr>
+                    <tr><td class="check-cell" id="val-Otros"></td><td>Otros: <span id="val-OtrosText"></span></td></tr>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <div class="signature-line"></div>
+            <p style="margin:0; font-size:10pt;">Firma y Sello Médico</p>
+        </footer>
+    </div>
+
+    <div class="button-container no-print">
+        <button class="btn btn-print" onclick="window.print()">Imprimir / PDF</button>
+        <button class="btn btn-word" onclick="exportToWord()">Descargar Word</button>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const fullUrl = window.location.href.toLowerCase();
+        const paramSede = (params.get('sede') || '').toLowerCase();
+
+        // 1. Detección y Membrete Dinámico
+        const container = document.getElementById('exportContent');
+        const logoImg = document.getElementById('logoImg');
+        const headerTitle = document.getElementById('headerTitle');
+        const headerSubtitle = document.getElementById('headerSubtitle');
+        const headerContact = document.getElementById('headerContact');
+
+        const esCMC = paramSede === 'cmc' || fullUrl.includes('cmc');
+
+        if (esCMC) {
+            container.classList.add('theme-cmc');
+            logoImg.src = "https://lh3.googleusercontent.com/d/1AG-tPiSsSS3lK2I1X3qFj7iWVh0oC1bF";
+            logoImg.alt = "Logo CMC";
+            headerTitle.innerText = "DRA. LUISA MONTILLA";
+            headerSubtitle.innerText = "Médico Dermatólogo UCV";
+            headerContact.innerHTML = "Centro Médico de Caracas. San Bernardino<br>Teléfono: 0414-9172983 / Whatsapp: 04269198665";
+        } else {
+            // Predeterminado Cavendes
+            logoImg.src = "https://lh3.googleusercontent.com/d/1b0xVc6U0mUzyTCTHS29LsfUf9yiV3Euk";
+            logoImg.alt = "Logo Cavendes";
+            headerTitle.innerText = "CONSULTORIO MÉDICO DERMATOLÓGICO";
+            headerSubtitle.innerText = "Dra. Luisa Montilla - Dermatólogo UCV";
+            headerContact.innerHTML = "Torre Cavendes - Caracas. Teléfono: 0414-9172983<br>Whatsapp: 04269198665 / @draluisamontilla";
+        }
+
+        // 2. Carga segura de datos del paciente
+        function procesarCampo(paramKeys, elementId) {
+            let valor = null;
+            if (Array.isArray(paramKeys)) {
+                for (let key of paramKeys) {
+                    valor = params.get(key);
+                    if (valor) break;
+                }
+            } else {
+                valor = params.get(paramKeys);
+            }
+            
+            const el = document.getElementById(elementId);
+            if (el) {
+                el.innerText = (valor && valor.toLowerCase() !== "null") ? valor : "";
+            }
+        }
+
+        procesarCampo(['f', 'Fecha'], 'val-Fecha');
+        procesarCampo(['n', 'Nombre_Apellido', 'Nombre y Apellido'], 'val-Nombre');
+        procesarCampo(['c', 'Cedula', 'C.I.'], 'val-Cedula');
+        procesarCampo(['e', 'Edad'], 'val-Edad');
+        procesarCampo(['ot', 'OtrosText', 'Otros_Texto'], 'val-OtrosText');
+
+        // 3. Marcado dinámico de ítems con X
+        function setCheck(id, param) {
+            let val = params.get(param);
+            if (val && val.trim() !== "") {
+                let cleanVal = val.toUpperCase().trim();
+                if (cleanVal === 'X' || cleanVal === 'YES' || cleanVal === 'TRUE' || cleanVal === 'Y' || cleanVal === '1') {
+                    const el = document.getElementById(id);
+                    if(el) el.innerText = 'X';
+                }
+            }
+        }
+
+        setCheck('val-Hemato', 'h'); setCheck('val-Glicemia', 'ga'); setCheck('val-Urea', 'uc');
+        setCheck('val-AST', 'ast'); setCheck('val-Bilirrubina', 'btf'); setCheck('val-Colesterol', 'ct');
+        setCheck('val-LDH', 'ldh'); setCheck('val-CK', 'ck'); setCheck('val-TSH', 'tsh');
+        setCheck('val-T3L', 't3l'); setCheck('val-T4L', 't4l'); setCheck('val-Anticuerpos', 'aa');
+        setCheck('val-HIV', 'hiv'); setCheck('val-VDRL', 'vdrl'); setCheck('val-Uroanalisis', 'ua');
+        setCheck('val-Urocultivo', 'ucul'); setCheck('val-Coproanalisis', 'ca'); setCheck('val-Coprocultivo', 'cc');
+        setCheck('val-Estradiol', 'est'); setCheck('val-Andros', 'and'); setCheck('val-Testo', 'tes');
+        setCheck('val-17OH', '17oh'); setCheck('val-DHEA', 'dhea'); setCheck('val-LH', 'lh');
+        setCheck('val-FSH', 'fsh'); setCheck('val-Prolactina', 'pro'); setCheck('val-SHGB', 'shgb');
+        setCheck('val-Insulina', 'ins'); setCheck('val-Ferritina', 'fer'); setCheck('val-Hierro', 'hie');
+        setCheck('val-VitB12', 'b12'); setCheck('val-AcidoFolico', 'af'); setCheck('val-Otros', 'ot_chk');
+
+        // 4. Exportación Word conservando estilos
+        function exportToWord() {
+            var node = document.getElementById("exportContent");
+            var exportElement = node.cloneNode(true);
+            
+            var content = exportElement.innerHTML;
+            
+            if (esCMC) {
+                content = content.replace(/<img/g, '<img width="220" height="80" style="display:block; margin-bottom:5pt;"');
+            } else {
+                content = content.replace(/<img/g, '<img width="180" height="85" style="display:block; margin-bottom:5pt;"');
+            }
+            
+            var patientStyle = 'style="margin:0in; margin-bottom:.0001pt; line-height:1.2; font-family:\'Times New Roman\',serif; font-size:10pt;"';
+            
+            content = content.replace(/<div class="patient-data">/g, '<div style="margin-top:15pt; margin-bottom:15pt; border-bottom:1.5pt solid black; padding-bottom:8pt;">');
+            content = content.replace(/<p><strong>Nombre/g, '<p ' + patientStyle + '><strong>Nombre');
+            content = content.replace(/<p><strong>C.I./g, '<p ' + patientStyle + '><strong>C.I.');
+            content = content.replace(/<p><strong>Edad/g, '<p ' + patientStyle + '><strong>Edad');
+
+            content = content.replace(/<footer>/g, '<footer align="center" style="text-align:center; margin-top:40pt;">');
+            content = content.replace(/<div class="signature-line"><\/div>/g, '<div class="signature-line" align="center" style="margin-left:auto; margin-right:auto; width:200pt; border-top:1pt solid black; height:1pt;"></div>');
+
+            var preHtml = `
+            <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+            <head>
+                <meta charset='utf-8'>
+                <!--[if gte mso 9]>
+                <xml>
+                    <w:WordDocument>
+                        <w:View>Print</w:View>
+                        <w:Zoom>100</w:Zoom>
+                        <w:DoNotOptimizeForBrowser/>
+                    </w:WordDocument>
+                </xml>
+                <![endif]-->
+                <style>
+                    @page Section1 { size: 8.5in 11in; margin: 0.5in 0.8in; }
+                    div.Section1 { page: Section1; }
+                    body { font-family: 'Times New Roman', serif; font-size: 10pt; }
+                    .header-table { width: 100% !important; border: none; }
+                    .info-cell { text-align: center !important; }
+                    .top-info h2 { font-family: Arial, sans-serif !important; font-size: 11pt !important; margin: 0; padding: 0; line-height: 1.0; color: ${ esCMC ? '#555555' : '#000000' }; text-align: center !important; }
+                    .dra-name { font-family: Arial, sans-serif !important; font-size: 10pt !important; margin: 0; line-height: 1.0; color: ${ esCMC ? '#555555' : '#000000' }; text-align: center !important; }
+                    .bottom-info { font-family: Arial, sans-serif !important; font-size: 9pt !important; color: ${ esCMC ? '#555555' : '#444444' }; line-height: 1.0; text-align: center !important; }
+                    .fecha-top { text-align: right !important; float: right; font-weight: bold; }
+                    .title-doc { text-align: center !important; font-size: 14pt !important; font-weight: bold; text-decoration: underline; margin: 15pt 0 !important; }
+                    table.lab-table { width: 100% !important; border-collapse: collapse !important; font-size: 9pt !important; margin-bottom: 10pt !important; }
+                    table.lab-table th, table.lab-table td { border: 1pt solid black !important; padding: 2pt 4pt !important; }
+                    table.lab-table th { background-color: #f2f2f2 !important; font-weight: bold !important; text-align: center !important; }
+                    .check-cell { width: 25pt !important; text-align: center !important; font-weight: bold !important; }
+                </style>
+            </head>
+            <body>
+                <div class="Section1">${content}</div>
+            </body>
+            </html>`;
+
+            var finalContent = preHtml.replace(/class="info-cell"/g, 'class="info-cell" align="center"');
+            finalContent = finalContent.replace(/class="title-doc"/g, 'class="title-doc" align="center"');
+
+            var blob = new Blob(['\ufeff', finalContent], { type: 'application/msword' });
+            var url = URL.createObjectURL(blob);
+            
+            var nombrePaciente = document.getElementById('val-Nombre').innerText.trim() || 'Paciente';
+            var filename = 'Laboratorio_' + nombrePaciente.replace(/[^a-z0-9]/gi, '_') + '.doc';
+            
+            var downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+            downloadLink.href = url;
+            downloadLink.download = filename;
+            downloadLink.click();
+            
+            setTimeout(function() {
+                document.body.removeChild(downloadLink);
+                window.URL.revokeObjectURL(url);
+            }, 100);
+        }
+    </script>
+</body>
+</html>

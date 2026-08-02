@@ -114,6 +114,7 @@
         <section class="patient-data">
             <p class="full-width"><strong>Nombre y Apellido:</strong> <span id="nombre"></span></p>
             <p><strong>C.I.:</strong> <span id="cedula"></span></p>
+            <p><strong>F. N.:</strong> <span id="fnac"></span></p>
             <p><strong>Edad:</strong> <span id="edad"></span></p>
             <p><strong>Sexo:</strong> <span id="sexo"></span></p>
             <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
@@ -197,6 +198,7 @@
         procesarCampo(['f', 'Fecha'], 'fecha');
         procesarCampo(['n', 'Nombre_Apellido', 'Nombre y Apellido'], 'nombre');
         procesarCampo(['c', 'Cedula', 'C.I.'], 'cedula');
+        procesarCampo(['fn', 'F_N', 'F/N', 'Fecha_Nacimiento'], 'fnac');
         procesarCampo(['e', 'Edad'], 'edad');
         procesarCampo(['sx', 'Sexo'], 'sexo');
         procesarCampo(['tel', 'Telefono', 'Teléfono'], 'telefono');

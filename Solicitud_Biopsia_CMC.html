@@ -109,8 +109,37 @@
         }
     }
 
+    // Procesamiento especial para la fecha (convierte YYYY-MM-DD a DD/MM/YYYY)
+    function procesarFecha(paramId, elementId) {
+        const valor = params.get(paramId);
+        const el = document.getElementById(elementId);
+        if (el) {
+            if (valor && valor.toLowerCase() !== "null") {
+                // Si viene en formato YYYY-MM-DD (estándar de AppSheet)
+                const partes = valor.split(/[-/]/);
+                if (partes.length === 3) {
+                    // Verificamos si el año está al principio (formato americano/ISO)
+                    if (partes[0].length === 4) {
+                        el.innerText = `${partes[2]}/${partes[1]}/${partes[0]}`;
+                    } else {
+                        el.innerText = valor; // Si ya viene en otro formato, lo respeta
+                    }
+                } else {
+                    el.innerText = valor;
+                }
+            } else {
+                // Si no se pasa el parámetro por URL, coloca la fecha actual de forma automática en formato latino
+                const hoy = new Date();
+                const dia = String(hoy.getDate()).padStart(2, '0');
+                const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+                const anio = hoy.getFullYear();
+                el.innerText = `${dia}/${mes}/${anio}`;
+            }
+        }
+    }
+
     // Mapeo de parámetros de AppSheet
-    procesarCampo('f', 'fecha');
+    procesarFecha('f', 'fecha');
     procesarCampo('n', 'n');
     procesarCampo('c', 'c');
     procesarCampo('e', 'e');

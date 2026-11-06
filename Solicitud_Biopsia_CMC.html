@@ -109,37 +109,25 @@
         }
     }
 
-    // Procesamiento robusto para forzar formato latino DD/MM/YYYY
+    // Procesamiento con conversión estricta a formato latino DD/MM/YYYY
     function procesarFechaLatina(paramId, elementId) {
         let valor = params.get(paramId);
         const el = document.getElementById(elementId);
         
-        console.log("Valor recibido en fecha ('" + paramId + "'):", valor);
-
         if (el) {
             if (valor && valor.toLowerCase() !== "null") {
-                // Limpiamos espacios y tomamos la primera parte si trae hora (ej. 2026-10-03 00:00:00)
                 valor = valor.trim().split('T')[0].split(' ')[0];
                 
-                // Intentamos separar por guion o barra
-                const partes = valor.split(/[-/]/);
-                
-                if (partes.length === 3) {
-                    // Si el primer elemento tiene 4 dígitos (Año al inicio: YYYY-MM-DD)
-                    if (partes[0].length === 4) {
+                if (valor.includes('-')) {
+                    const partes = valor.split('-');
+                    if (partes.length === 3) {
                         el.innerText = `${partes[2]}/${partes[1]}/${partes[0]}`;
-                    } 
-                    // Si el tercer elemento tiene 4 dígitos (Ya viene latino o invertido: DD-MM-YYYY)
-                    else if (partes[2].length === 4) {
-                        el.innerText = `${partes[0]}/${partes[1]}/${partes[2]}`;
-                    } else {
-                        el.innerText = valor;
+                        return;
                     }
-                } else {
-                    el.innerText = valor;
                 }
+                
+                el.innerText = valor;
             } else {
-                // Si no viene fecha en la URL, colocamos la fecha actual de forma automática
                 const hoy = new Date();
                 const dia = String(hoy.getDate()).padStart(2, '0');
                 const mes = String(hoy.getMonth() + 1).padStart(2, '0');
@@ -149,7 +137,7 @@
         }
     }
 
-    // Mapeo de parámetros
+    // Mapeo de parámetros de AppSheet
     procesarFechaLatina('f', 'fecha');
     procesarCampo('n', 'n');
     procesarCampo('c', 'c');
